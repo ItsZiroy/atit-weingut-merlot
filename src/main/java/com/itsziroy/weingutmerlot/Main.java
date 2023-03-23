@@ -1,3 +1,3 @@
 package com.itsziroy.weingutmerlot;
 
-public class Main { }
+public class Main {}
