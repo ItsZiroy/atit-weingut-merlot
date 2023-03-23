@@ -5,19 +5,22 @@ jdk: openjdk19
 # Tests, dependency check and jacoco are skipped on purpose
 # here because they will be run later.
 script: mvn install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+stages:
+  - name: "Tests & Sonar Scan"
+    if: branch = master OR type = pull_request
+  - name: "Test"
+    if: branch != master AND type != pull_request
+
 jobs:
   include:
     # Only run sonar Scan on master/ pull_requests
-    - if: branch = master OR type = pull_request
-      stage: "Tests & Sonar Scan"
+    - stage: "Tests & Sonar Scan"
       script: "mvn clean verify sonar:sonar
       -Dsonar.projectKey=$SONAR_PROJECT_KEY
       -Dsonar.host.url=$SONAR_HOST
       -Dsonar.login=$SONAR_LOGIN"
-
-  exclude:
-    - if: branch = master OR type = pull_request
-      stage: "Tests"
+    - stage: "Tests"
       script: "mvn test"
 
     # The maven dependencies should be cached so the pipeline is faster
