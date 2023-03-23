@@ -8,9 +8,9 @@ script: mvn install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=
 jobs:
   include:
     - stage: "Tests & Sonar Scan"
-      script: "mvn clean verify sonar:sonar \
-      -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-      -Dsonar.host.url=$SONAR_HOST \
+      script: "mvn clean verify sonar:sonar
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY
+      -Dsonar.host.url=$SONAR_HOST
       -Dsonar.login=$SONAR_LOGIN"
 
 # The maven dependencies should be cached so the pipeline is faster
