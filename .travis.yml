@@ -7,13 +7,20 @@ jdk: openjdk19
 script: mvn install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 jobs:
   include:
-    - stage: "Tests & Sonar Scan"
+    # Only run sonar Scan on master/ pull_requests
+    - if: branch = master OR type = pull_request
+      stage: "Tests & Sonar Scan"
       script: "mvn clean verify sonar:sonar
       -Dsonar.projectKey=$SONAR_PROJECT_KEY
       -Dsonar.host.url=$SONAR_HOST
       -Dsonar.login=$SONAR_LOGIN"
 
-# The maven dependencies should be cached so the pipeline is faster
+  exclude:
+    - if: branch = master OR type = pull_request
+      stage: "Tests"
+      script: "mvn test"
+
+    # The maven dependencies should be cached so the pipeline is faster
 cache:
   directories:
     - $HOME/.m2
