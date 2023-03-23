@@ -10,7 +10,7 @@ script: "mvn install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests
 stages:
   - name: "Tests & Sonar Scan"
     if: branch = master OR type = pull_request
-  - name: "Test"
+  - name: "Tests"
     if: (NOT branch = master) AND (NOT type = pull_request)
 
 jobs:
