@@ -1,2 +1,2 @@
 # atit-weingut-merlot
-Agriculture planning tool for whine production.
+Agriculture planning tool for wine production.
