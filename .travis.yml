@@ -11,7 +11,7 @@ stages:
   - name: "Tests & Sonar Scan"
     if: branch = master OR type = pull_request
   - name: "Test"
-    if: branch != master AND type != pull_request
+    if: (NOT branch = master) AND (NOT type = pull_request)
 
 jobs:
   include:
