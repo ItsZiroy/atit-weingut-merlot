@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 public class MainTest {
 
-    @Test
-    public void testMainClassCreation() {
-        Main main = new Main();
-        Assertions.assertInstanceOf(Main.class, main);
-    }
+  @Test
+  public void testMainClassCreation() {
+    Main main = new Main();
+    Assertions.assertInstanceOf(Main.class, main);
+  }
 }
