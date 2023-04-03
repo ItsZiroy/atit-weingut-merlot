@@ -12,12 +12,12 @@ public class GaerungsprozessschritteHasHefen {
   @MapsId("gaerungsprozessschritteId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "gaerungsprozessschritte_id", nullable = false)
-  private Gaerungsprozessschritte gaerungsprozessschritte;
+  private Gaerungsprozessschritt gaerungsprozessschritt;
 
   @MapsId("hefenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "hefen_id", nullable = false)
-  private Hefen hefen;
+  private Hefe hefe;
 
   @Column(name = "menge", nullable = false)
   private Integer menge;
@@ -30,20 +30,20 @@ public class GaerungsprozessschritteHasHefen {
     this.id = id;
   }
 
-  public Gaerungsprozessschritte getGaerungsprozessschritte() {
-    return gaerungsprozessschritte;
+  public Gaerungsprozessschritt getGaerungsprozessschritte() {
+    return gaerungsprozessschritt;
   }
 
-  public void setGaerungsprozessschritte(Gaerungsprozessschritte gaerungsprozessschritte) {
-    this.gaerungsprozessschritte = gaerungsprozessschritte;
+  public void setGaerungsprozessschritte(Gaerungsprozessschritt gaerungsprozessschritt) {
+    this.gaerungsprozessschritt = gaerungsprozessschritt;
   }
 
-  public Hefen getHefen() {
-    return hefen;
+  public Hefe getHefen() {
+    return hefe;
   }
 
-  public void setHefen(Hefen hefen) {
-    this.hefen = hefen;
+  public void setHefen(Hefe hefe) {
+    this.hefe = hefe;
   }
 
   public Integer getMenge() {

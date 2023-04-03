@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "gaerungsprozessschritte")
-public class Gaerungsprozessschritte {
+public class Gaerungsprozessschritt {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "gaerungsprozess_id", nullable = false)
-  private Gaerungsprozesse gaerungsprozess;
+  private Gaerungsprozess gaerungsprozess;
 
   @Column(name = "nach_zeit", nullable = false)
   private Integer nachZeit;
@@ -25,6 +25,20 @@ public class Gaerungsprozessschritte {
   @Column(name = "soll_alkohol", nullable = false)
   private Integer sollAlkohol;
 
+  /**
+   * Gibt die Rangfolge der Prozessschritte an
+   */
+  @Column(name = "schritt", nullable = false)
+  private Integer schritt;
+
+  public Integer getSchritt() {
+    return schritt;
+  }
+
+  public void setSchritt(Integer schritt) {
+    this.schritt = schritt;
+  }
+
   public Integer getId() {
     return id;
   }
@@ -33,11 +47,11 @@ public class Gaerungsprozessschritte {
     this.id = id;
   }
 
-  public Gaerungsprozesse getGaerungsprozess() {
+  public Gaerungsprozess getGaerungsprozess() {
     return gaerungsprozess;
   }
 
-  public void setGaerungsprozess(Gaerungsprozesse gaerungsprozess) {
+  public void setGaerungsprozess(Gaerungsprozess gaerungsprozess) {
     this.gaerungsprozess = gaerungsprozess;
   }
 
@@ -72,5 +86,4 @@ public class Gaerungsprozessschritte {
   public void setSollAlkohol(Integer sollAlkohol) {
     this.sollAlkohol = sollAlkohol;
   }
-
 }

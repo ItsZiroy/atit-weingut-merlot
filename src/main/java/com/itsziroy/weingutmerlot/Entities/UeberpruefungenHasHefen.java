@@ -12,12 +12,12 @@ public class UeberpruefungenHasHefen {
   @MapsId("ueberpruefungenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ueberpruefungen_id", nullable = false)
-  private Ueberpruefungen ueberpruefungen;
+  private Ueberpruefung ueberpruefung;
 
   @MapsId("hefenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "hefen_id", nullable = false)
-  private Hefen hefen;
+  private Hefe hefe;
 
   @Column(name = "ist", nullable = false)
   private Integer ist;
@@ -33,20 +33,20 @@ public class UeberpruefungenHasHefen {
     this.id = id;
   }
 
-  public Ueberpruefungen getUeberpruefungen() {
-    return ueberpruefungen;
+  public Ueberpruefung getUeberpruefungen() {
+    return ueberpruefung;
   }
 
-  public void setUeberpruefungen(Ueberpruefungen ueberpruefungen) {
-    this.ueberpruefungen = ueberpruefungen;
+  public void setUeberpruefungen(Ueberpruefung ueberpruefung) {
+    this.ueberpruefung = ueberpruefung;
   }
 
-  public Hefen getHefen() {
-    return hefen;
+  public Hefe getHefen() {
+    return hefe;
   }
 
-  public void setHefen(Hefen hefen) {
-    this.hefen = hefen;
+  public void setHefen(Hefe hefe) {
+    this.hefe = hefe;
   }
 
   public Integer getIst() {

@@ -1,4 +1,4 @@
-package com.itsziroy.weingutmerlot.Entities;
+package com.itsziroy.weingutmerlot.Entities.CompositeKeys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

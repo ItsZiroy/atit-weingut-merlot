@@ -14,12 +14,12 @@ public class WeinartenHasWeinreben {
   @MapsId("weinartenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weinarten_id", nullable = false)
-  private Weinarten weinarten;
+  private Weinart weinart;
 
   @MapsId("weinrebenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weinreben_id", nullable = false)
-  private Weinreben weinreben;
+  private Weinrebe weinrebe;
 
   @Column(name = "menge", nullable = false, precision = 13, scale = 10)
   private BigDecimal menge;
@@ -32,20 +32,20 @@ public class WeinartenHasWeinreben {
     this.id = id;
   }
 
-  public Weinarten getWeinarten() {
-    return weinarten;
+  public Weinart getWeinarten() {
+    return weinart;
   }
 
-  public void setWeinarten(Weinarten weinarten) {
-    this.weinarten = weinarten;
+  public void setWeinarten(Weinart weinart) {
+    this.weinart = weinart;
   }
 
-  public Weinreben getWeinreben() {
-    return weinreben;
+  public Weinrebe getWeinreben() {
+    return weinrebe;
   }
 
-  public void setWeinreben(Weinreben weinreben) {
-    this.weinreben = weinreben;
+  public void setWeinreben(Weinrebe weinrebe) {
+    this.weinrebe = weinrebe;
   }
 
   public BigDecimal getMenge() {

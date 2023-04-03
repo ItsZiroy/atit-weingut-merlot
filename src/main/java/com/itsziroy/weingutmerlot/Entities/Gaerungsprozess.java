@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "gaerungsprozesse")
-public class Gaerungsprozesse {
+public class Gaerungsprozess {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weine_id", nullable = false)
-  private Weine weine;
+  private Wein wein;
 
   @Column(name = "zuckergehalt", nullable = false)
   private Integer zuckergehalt;
@@ -33,12 +33,12 @@ public class Gaerungsprozesse {
     this.id = id;
   }
 
-  public Weine getWeine() {
-    return weine;
+  public Wein getWeine() {
+    return wein;
   }
 
-  public void setWeine(Weine weine) {
-    this.weine = weine;
+  public void setWeine(Wein wein) {
+    this.wein = wein;
   }
 
   public Integer getZuckergehalt() {

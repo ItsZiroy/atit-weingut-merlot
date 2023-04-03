@@ -1,5 +1,6 @@
 package com.itsziroy.weingutmerlot.Entities;
 
+import com.itsziroy.weingutmerlot.Entities.CompositeKeys.WeinHasZutatenId;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,12 +12,12 @@ public class WeinHasZutaten {
   @MapsId("weinId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wein_id", nullable = false)
-  private Weine wein;
+  private Wein wein;
 
   @MapsId("zutatenId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "Zutaten_id", nullable = false)
-  private Zutaten zutaten;
+  private Zutat zutat;
 
   @Column(name = "menge", nullable = false)
   private Integer menge;
@@ -32,20 +33,20 @@ public class WeinHasZutaten {
     this.id = id;
   }
 
-  public Weine getWein() {
+  public Wein getWein() {
     return wein;
   }
 
-  public void setWein(Weine wein) {
+  public void setWein(Wein wein) {
     this.wein = wein;
   }
 
-  public Zutaten getZutaten() {
-    return zutaten;
+  public Zutat getZutaten() {
+    return zutat;
   }
 
-  public void setZutaten(Zutaten zutaten) {
-    this.zutaten = zutaten;
+  public void setZutaten(Zutat zutat) {
+    this.zutat = zutat;
   }
 
   public Integer getMenge() {

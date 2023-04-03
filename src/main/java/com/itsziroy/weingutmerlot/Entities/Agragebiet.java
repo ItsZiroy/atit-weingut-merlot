@@ -6,14 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "weinreben")
-public class Weinreben {
+@Table(name = "agragebiete")
+public class Agragebiet {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+  @Column(name = "size", nullable = false)
+  private Integer size;
 
   public Integer getId() {
     return id;
@@ -23,12 +23,12 @@ public class Weinreben {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Integer getSize() {
+    return size;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setSize(Integer size) {
+    this.size = size;
   }
 
 }

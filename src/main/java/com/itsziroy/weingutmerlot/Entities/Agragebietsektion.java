@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "agragebietsektionen")
-public class Agragebietsektionen {
+public class Agragebietsektion {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "agragebiet_id", nullable = false)
-  private Agragebiete agragebiet;
+  private Agragebiet agragebiet;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weinrebe_id", nullable = false)
-  private Weinreben weinrebe;
+  private Weinrebe weinrebe;
 
   @Column(name = "size", nullable = false)
   private Integer size;
@@ -28,19 +28,19 @@ public class Agragebietsektionen {
     this.id = id;
   }
 
-  public Agragebiete getAgragebiet() {
+  public Agragebiet getAgragebiet() {
     return agragebiet;
   }
 
-  public void setAgragebiet(Agragebiete agragebiet) {
+  public void setAgragebiet(Agragebiet agragebiet) {
     this.agragebiet = agragebiet;
   }
 
-  public Weinreben getWeinrebe() {
+  public Weinrebe getWeinrebe() {
     return weinrebe;
   }
 
-  public void setWeinrebe(Weinreben weinrebe) {
+  public void setWeinrebe(Weinrebe weinrebe) {
     this.weinrebe = weinrebe;
   }
 

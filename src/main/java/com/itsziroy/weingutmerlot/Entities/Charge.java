@@ -1,17 +1,18 @@
 package com.itsziroy.weingutmerlot.Entities;
 
+import com.itsziroy.weingutmerlot.db.DB;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "chargen")
-public class Chargen {
+public class Charge {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weintyp_id", nullable = false)
-  private Weine weintyp;
+  private Wein weintyp;
 
   @Column(name = "jahrgang", nullable = false)
   private Integer jahrgang;
@@ -30,11 +31,11 @@ public class Chargen {
     this.id = id;
   }
 
-  public Weine getWeintyp() {
+  public Wein getWeintyp() {
     return weintyp;
   }
 
-  public void setWeintyp(Weine weintyp) {
+  public void setWeintyp(Wein weintyp) {
     this.weintyp = weintyp;
   }
 
@@ -60,6 +61,10 @@ public class Chargen {
 
   public void setMengeInLiter(Integer mengeInLiter) {
     this.mengeInLiter = mengeInLiter;
+  }
+
+  public void create(Charge charge) {
+    DB.entityManager.persist(charge);
   }
 
 }

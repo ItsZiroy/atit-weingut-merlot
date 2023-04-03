@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ueberpruefungen")
-public class Ueberpruefungen {
+public class Ueberpruefung {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "chargen_id", nullable = false)
-  private Chargen chargen;
+  private Charge chargen;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "gaerungsprozessschritte_id", nullable = false)
-  private Gaerungsprozessschritte gaerungsprozessschritte;
+  private Gaerungsprozessschritt gaerungsprozessschritt;
 
   @Column(name = "ist_zucker", nullable = false)
   private Integer istZucker;
@@ -43,20 +43,20 @@ public class Ueberpruefungen {
     this.id = id;
   }
 
-  public Chargen getChargen() {
+  public Charge getChargen() {
     return chargen;
   }
 
-  public void setChargen(Chargen chargen) {
+  public void setChargen(Charge chargen) {
     this.chargen = chargen;
   }
 
-  public Gaerungsprozessschritte getGaerungsprozessschritte() {
-    return gaerungsprozessschritte;
+  public Gaerungsprozessschritt getGaerungsprozessschritte() {
+    return gaerungsprozessschritt;
   }
 
-  public void setGaerungsprozessschritte(Gaerungsprozessschritte gaerungsprozessschritte) {
-    this.gaerungsprozessschritte = gaerungsprozessschritte;
+  public void setGaerungsprozessschritte(Gaerungsprozessschritt gaerungsprozessschritt) {
+    this.gaerungsprozessschritt = gaerungsprozessschritt;
   }
 
   public Integer getIstZucker() {

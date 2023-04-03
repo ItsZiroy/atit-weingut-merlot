@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "weine")
-public class Weine {
+public class Wein {
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weinart_id", nullable = false)
-  private Weinarten weinart;
+  private Weinart weinart;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "suessegrad", nullable = false, length = 11)
@@ -33,11 +33,11 @@ public class Weine {
     this.id = id;
   }
 
-  public Weinarten getWeinart() {
+  public Weinart getWeinart() {
     return weinart;
   }
 
-  public void setWeinart(Weinarten weinart) {
+  public void setWeinart(Weinart weinart) {
     this.weinart = weinart;
   }
 
