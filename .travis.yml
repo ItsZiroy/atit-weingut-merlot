@@ -4,8 +4,7 @@ jdk: openjdk19
 # The basic install script will be run before every job.
 # Tests, dependency check and jacoco are skipped on purpose
 # here because they will be run later.
-install: mvn dependency:resolve
-script: "mvn install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+install: "mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
 
 stages:
   - name: "Tests & Sonar Scan"
