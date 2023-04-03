@@ -59,7 +59,7 @@ CREATE INDEX `fk_agragebietsektionen_weinrebe1_idx` ON `weingutmerlot`.`agragebi
 CREATE TABLE IF NOT EXISTS `weingutmerlot`.`chargen` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `weintyp_id` INT NOT NULL,
-  `jahrgang` INT NOT NULL DEFAULT year(curdate());,
+  `jahrgang` INT NOT NULL DEFAULT (YEAR(CURDATE())),
   `lagerungsort` VARCHAR(255) NULL,
   `menge_in_liter` INT NOT NULL,
   PRIMARY KEY (`id`),
