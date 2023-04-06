@@ -34,6 +34,10 @@ build/
 ### VS Code ###
 .vscode/
 
+
 ### Mac OS ###
 .DS_Store
+
+
+### Persistence information ###
 /src/main/resources/META-INF/persistence.xml
