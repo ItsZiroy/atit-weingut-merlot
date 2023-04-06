@@ -63,8 +63,4 @@ public class Charge {
     this.mengeInLiter = mengeInLiter;
   }
 
-  public void create(Charge charge) {
-    DB.entityManager.persist(charge);
-  }
-
 }
