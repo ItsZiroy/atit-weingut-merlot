@@ -9,6 +9,7 @@ import java.util.Set;
 @Table(name = "weine")
 public class Wein {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Integer id;
 
@@ -21,7 +22,7 @@ public class Wein {
   private Suessegrad suessegrad;
 
   @Column(name = "alkoholgehalt", nullable = false)
-  private Integer alkoholgehalt;
+  private Double alkoholgehalt;
 
   @Lob
   @Column(name = "beschreibung")
@@ -59,11 +60,11 @@ public class Wein {
     this.suessegrad = suessegrad;
   }
 
-  public Integer getAlkoholgehalt() {
+  public Double getAlkoholgehalt() {
     return alkoholgehalt;
   }
 
-  public void setAlkoholgehalt(Integer alkoholgehalt) {
+  public void setAlkoholgehalt(Double alkoholgehalt) {
     this.alkoholgehalt = alkoholgehalt;
   }
 

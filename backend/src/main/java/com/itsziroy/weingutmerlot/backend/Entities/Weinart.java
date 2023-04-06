@@ -49,4 +49,8 @@ public class Weinart {
     this.art = art;
   }
 
+  @Override
+  public String toString() {
+    return getName() + " - " + getArt();
+  }
 }
