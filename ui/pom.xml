@@ -15,11 +15,26 @@
         <maven.compiler.target>19</maven.compiler.target>
     </properties>
     <dependencies>
+        <!-- ui framework -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>20</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>20</version>
+        </dependency>
+
+        <!-- styling library -->
+        <dependency>
+            <groupId>io.github.palexdev</groupId>
+            <artifactId>materialfx</artifactId>
+            <version>11.15.0</version>
+        </dependency>
+
+        <!-- backend code -->
         <dependency>
             <groupId>com.itsziroy.weingutmerlot</groupId>
             <artifactId>backend</artifactId>

@@ -95,7 +95,7 @@ public class Gaerungsprozessschritt {
     return this.getSiblingProzessschrittByNumber(this.getSchritt() +1);
   }
   public Gaerungsprozessschritt getSiblingProzessschrittByNumber(int schritt) {
-    TypedQuery<Gaerungsprozessschritt> query = DB.entityManager.createQuery("select p from Gaerungsprozessschritt p " +
+    TypedQuery<Gaerungsprozessschritt> query = DB.getEntityManager().createQuery("select p from Gaerungsprozessschritt p " +
             "where p.schritt = :schritt and p.gaerungsprozess.id = :gaerungsprozess_id", Gaerungsprozessschritt.class);
 
     query.setParameter("schritt",schritt);
