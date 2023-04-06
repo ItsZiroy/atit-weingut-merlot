@@ -3,6 +3,8 @@ package com.itsziroy.weingutmerlot.backend.Entities;
 import com.itsziroy.weingutmerlot.backend.Entities.Enums.Suessegrad;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "weine")
 public class Wein {
@@ -24,6 +26,14 @@ public class Wein {
   @Lob
   @Column(name = "beschreibung")
   private String beschreibung;
+
+  @ManyToMany
+  @JoinTable(
+          name = "weine_has_zutaten",
+          joinColumns = {@JoinColumn(name = "weine_id")},
+          inverseJoinColumns = {@JoinColumn(name = "zutaten_id")}
+  )
+  private Set<Zutat> zutaten;
 
   public Integer getId() {
     return id;

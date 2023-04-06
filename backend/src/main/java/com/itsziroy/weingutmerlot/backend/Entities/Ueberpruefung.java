@@ -2,6 +2,8 @@ package com.itsziroy.weingutmerlot.backend.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "ueberpruefungen")
 public class Ueberpruefung {
@@ -11,7 +13,7 @@ public class Ueberpruefung {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "chargen_id", nullable = false)
-  private Charge chargen;
+  private Charge charge;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "gaerungsprozessschritte_id", nullable = false)
@@ -35,6 +37,14 @@ public class Ueberpruefung {
   @Column(name = "naechster_schritt", nullable = false)
   private Boolean naechsterSchritt = false;
 
+  @ManyToMany
+  @JoinTable(
+          name = "ueberpruefungen_has_hefen",
+          joinColumns = {@JoinColumn(name = "ueberpruefungen_id")},
+          inverseJoinColumns = {@JoinColumn(name = "hefen_id")}
+  )
+  private Set<Hefe> hefen;
+
   public Integer getId() {
     return id;
   }
@@ -43,12 +53,12 @@ public class Ueberpruefung {
     this.id = id;
   }
 
-  public Charge getChargen() {
-    return chargen;
+  public Charge getCharge() {
+    return charge;
   }
 
-  public void setChargen(Charge chargen) {
-    this.chargen = chargen;
+  public void setCharge(Charge charge) {
+    this.charge = charge;
   }
 
   public Gaerungsprozessschritt getGaerungsprozessschritte() {

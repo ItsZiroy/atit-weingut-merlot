@@ -261,7 +261,7 @@ CREATE INDEX `fk_weinarten_has_weinreben_weinarten1_idx` ON `weingutmerlot`.`wei
 CREATE TABLE IF NOT EXISTS `weingutmerlot`.`weine` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `weinart_id` INT NOT NULL,
-  `suessegrad` ENUM("Trocken", "Halbtrocken", "Lieblich", "Süß", "Feinherb") NOT NULL,
+  `suessegrad` ENUM("TROCKEN", "HALBTROCKEN", "LIEBLICH", "SUESS", "FEINHERB") NOT NULL,
   `alkoholgehalt` INT NOT NULL,
   `beschreibung` MEDIUMTEXT NULL,
   PRIMARY KEY (`id`),
@@ -276,29 +276,29 @@ CREATE INDEX `fk_weine_weinart1_idx` ON `weingutmerlot`.`weine` (`weinart_id` AS
 
 
 -- -----------------------------------------------------
--- Table `weingutmerlot`.`wein_has_Zutaten`
+-- Table `weingutmerlot`.`weine_has_zutaten`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `weingutmerlot`.`wein_has_Zutaten` (
-  `wein_id` INT NOT NULL,
-  `Zutaten_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `weingutmerlot`.`weine_has_zutaten` (
+  `weine_id` INT NOT NULL,
+  `zutaten_id` INT NOT NULL,
   `menge` INT NOT NULL DEFAULT 0 COMMENT 'Menge In Prozent von Chargengröße',
   `menge_einheit` VARCHAR(10) NOT NULL DEFAULT 'g' COMMENT 'Wird immer auf einen Liter gerechnet',
-  PRIMARY KEY (`wein_id`, `Zutaten_id`),
-  CONSTRAINT `fk_wein_has_Zutaten_wein1`
-    FOREIGN KEY (`wein_id`)
+  PRIMARY KEY (`weine_id`, `zutaten_id`),
+  CONSTRAINT `fk_weine_has_zutaten_wein1`
+    FOREIGN KEY (`weine_id`)
     REFERENCES `weingutmerlot`.`weine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_wein_has_Zutaten_Zutaten1`
-    FOREIGN KEY (`Zutaten_id`)
+  CONSTRAINT `fk_weine_has_zutaten_zutaten1`
+    FOREIGN KEY (`zutaten_id`)
     REFERENCES `weingutmerlot`.`zutaten` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_wein_has_Zutaten_Zutaten1_idx` ON `weingutmerlot`.`wein_has_Zutaten` (`Zutaten_id` ASC) VISIBLE;
+CREATE INDEX `fk_weine_has_zutaten_zutaten1_idx` ON `weingutmerlot`.`weine_has_zutaten` (`zutaten_id` ASC) VISIBLE;
 
-CREATE INDEX `fk_wein_has_Zutaten_wein1_idx` ON `weingutmerlot`.`wein_has_Zutaten` (`wein_id` ASC) VISIBLE;
+CREATE INDEX `fk_weine_has_zutaten_wein1_idx` ON `weingutmerlot`.`weine_has_zutaten` (`weine_id` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------

@@ -3,6 +3,8 @@ package com.itsziroy.weingutmerlot.backend.Entities;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "gaerungsprozessschritte")
 public class Gaerungsprozessschritt {
@@ -31,6 +33,14 @@ public class Gaerungsprozessschritt {
    */
   @Column(name = "schritt", nullable = false)
   private Integer schritt;
+
+  @ManyToMany
+  @JoinTable(
+          name = "gaehrungsprozessschritte_has_hefen",
+          joinColumns = {@JoinColumn(name = "gaehrungsprozessschritte_id")},
+          inverseJoinColumns = {@JoinColumn(name = "hefen_id")}
+  )
+  private Set<Hefe> hefen;
 
   public Integer getSchritt() {
     return schritt;

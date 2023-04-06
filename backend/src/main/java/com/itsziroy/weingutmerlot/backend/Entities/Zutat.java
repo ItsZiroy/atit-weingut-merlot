@@ -1,9 +1,8 @@
 package com.itsziroy.weingutmerlot.backend.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "zutaten")
@@ -14,6 +13,14 @@ public class Zutat {
 
   @Column(name = "name", nullable = false)
   private String name;
+
+  @ManyToMany
+  @JoinTable(
+          name = "weine_has_zutaten",
+          joinColumns = {@JoinColumn(name = "zutaten_id")},
+          inverseJoinColumns = {@JoinColumn(name = "weine_id")}
+  )
+  private Set<Wein> weine;
 
   public Integer getId() {
     return id;
