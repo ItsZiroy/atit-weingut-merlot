@@ -1,6 +1,5 @@
 package com.itsziroy.weingutmerlot.backend.Entities;
 
-import com.itsziroy.weingutmerlot.backend.db.DB;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +7,7 @@ import jakarta.persistence.*;
 public class Charge {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)

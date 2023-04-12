@@ -9,6 +9,7 @@ import java.util.Set;
 public class Zutat {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "name", nullable = false)

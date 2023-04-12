@@ -9,6 +9,7 @@ import java.util.Set;
 public class Hefe {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "art", nullable = false)
@@ -19,9 +20,9 @@ public class Hefe {
 
   @ManyToMany
   @JoinTable(
-          name = "gaehrungsprozessschritte_has_hefen",
+          name = "gaerungsprozessschritte_has_hefen",
           joinColumns = {@JoinColumn(name = "hefen_id")},
-          inverseJoinColumns = {@JoinColumn(name = "gaehrungsprozessschritte_id")}
+          inverseJoinColumns = {@JoinColumn(name = "gaerungsprozessschritte_id")}
   )
   private Set<Gaerungsprozessschritt> gaerungsprozessschritte;
 
