@@ -262,7 +262,7 @@ CREATE INDEX `fk_weinarten_has_weinreben_weinarten1_idx` ON `weingutmerlot`.`wei
 CREATE TABLE IF NOT EXISTS `weingutmerlot`.`weine` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `weinart_id` INT NOT NULL,
-  `suessegrad` ENUM("TROCKEN", "HALBTROCKEN", "LIEBLICH", "SUESS", "FEINHERB") NOT NULL,
+  `suessegrad` ENUM("Trocken", "Halbtrocken", "Lieblich", "Suess", "Feinherb") NOT NULL,
   `alkoholgehalt` INT NOT NULL,
   `beschreibung` MEDIUMTEXT NULL,
   PRIMARY KEY (`id`),

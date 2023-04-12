@@ -116,10 +116,11 @@
                 </executions>
             </plugin>
 
+            <!-- Copies all Entity files to the test build folder so the test can run properly -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>copy entities</id>
@@ -140,5 +141,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
