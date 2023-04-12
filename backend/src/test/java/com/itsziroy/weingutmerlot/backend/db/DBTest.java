@@ -11,7 +11,7 @@ class DBTest {
    * an exception is being thrown
    */
   @Test
-  void persistenceUnitDoesNotExist() {
+  void persistenceUnitDoesNotExist() throws ClassNotFoundException {
     Assertions.assertThrows(PersistenceException.class, () -> DB.setPersistenceUnit("this_will_definitely_not_exist"));
   }
 

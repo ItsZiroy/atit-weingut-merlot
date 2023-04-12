@@ -103,7 +103,7 @@ public class Gaerungsprozessschritt {
     return this.getSiblingProzessschrittByNumber(this.getSchritt() -1);
   }
   public Gaerungsprozessschritt getNextProzessschritt() {
-    return this.getSiblingProzessschrittByNumber(this.getSchritt() +2);
+    return this.getSiblingProzessschrittByNumber(this.getSchritt() +1);
   }
   public Gaerungsprozessschritt getSiblingProzessschrittByNumber(int schritt) {
     TypedQuery<Gaerungsprozessschritt> query = DB.getEntityManager().createQuery("select p from Gaerungsprozessschritt p " +

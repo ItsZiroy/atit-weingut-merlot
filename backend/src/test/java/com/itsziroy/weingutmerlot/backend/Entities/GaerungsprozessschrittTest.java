@@ -17,7 +17,6 @@ class GaerungsprozessschrittTest {
   static void setUp() {
 
     DB.setPersistenceUnit("test");
-
     Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(false);
 
     DB.getEntityManager().getTransaction().begin();
