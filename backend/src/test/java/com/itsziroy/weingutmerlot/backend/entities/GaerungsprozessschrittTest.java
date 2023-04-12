@@ -1,6 +1,8 @@
-package com.itsziroy.weingutmerlot.backend.Entities;
+package com.itsziroy.weingutmerlot.backend.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
+import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozess;
+import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

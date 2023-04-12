@@ -1,7 +1,5 @@
 package com.itsziroy.weingutmerlot.ui;
 
-import com.itsziroy.weingutmerlot.backend.Entities.Gaerungsprozessschritt;
-import com.itsziroy.weingutmerlot.backend.db.DB;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import jakarta.persistence.PersistenceException;

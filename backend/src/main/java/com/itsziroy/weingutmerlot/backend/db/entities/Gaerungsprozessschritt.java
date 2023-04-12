@@ -1,4 +1,4 @@
-package com.itsziroy.weingutmerlot.backend.Entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import jakarta.persistence.*;

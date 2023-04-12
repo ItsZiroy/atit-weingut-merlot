@@ -1,7 +1,8 @@
-package com.itsziroy.weingutmerlot.backend.Entities;
+package com.itsziroy.weingutmerlot.backend.entities;
 
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
+import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozess;
 
 class GaerungsprozessTest {
 

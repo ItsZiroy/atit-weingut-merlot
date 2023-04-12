@@ -1,6 +1,6 @@
-package com.itsziroy.weingutmerlot.backend.Entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
-import com.itsziroy.weingutmerlot.backend.Entities.Enums.Suessegrad;
+import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
 import jakarta.persistence.*;
 
 import java.util.Set;

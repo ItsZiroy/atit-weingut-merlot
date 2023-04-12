@@ -1,8 +1,8 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
-import com.itsziroy.weingutmerlot.backend.Entities.Enums.Suessegrad;
-import com.itsziroy.weingutmerlot.backend.Entities.Wein;
-import com.itsziroy.weingutmerlot.backend.Entities.Weinart;
+import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
+import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
+import com.itsziroy.weingutmerlot.backend.db.entities.Weinart;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXSlider;

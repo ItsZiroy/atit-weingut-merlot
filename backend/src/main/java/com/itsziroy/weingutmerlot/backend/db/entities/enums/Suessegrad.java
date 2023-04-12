@@ -1,4 +1,4 @@
-package com.itsziroy.weingutmerlot.backend.Entities.Enums;
+package com.itsziroy.weingutmerlot.backend.db.entities.enums;
 
 public enum Suessegrad {
   TROCKEN("Trocken"),

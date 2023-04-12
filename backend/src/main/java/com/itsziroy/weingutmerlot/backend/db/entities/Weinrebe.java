@@ -1,12 +1,12 @@
-package com.itsziroy.weingutmerlot.backend.Entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "zutaten")
-public class Zutat {
+@Table(name = "weinreben")
+public class Weinrebe {
   @Id
   @Column(name = "id", nullable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +17,11 @@ public class Zutat {
 
   @ManyToMany
   @JoinTable(
-          name = "weine_has_zutaten",
-          joinColumns = {@JoinColumn(name = "zutaten_id")},
-          inverseJoinColumns = {@JoinColumn(name = "weine_id")}
+          name = "weinarten_has_weinreben",
+          joinColumns = {@JoinColumn(name = "weinreben_id")},
+          inverseJoinColumns = {@JoinColumn(name = "weinarten_id")}
   )
-  private Set<Wein> weine;
+  private Set<Weinart> weinarten;
 
   public Integer getId() {
     return id;

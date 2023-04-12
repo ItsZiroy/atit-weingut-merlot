@@ -1,6 +1,6 @@
 package com.itsziroy.weingutmerlot.backend;
 
-import com.itsziroy.weingutmerlot.backend.Entities.Gaerungsprozessschritt;
+import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 
 public class Main {

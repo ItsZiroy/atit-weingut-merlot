@@ -129,10 +129,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/test-classes/com/itsziroy/weingutmerlot/backend/Entities</outputDirectory>
+                            <outputDirectory>target/test-classes/com/itsziroy/weingutmerlot/backend/db</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>target/classes/com/itsziroy/weingutmerlot/backend/Entities</directory>
+                                    <directory>target/classes/com/itsziroy/weingutmerlot/backend/db</directory>
                                 </resource>
                             </resources>
                         </configuration>
