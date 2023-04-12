@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Gaerungsprozess {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -33,7 +34,7 @@ public class Gaerungsprozess {
     this.id = id;
   }
 
-  public Wein getWeine() {
+  public Wein getWein() {
     return wein;
   }
 

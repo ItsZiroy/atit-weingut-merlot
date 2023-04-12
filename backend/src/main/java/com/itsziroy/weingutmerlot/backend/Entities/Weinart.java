@@ -9,6 +9,7 @@ import java.util.Set;
 public class Weinart {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "name", nullable = false)
@@ -24,6 +25,14 @@ public class Weinart {
           inverseJoinColumns = {@JoinColumn(name = "weinreben_id")}
   )
   private Set<Weinrebe> weinreben;
+
+  public Set<Weinrebe> getWeinreben() {
+    return weinreben;
+  }
+
+  public void setWeinreben(Set<Weinrebe> weinreben) {
+    this.weinreben = weinreben;
+  }
 
   public Integer getId() {
     return id;

@@ -10,6 +10,7 @@ import java.util.Set;
 public class Gaerungsprozessschritt {
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -36,8 +37,8 @@ public class Gaerungsprozessschritt {
 
   @ManyToMany
   @JoinTable(
-          name = "gaehrungsprozessschritte_has_hefen",
-          joinColumns = {@JoinColumn(name = "gaehrungsprozessschritte_id")},
+          name = "gaerungsprozessschritte_has_hefen",
+          joinColumns = {@JoinColumn(name = "gaerungsprozessschritte_id")},
           inverseJoinColumns = {@JoinColumn(name = "hefen_id")}
   )
   private Set<Hefe> hefen;
@@ -102,7 +103,7 @@ public class Gaerungsprozessschritt {
     return this.getSiblingProzessschrittByNumber(this.getSchritt() -1);
   }
   public Gaerungsprozessschritt getNextProzessschritt() {
-    return this.getSiblingProzessschrittByNumber(this.getSchritt() +1);
+    return this.getSiblingProzessschrittByNumber(this.getSchritt() +2);
   }
   public Gaerungsprozessschritt getSiblingProzessschrittByNumber(int schritt) {
     TypedQuery<Gaerungsprozessschritt> query = DB.getEntityManager().createQuery("select p from Gaerungsprozessschritt p " +
@@ -111,6 +112,10 @@ public class Gaerungsprozessschritt {
     query.setParameter("schritt",schritt);
     query.setParameter("gaerungsprozess_id", this.gaerungsprozess.getId());
 
-    return query.getSingleResult();
+    try {
+      return query.getSingleResult();
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

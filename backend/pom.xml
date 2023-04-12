@@ -33,6 +33,14 @@
             <version>6.1.7.Final</version>
         </dependency>
 
+        <!-- H2 In memory DB for testing -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.214</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- JUnit 5 for unit tests-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
