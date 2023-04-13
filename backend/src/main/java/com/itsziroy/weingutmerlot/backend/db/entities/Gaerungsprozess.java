@@ -30,10 +30,6 @@ public class Gaerungsprozess {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Wein getWein() {
     return wein;
   }

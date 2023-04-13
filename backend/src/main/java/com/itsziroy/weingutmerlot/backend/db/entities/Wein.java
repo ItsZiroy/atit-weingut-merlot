@@ -40,10 +40,6 @@ public class Wein {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Weinart getWeinart() {
     return weinart;
   }
