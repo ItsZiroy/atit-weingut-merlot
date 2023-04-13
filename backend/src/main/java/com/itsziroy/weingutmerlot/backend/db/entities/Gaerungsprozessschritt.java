@@ -55,10 +55,6 @@ public class Gaerungsprozessschritt {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Gaerungsprozess getGaerungsprozess() {
     return gaerungsprozess;
   }
@@ -100,10 +96,10 @@ public class Gaerungsprozessschritt {
   }
 
   public Gaerungsprozessschritt getPreviousProzessschritt() {
-    return this.getSiblingProzessschrittByNumber(this.getSchritt() -1);
+    return this.getSiblingProzessschrittByNumber(this.getSchritt() - 1);
   }
   public Gaerungsprozessschritt getNextProzessschritt() {
-    return this.getSiblingProzessschrittByNumber(this.getSchritt() +1);
+    return this.getSiblingProzessschrittByNumber(this.getSchritt() + 1);
   }
   public Gaerungsprozessschritt getSiblingProzessschrittByNumber(int schritt) {
     TypedQuery<Gaerungsprozessschritt> query = DB.getEntityManager().createQuery("select p from Gaerungsprozessschritt p " +

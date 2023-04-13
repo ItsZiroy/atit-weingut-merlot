@@ -25,10 +25,6 @@ public class Agragebietsektion {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Agragebiet getAgragebiet() {
     return agragebiet;
   }

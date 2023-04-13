@@ -17,10 +17,6 @@ public class Agragebiet {
     return id;
   }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
   public Integer getSize() {
     return size;
   }
