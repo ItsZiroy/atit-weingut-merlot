@@ -8,9 +8,9 @@ install: "mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -Dsk
 
 stages:
   - name: "Tests & Sonar Scan"
-    if: branch = master OR type = pull_request
+    if: branch = main OR type = pull_request
   - name: "Tests"
-    if: (NOT branch = master) AND (NOT type = pull_request)
+    if: (NOT branch = main) AND (NOT type = pull_request)
 
 jobs:
   include:
