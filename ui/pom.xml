@@ -69,19 +69,12 @@
             </plugin>
 
             <!-- jacoco plugin for test coverage check
-                 This plugin needs to be run only on the module
+                 The report aggregate execution needs to be run only on the module
                  that depends on all others. -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
                 <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>report</id>
                         <goals>

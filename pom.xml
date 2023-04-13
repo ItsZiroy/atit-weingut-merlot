@@ -98,6 +98,22 @@
                 </executions>
                 <inherited>false</inherited>
             </plugin>
+
+            <!-- jacoco plugin for test coverage check
+              The prepare agent execution needs to be run on every the module -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
