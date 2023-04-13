@@ -1,8 +1,7 @@
-package com.itsziroy.weingutmerlot.backend.entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
-import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozess;
-import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -68,6 +67,11 @@ class GaerungsprozessschrittTest {
           createRandomGaerungsprozessschritt(false),
           createRandomGaerungsprozessschritt(false)
   };
+
+  @Test
+  void gaerungsprozessSchrittPersistence() {
+    Assertions.assertDoesNotThrow(() -> createRandomGaerungsprozessschritt(true));
+  }
 
   @Test
   void getPreviousProzessschritt() {

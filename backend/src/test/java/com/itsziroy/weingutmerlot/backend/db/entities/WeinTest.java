@@ -1,9 +1,9 @@
-package com.itsziroy.weingutmerlot.backend.entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
-import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
-import com.itsziroy.weingutmerlot.backend.db.entities.Weinart;
 import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
 import com.itsziroy.weingutmerlot.backend.db.DB;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class WeinTest {
 
@@ -30,6 +30,11 @@ class WeinTest {
     }
 
     return wein;
+  }
+
+  @Test
+  void weinPersistence() {
+    Assertions.assertDoesNotThrow(() -> createRandomWein(true));
   }
 
 }

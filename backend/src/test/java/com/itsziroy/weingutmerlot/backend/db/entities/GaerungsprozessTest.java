@@ -1,8 +1,9 @@
-package com.itsziroy.weingutmerlot.backend.entities;
+package com.itsziroy.weingutmerlot.backend.db.entities;
 
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
-import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozess;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class GaerungsprozessTest {
 
@@ -30,4 +31,10 @@ class GaerungsprozessTest {
 
     return gaerungsprozess;
   }
+
+  @Test
+  void gaerungsprozessPersistence() {
+    Assertions.assertDoesNotThrow(() -> createRandomGaerungsprozess(true));
+  }
+
 }
