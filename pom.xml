@@ -7,36 +7,29 @@
     <groupId>com.itsziroy.weingutmerlot</groupId>
     <artifactId>weingutmerlot</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>backend</module>
+        <module>ui</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- This path needs tobe set to the module that imports all other modules. In case there
+             is no such module, a new one needs to be created only for the purpose of aggregating
+             test coverage. See https://github.com/jacoco/jacoco/wiki/MavenMultiModule
+
+             When this changes, the plugin dependency for the jacoco plugin has to change as well. -->
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/../ui/target/site/jacoco-aggregate/jacoco.xml,
+            ${project.basedir}/ui/target/site/jacoco-aggregate/jacoco.xml,
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
+
     <dependencies>
-        <!-- Database connector for MariaDB-->
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>3.1.2</version>
-        </dependency>
-
-        <!-- JUnit 5 for unit tests-->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Mockito for mocking in unit tests -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.2.0</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- LOG4j 2-->
         <!-- logging: SLF4J (simple logging facade) -->
         <dependency>
@@ -50,6 +43,7 @@
             <artifactId>log4j-api</artifactId>
             <version>2.20.0</version>
         </dependency>
+
         <!-- logging: binding slf4j to log4j2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -59,14 +53,23 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <!-- Maven surefire plugin for junit -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
+        <!-- Plugin for multi module project management -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>19</source>
+                        <target>19</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
+
+        <plugins>
             <!-- Sonar plugin for code scans -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
@@ -88,13 +91,16 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>check</goal>
+                            <goal>aggregate</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
+                <inherited>false</inherited>
             </plugin>
 
-            <!-- jacoco plugin for test coverage check -->
+            <!-- jacoco plugin for test coverage check
+              The prepare agent execution needs to be run on every the module -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -105,13 +111,6 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
