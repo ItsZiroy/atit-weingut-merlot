@@ -11,7 +11,9 @@ import jakarta.persistence.PersistenceException;
  * project, a static class mapping to exactly that makes sense to use
  */
 public final class DB {
-  private static String persistence_unit_name = "default";
+
+  private DB () {}
+  private static String persistenceUnitName = "default";
   private static EntityManager entityManager = null;
 
   /**
@@ -21,7 +23,7 @@ public final class DB {
    */
   private static void initialize() throws PersistenceException {
     EntityManagerFactory entityManagerFactory =
-            Persistence.createEntityManagerFactory(persistence_unit_name);
+            Persistence.createEntityManagerFactory(persistenceUnitName);
 
     entityManager = entityManagerFactory.createEntityManager();
   }
@@ -33,15 +35,15 @@ public final class DB {
    * @throws PersistenceException An error with persistence config
    */
   public static void setPersistenceUnit(String name) throws PersistenceException {
-    persistence_unit_name = name;
+    persistenceUnitName = name;
     initialize();
   }
 
   /**
    * @return Persistence Unit Name
    */
-  public static String getPersistence_unit_name() {
-    return persistence_unit_name;
+  public static String getPersistenceUnitName() {
+    return persistenceUnitName;
   }
 
   /**
@@ -68,7 +70,7 @@ public final class DB {
    * @throws PersistenceException An error with persistence config
    */
   public static EntityManager getEntityManager(String p_unit_name) throws PersistenceException {
-    if(entityManager == null || !p_unit_name.equals(persistence_unit_name)) {
+    if(entityManager == null || !p_unit_name.equals(persistenceUnitName)) {
       setPersistenceUnit(p_unit_name);
     }
     return entityManager;

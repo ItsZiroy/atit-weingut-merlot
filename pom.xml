@@ -18,6 +18,15 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- This path needs tobe set to the module that imports all other modules. In case there
+             is no such module, a new one needs to be created only for the purpose of aggregating
+             test coverage. See https://github.com/jacoco/jacoco/wiki/MavenMultiModule
+
+             When this changes, the plugin dependency for the jacoco plugin has to change as well. -->
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/../ui/target/site/jacoco-aggregate/jacoco.xml,
+            ${project.basedir}/ui/target/site/jacoco-aggregate/jacoco.xml,
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencies>
@@ -44,6 +53,7 @@
     </dependencies>
 
     <build>
+        <!-- Plugin for multi module project management -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -57,5 +67,37 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+
+        <plugins>
+            <!-- Sonar plugin for code scans -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version>
+            </plugin>
+
+            <!-- owasp dependency check for vulnerability check -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>8.2.0</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>json</format>
+                    </formats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
     </build>
 </project>
