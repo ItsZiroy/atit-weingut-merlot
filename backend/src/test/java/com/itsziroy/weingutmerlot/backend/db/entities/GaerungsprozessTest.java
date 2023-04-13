@@ -3,6 +3,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class GaerungsprozessTest {
@@ -30,6 +31,11 @@ class GaerungsprozessTest {
     }
 
     return gaerungsprozess;
+  }
+
+  @BeforeAll
+  static void setUp() {
+    DB.setPersistenceUnit("test");
   }
 
   @Test
