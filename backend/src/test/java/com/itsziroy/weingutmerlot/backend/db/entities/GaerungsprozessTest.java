@@ -22,7 +22,9 @@ class GaerungsprozessTest {
     gaerungsprozess.setZuckergehalt((int) (Math.random() * 100));
     gaerungsprozess.setDauer((int) (Math.random() * 100));
 
-    gaerungsprozess.setWeine(WeinTest.createRandomWein(persist));
+    Wein wein = WeinTest.createRandomWein(persist);
+
+    gaerungsprozess.setWein(wein);
 
     if(persist) {
       DB.getEntityManager().getTransaction().begin();

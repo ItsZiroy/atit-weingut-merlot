@@ -38,7 +38,7 @@ public class Gaerungsprozess {
     return wein;
   }
 
-  public void setWeine(Wein wein) {
+  public void setWein(Wein wein) {
     this.wein = wein;
   }
 

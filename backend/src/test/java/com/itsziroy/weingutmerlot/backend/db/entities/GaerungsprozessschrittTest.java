@@ -10,6 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class GaerungsprozessschrittTest {
 
   /**
+   * A set of Gaerungsprozessschritte to use for Sibling testing
+   */
+  static Gaerungsprozessschritt[] schritte = {
+          createRandomGaerungsprozessschritt(false),
+          createRandomGaerungsprozessschritt(false),
+          createRandomGaerungsprozessschritt(false)
+  };
+
+  /**
    * This method runs before all tests of this class to create a
    * useful set of Entities that can be used throughout the rest of
    * the tests.
@@ -22,8 +31,11 @@ class GaerungsprozessschrittTest {
 
     DB.getEntityManager().getTransaction().begin();
 
-    DB.getEntityManager().persist(gaerungsprozess.getWein().getWeinart());
-    DB.getEntityManager().persist(gaerungsprozess.getWein());
+    Wein wein = gaerungsprozess.getWein();
+    Weinart weinart = wein.getWeinart();
+
+    DB.getEntityManager().persist(weinart);
+    DB.getEntityManager().persist(wein);
     DB.getEntityManager().persist(gaerungsprozess);
 
 
@@ -51,7 +63,9 @@ class GaerungsprozessschrittTest {
     schritt.setSollZucker((int) (Math.random() * 100));
     schritt.setSchritt((int) (Math.random() * 100));
 
-    schritt.setGaerungsprozess(GaerungsprozessTest.createRandomGaerungsprozess(persist));
+    Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(persist);
+
+    schritt.setGaerungsprozess(gaerungsprozess);
 
     if(persist) {
       DB.getEntityManager().getTransaction().begin();
@@ -61,12 +75,6 @@ class GaerungsprozessschrittTest {
 
     return schritt;
   }
-
-  static Gaerungsprozessschritt[] schritte = {
-          createRandomGaerungsprozessschritt(false),
-          createRandomGaerungsprozessschritt(false),
-          createRandomGaerungsprozessschritt(false)
-  };
 
   @Test
   void gaerungsprozessSchrittPersistence() {
