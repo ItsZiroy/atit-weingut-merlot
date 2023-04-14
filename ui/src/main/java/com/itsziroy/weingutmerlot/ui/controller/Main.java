@@ -1,5 +1,6 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
+import com.itsziroy.weingutmerlot.ui.App;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Main {
 
@@ -21,6 +24,7 @@ public class Main {
   @FXML
   public void initialize() throws IOException {
     FXMLLoader loader = new FXMLLoader();
+    loader.setResources(ResourceBundle.getBundle("App", App.locale));
     loader.setLocation(getClass().getResource("/views/create/wein.fxml"));
     weinCreateScene = loader.load();
 
