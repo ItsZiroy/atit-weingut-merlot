@@ -1,18 +1,14 @@
 package com.itsziroy.weingutmerlot.ui;
 
-import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
-import io.github.palexdev.materialfx.css.themes.Themes;
 import jakarta.persistence.PersistenceException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -20,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -28,20 +25,30 @@ import java.util.ResourceBundle;
  */
 public class App extends Application {
 
-    BorderPane borderPane = new BorderPane();
+    // default language is German
     public static Locale locale = new Locale("de");
+    private BorderPane borderPane = new BorderPane();
+
 
     public static void main(String[] args) {
         launch();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        loadView();
-        borderPane.setTop(createComboBox());
-        stage.setScene(new Scene(borderPane));
-        stage.setTitle("Internationalization");
-        stage.show();
+    public void start(Stage stage) throws IOException {
+        try {
+            loadView();
+            borderPane.setTop(createComboBox());
+            stage.setScene(new Scene(borderPane));
+            stage.setTitle("Internationalization");
+            stage.show();
+
+        } catch (PersistenceException e) {
+            var label = new Label("A database Error occured while starting the application: " +e.getMessage());
+            var scene = new Scene(new StackPane(label), 640, 480);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     private ComboBox<Locale> createComboBox() {
@@ -63,7 +70,7 @@ public class App extends Application {
         comboBox.getSelectionModel().selectFirst();
 
         comboBox.setOnAction(event -> {
-            App.locale=comboBox.getSelectionModel().getSelectedItem();
+            App.locale = comboBox.getSelectionModel().getSelectedItem();
             loadView();
         });
         return comboBox;
@@ -73,12 +80,10 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
 
-            // Here, just the resource bundles name is mentioned. You can add support for more languages
-            // by adding more properties-files with language-specific endings like
-            // "E_13_Internationalization_fr.properties".
             loader.setResources(ResourceBundle.getBundle("App", locale));
 
-            Pane pane = (AnchorPane) loader.load(this.getClass().getResource("/views/Main.fxml").openStream());
+            InputStream inputStream = this.getClass().getResource("/views/Main.fxml").openStream();
+            Pane pane = loader.load(inputStream);
             borderPane.setCenter(pane);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -94,34 +99,3 @@ public class App extends Application {
         }
     }
 }
-
-/*
-    @Override
-    public void start(Stage stage) throws IOException {
-        try {
-            var javaVersion = SystemInfo.javaVersion();
-            var javafxVersion = SystemInfo.javafxVersion();
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Main.fxml"));
-            Parent main = loader.load();
-
-            Scene mainScene = new Scene(main);
-            // Adds Material UI Theme Manager
-            MFXThemeManager.addOn(mainScene, Themes.DEFAULT, Themes.LEGACY);
-
-            stage.setScene(mainScene);
-            stage.show();
-
-
-        } catch (PersistenceException e) {
-
-            var label = new Label("A database Error occured while starting the application: " +e.getMessage());
-            var scene = new Scene(new StackPane(label), 640, 480);
-            stage.setScene(scene);
-            stage.show();
-        }
-    }
-
-
-}*/

@@ -54,7 +54,6 @@ public class WeinController {
       LogManager.getLogger().error("Datenbank Transaktion Fehlgeschlagen");
     }
 
-
   }
 
   private void initializeWeinartComboxbox() {
