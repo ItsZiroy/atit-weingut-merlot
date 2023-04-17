@@ -35,27 +35,28 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage){
         try {
-            loadView();
-            borderPane.setTop(createComboBox());
-            stage.setScene(new Scene(borderPane));
-            stage.setTitle("Internationalization");
+            loadView(stage);
+            ComboBox comboBox = createComboBox(stage);
+            borderPane.setTop(comboBox);
+            Scene scene = new Scene (borderPane);
+            stage.setScene(scene);
             stage.show();
 
         } catch (PersistenceException e) {
-            var label = new Label("A database Error occured while starting the application: " +e.getMessage());
+            var label = new Label("A database error occurred while starting the application: " +e.getMessage());
             var scene = new Scene(new StackPane(label), 640, 480);
             stage.setScene(scene);
             stage.show();
         }
     }
 
-    private ComboBox<Locale> createComboBox() {
+    private ComboBox<Locale> createComboBox(Stage stage) {
         ComboBox<Locale> comboBox = new ComboBox<>();
         ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
         comboBox.setItems(options);
-        comboBox.setConverter(new StringConverter<Locale>() {
+        comboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(Locale object) {
                 return object.getDisplayLanguage();
@@ -71,12 +72,12 @@ public class App extends Application {
 
         comboBox.setOnAction(event -> {
             App.locale = comboBox.getSelectionModel().getSelectedItem();
-            loadView();
+            loadView(stage);
         });
         return comboBox;
     }
 
-    private void loadView() {
+    private void loadView(Stage stage){
         try {
             FXMLLoader loader = new FXMLLoader();
 
@@ -85,8 +86,11 @@ public class App extends Application {
             InputStream inputStream = this.getClass().getResource("/views/Main.fxml").openStream();
             Pane pane = loader.load(inputStream);
             borderPane.setCenter(pane);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException | NullPointerException e){
+            var label = new Label("The view could not be loaded" + e.getMessage());
+            var scene = new Scene(new StackPane(label), 640, 480);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
