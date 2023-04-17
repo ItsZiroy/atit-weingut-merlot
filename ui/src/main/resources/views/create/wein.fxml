@@ -141,6 +141,7 @@
                               </LinearGradient>
                            </rippleColor>
                         </MFXButton>
+                        <Label fx:id="alkoholgehaltsLabel" text = "%alkohohlgehalt" layoutX="20.0" layoutY="130.0"/>
                         <MFXSlider fx:id="alkoholgehaltSlider" alternativeUnitIncrement="1.0" decimalPrecision="2" layoutX="20.0" layoutY="152.0" max="30.0" prefHeight="5.0" prefWidth="390.0" showMajorTicks="true" tickUnit="10.0" unitIncrement="0.01" />
               </children>
             </AnchorPane>

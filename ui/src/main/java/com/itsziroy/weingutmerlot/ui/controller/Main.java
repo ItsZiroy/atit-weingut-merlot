@@ -4,7 +4,6 @@ import com.itsziroy.weingutmerlot.ui.App;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.util.StringConverter;
 
@@ -46,7 +45,7 @@ public class Main {
   }
 
   public void weinOverviewButtonClicked() {
-    App.loadView("/views/view/wein.fxml");
+    App.loadView("/views/read/wein.fxml");
   }
 
   public void handleLanguageChange() {

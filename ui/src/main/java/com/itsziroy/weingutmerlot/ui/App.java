@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -43,8 +44,10 @@ public class App extends Application {
 
     try {
       FXMLLoader loader = new FXMLLoader();
-      loader.setResources(ResourceBundle.getBundle("App", App.locale));
-      loader.setLocation(App.class.getResource(view));
+      ResourceBundle resourceBundle = ResourceBundle.getBundle("App", App.locale);
+      loader.setResources(resourceBundle);
+      URL url = App.class.getResource(view);
+      loader.setLocation(url);
       root = loader.load();
 
     } catch (IOException | NullPointerException e) {
@@ -59,7 +62,7 @@ public class App extends Application {
 
     } catch (Exception e) {
       var label = new Label("An error occurred while starting the app: " + e.getMessage() +
-              "See System log for more information.");
+              "See system log for more information.");
       var exceptionScene = new Scene(new StackPane(label), 640, 480);
       root = exceptionScene.getRoot();
     }
