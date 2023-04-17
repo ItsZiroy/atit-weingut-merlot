@@ -86,6 +86,13 @@ For MariaDB:
         </properties>
 ```
 
+After changing the persistence.xml you need to run another clean install so the ui has the
+updated backend version:
+
+```shell
+mvn clean install
+```
+
 ### Running the Application
 Having everything in place you just need to run the `javafx:run` maven goal in the ui module to get 
 the application going either through the editor or through the command line:
