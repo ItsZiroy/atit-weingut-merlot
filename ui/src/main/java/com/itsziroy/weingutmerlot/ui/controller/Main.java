@@ -1,46 +1,60 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
 import com.itsziroy.weingutmerlot.ui.App;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.util.StringConverter;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
+import java.util.Locale;
 
 public class Main {
 
-  private Parent weinCreateScene;
-  private Parent weinOverviewScene;
-
+  public MFXComboBox<Locale> languageSelection;
   @FXML
-  private Button weinButton;
-  @FXML
-  public void initialize() throws IOException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setResources(ResourceBundle.getBundle("App", App.locale));
-    loader.setLocation(getClass().getResource("/views/create/wein.fxml"));
-    weinCreateScene = loader.load();
-
-    loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("/views/read/wein.fxml"));
-    weinOverviewScene = loader.load();
+  public void initialize() {
+    initializeLanguageSelection();
   }
 
-  public void weinCreateButtonClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    Scene scene = node.getScene();
-    scene.setRoot(weinCreateScene);
+  private void initializeLanguageSelection() {
+    ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
+    languageSelection.setItems(options);
+    languageSelection.getSelectionModel().selectItem(App.locale);
+
+    // Set Display converter for Language Selection
+    languageSelection.setConverter(new StringConverter<>() {
+      @Override
+      public String toString(Locale locale) {
+        if(locale != null) {
+          return locale.getDisplayLanguage();
+        }
+        return "";
+      }
+
+      @Override
+      public Locale fromString(String string) {
+        return new Locale.Builder().setLanguage(string).build();
+      }
+    });
+
   }
 
-  public void weinOverviewButtonClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    Scene scene = node.getScene();
-    scene.setRoot(weinOverviewScene);
+  public void weinCreateButtonClicked() {
+    App.loadView("/views/create/wein.fxml");
   }
 
+  public void weinOverviewButtonClicked() {
+    App.loadView("/views/view/wein.fxml");
+  }
+
+  public void handleLanguageChange() {
+    Locale selection = languageSelection.getSelectionModel().getSelectedItem();
+
+    if (selection != App.locale) {
+      App.locale = selection;
+      App.loadView("/views/Main.fxml");
+    }
+  }
 }
