@@ -46,22 +46,23 @@ public class App extends Application {
   /**
    * Loads the view that is passed as a parameter in the selected language
    * @param view View that shall be loaded
+   * @return Pair of the loaded Parent Node and the Loader Object
    */
   public static Pair<Parent, FXMLLoader> loadView(View view) {
-    Parent root = null;
+    Parent root;
     FXMLLoader loader = new FXMLLoader();
-    LogManager.getLogger().info("Loading View " + view.toString());
 
+    LogManager.getLogger().info("Loading View " + view);
     try {
       resourceBundle = ResourceBundle.getBundle("App", App.locale);
       loader.setResources(resourceBundle);
       URL url = App.class.getResource(view.toString());
       loader.setLocation(url);
       root = loader.load();
-      LogManager.getLogger().info("Successfully loaded View " + view.toString());
+      LogManager.getLogger().info("Successfully loaded View " + view);
 
     } catch (IOException | IllegalStateException e) {
-      LogManager.getLogger().error(view.toString() + " could not be loaded");
+      LogManager.getLogger().error(view + " could not be loaded");
       App.error(resourceBundle.getString("viewExceptionScene"));
       throw new RuntimeException(e);
 
@@ -79,14 +80,28 @@ public class App extends Application {
     return new Pair<>(root, loader);
   }
 
+  /**
+   * Combines {@link #loadView(View)} and {@link #setRoot(Parent)}
+   * @param view View
+   */
   public static void setView(View view) {
     Parent root = loadView(view).getValue0();
     if(root != null) scene.setRoot(root);
   }
+
+  /**
+   * Sets the Root Node of the entire Stage
+   * @param root Node to display
+   */
   public static void setRoot(Parent root) {
     if(root != null) scene.setRoot(root);
   }
 
+  /**
+   * A helper method for loading a generic error View.
+   * See {@link ErrorController} for more information
+   * @param message The message to display
+   */
   public static void error(String message) {
     Pair<Parent, FXMLLoader> pair = loadView(View.ERROR);
     FXMLLoader loader = pair.getValue1();

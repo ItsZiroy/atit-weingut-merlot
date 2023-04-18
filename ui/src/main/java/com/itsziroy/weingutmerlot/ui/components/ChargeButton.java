@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 
 import java.util.Date;
 
@@ -19,19 +18,30 @@ public class ChargeButton extends MFXButton {
   private Charge charge;
   private Date date;
   private Ueberpruefung ueberpruefung;
-  public ChargeButton(Triplet<Charge, Date, Ueberpruefung> triplet) {
-    this.charge = triplet.getValue0();
-    this.date = triplet.getValue1();
-    this.ueberpruefung = triplet.getValue2();
+
+  /**
+   * The ChargeButton Component
+   *
+   * @param charge Charge
+   * @param date Date to display
+   * @param ueberpruefung The last Überprüfung that ran
+   */
+  public ChargeButton(Charge charge, Date date, Ueberpruefung ueberpruefung) {
+    this.charge = charge;
+    this.date = date;
+    this.ueberpruefung = ueberpruefung;
 
     this.setText(date.toString());
 
     this.setOnAction(this::onUeberpruefungButtonClick);
   }
+
+  /**
+   * Loads {@link UeberpruefungController} View and initializes it
+   * with the desired data.
+   * @param e ActionEvent
+   */
   private void onUeberpruefungButtonClick(ActionEvent e) {
-    System.out.println(charge.getId());
-
-
     Pair<Parent, FXMLLoader> pair = App.loadView(View.UEBERPRUEFUNG);
 
     Parent root = pair.getValue0();

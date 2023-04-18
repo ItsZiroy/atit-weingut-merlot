@@ -20,12 +20,19 @@ public class DashboardController {
   @FXML
   public void initialize() {
 
-    List<Triplet<Charge, Date, Ueberpruefung>> nextUe = UeberpruefungManager.getUpcomingUeberpruefungen();
+    List<Triplet<Charge, Date, Ueberpruefung>> nextUe =
+            UeberpruefungManager.getUpcomingUeberpruefungen();
 
+    // Sort the list by date
     nextUe.sort(Comparator.comparing(Triplet::getValue1));
 
     nextUe.forEach(p -> {
-      ChargeButton button = new ChargeButton(p);
+      Charge charge = p.getValue0();
+      Date date = p.getValue1();
+      Ueberpruefung ue = p.getValue2();
+
+      ChargeButton button = new ChargeButton(charge, date, ue);
+
       listView.getItems().add(button);
     });
   }
