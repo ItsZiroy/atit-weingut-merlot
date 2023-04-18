@@ -1,6 +1,7 @@
 package com.itsziroy.weingutmerlot.ui;
 
 import com.itsziroy.weingutmerlot.ui.Enums.View;
+import com.itsziroy.weingutmerlot.ui.controller.ErrorController;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import jakarta.persistence.PersistenceException;
@@ -8,11 +9,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
+import org.javatuples.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,13 +31,15 @@ public class App extends Application {
     launch();
   }
 
-  private static final Scene scene = new Scene(new BorderPane());
+  private static final Scene scene = new Scene(new Pane());
+
+  public static ResourceBundle resourceBundle;
 
   @Override
   public void start(Stage stage) {
     MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
-    loadView(View.MAIN);
     stage.setScene(scene);
+    setView(View.DASHBOARD);
     stage.show();
   }
 
@@ -45,39 +47,52 @@ public class App extends Application {
    * Loads the view that is passed as a parameter in the selected language
    * @param view View that shall be loaded
    */
-  public static void loadView(View view) {
-    Parent root;
+  public static Pair<Parent, FXMLLoader> loadView(View view) {
+    Parent root = null;
+    FXMLLoader loader = new FXMLLoader();
+    LogManager.getLogger().info("Loading View " + view.toString());
 
-    ResourceBundle resourceBundle = null;
     try {
-      LogManager.getLogger().info("Loading View " + view.toString());
-      FXMLLoader loader = new FXMLLoader();
       resourceBundle = ResourceBundle.getBundle("App", App.locale);
       loader.setResources(resourceBundle);
       URL url = App.class.getResource(view.toString());
       loader.setLocation(url);
       root = loader.load();
+      LogManager.getLogger().info("Successfully loaded View " + view.toString());
 
-    } catch (IOException | NullPointerException e) {
-      LogManager.getLogger().error("The view could not be loaded");
-      var label = new Label(resourceBundle.getString("viewExceptionScene") + e.getMessage());
-      var viewExceptionScene = new Scene(new StackPane(label), 640, 480);
-      root = viewExceptionScene.getRoot();
+    } catch (IOException | IllegalStateException e) {
+      LogManager.getLogger().error(view.toString() + " could not be loaded");
+      App.error(resourceBundle.getString("viewExceptionScene"));
+      throw new RuntimeException(e);
 
     } catch (PersistenceException e) {
       LogManager.getLogger().error("A database error occurred while starting the application:  ");
-      var label = new Label(resourceBundle.getString("dbExceptionScene") + e.getMessage());
-      var dbExceptionScene = new Scene(new StackPane(label), 640, 480);
-      root = dbExceptionScene.getRoot();
+      App.error(resourceBundle.getString("dbExceptionScene"));
+      throw new RuntimeException(e);
 
     } catch (Exception e) {
       LogManager.getLogger().error("An error occurred while starting the app");
-      var label = new Label(resourceBundle.getString("exceptionScene") + e.getMessage() +
+      App.error(resourceBundle.getString("exceptionScene") +" " +
               resourceBundle.getString("seeSystemLog"));
-      var exceptionScene = new Scene(new StackPane(label), 640, 480);
-      root = exceptionScene.getRoot();
+      throw new RuntimeException(e);
     }
+    return new Pair<>(root, loader);
+  }
 
-    scene.setRoot(root);
+  public static void setView(View view) {
+    Parent root = loadView(view).getValue0();
+    if(root != null) scene.setRoot(root);
+  }
+  public static void setRoot(Parent root) {
+    if(root != null) scene.setRoot(root);
+  }
+
+  public static void error(String message) {
+    Pair<Parent, FXMLLoader> pair = loadView(View.ERROR);
+    FXMLLoader loader = pair.getValue1();
+
+    ErrorController controller = loader.getController();
+    controller.initializeData(message);
+    App.setRoot(pair.getValue0());
   }
 }

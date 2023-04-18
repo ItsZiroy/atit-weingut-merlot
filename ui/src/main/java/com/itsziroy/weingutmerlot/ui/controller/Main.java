@@ -42,11 +42,11 @@ public class Main {
   }
 
   public void weinCreateButtonClicked() {
-    App.loadView(View.CREATEWEIN);
+    App.setView(View.CREATE_WEIN);
   }
 
   public void weinOverviewButtonClicked() {
-    App.loadView(View.READWEIN);
+    App.setView(View.READ_WEIN);
   }
 
   public void handleLanguageChange() {
@@ -54,7 +54,7 @@ public class Main {
 
     if (selection != App.locale) {
       App.locale = selection;
-      App.loadView(View.MAIN);
+      App.setView(View.MAIN);
     }
   }
 }

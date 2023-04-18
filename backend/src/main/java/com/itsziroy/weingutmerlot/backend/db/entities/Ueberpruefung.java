@@ -2,6 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -46,6 +47,17 @@ public class Ueberpruefung {
   )
   private Set<Hefe> hefen;
 
+  public Date getDatum() {
+    return datum;
+  }
+
+  public void setDatum(Date datum) {
+    this.datum = datum;
+  }
+
+  @Column(name = "datum", nullable = false)
+  private Date datum;
+
   public Integer getId() {
     return id;
   }
@@ -58,11 +70,11 @@ public class Ueberpruefung {
     this.charge = charge;
   }
 
-  public Gaerungsprozessschritt getGaerungsprozessschritte() {
+  public Gaerungsprozessschritt getGaerungsprozessschritt() {
     return gaerungsprozessschritt;
   }
 
-  public void setGaerungsprozessschritte(Gaerungsprozessschritt gaerungsprozessschritt) {
+  public void setGaerungsprozessschritt(Gaerungsprozessschritt gaerungsprozessschritt) {
     this.gaerungsprozessschritt = gaerungsprozessschritt;
   }
 

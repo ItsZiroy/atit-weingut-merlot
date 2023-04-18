@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<?import com.itsziroy.weingutmerlot.ui.components.HomeButton?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController">
+   <children>
+      <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="35.0" layoutY="80.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="35.0" layoutY="149.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="\%temperatur_soll" layoutX="35.0" layoutY="216.0" prefHeight="28.0" prefWidth="147.0" />
+      <Label fx:id="chargeLabel" layoutX="35.0" layoutY="46.0" text="Label" />
+      <MFXToggleButton layoutX="319.0" layoutY="247.0" />
+      <HomeButton layoutX="35.0" layoutY="14.0" />
+   </children>
+</AnchorPane>

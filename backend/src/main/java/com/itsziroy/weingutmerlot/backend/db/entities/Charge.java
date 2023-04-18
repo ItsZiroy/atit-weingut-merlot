@@ -12,7 +12,7 @@ public class Charge {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weintyp_id", nullable = false)
-  private Wein weintyp;
+  private Wein wein;
 
   @Column(name = "jahrgang", nullable = false)
   private Integer jahrgang;
@@ -23,16 +23,27 @@ public class Charge {
   @Column(name = "menge_in_liter", nullable = false)
   private Integer mengeInLiter;
 
+  public boolean isIstFertig() {
+    return istFertig;
+  }
+
+  public void setIstFertig(boolean istFertig) {
+    this.istFertig = istFertig;
+  }
+
+  @Column(name = "ist_fertig", nullable = false)
+  private boolean istFertig;
+
   public Integer getId() {
     return id;
   }
 
   public Wein getWeintyp() {
-    return weintyp;
+    return wein;
   }
 
   public void setWeintyp(Wein weintyp) {
-    this.weintyp = weintyp;
+    this.wein = weintyp;
   }
 
   public Integer getJahrgang() {
