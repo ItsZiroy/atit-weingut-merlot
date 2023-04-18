@@ -1,6 +1,7 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
 import com.itsziroy.weingutmerlot.ui.App;
+import com.itsziroy.weingutmerlot.ui.Enums.View;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +23,7 @@ public class Main {
     languageSelection.setItems(options);
     languageSelection.getSelectionModel().selectItem(App.locale);
 
-    // Set Display converter for Language Selection
+    // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
     languageSelection.setConverter(new StringConverter<>() {
       @Override
       public String toString(Locale locale) {
@@ -41,11 +42,11 @@ public class Main {
   }
 
   public void weinCreateButtonClicked() {
-    App.loadView("/views/create/wein.fxml");
+    App.loadView(View.CREATEWEIN);
   }
 
   public void weinOverviewButtonClicked() {
-    App.loadView("/views/read/wein.fxml");
+    App.loadView(View.READWEIN);
   }
 
   public void handleLanguageChange() {
@@ -53,7 +54,7 @@ public class Main {
 
     if (selection != App.locale) {
       App.locale = selection;
-      App.loadView("/views/Main.fxml");
+      App.loadView(View.MAIN);
     }
   }
 }

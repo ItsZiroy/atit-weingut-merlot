@@ -1,5 +1,6 @@
 package com.itsziroy.weingutmerlot.ui;
 
+import com.itsziroy.weingutmerlot.ui.Enums.View;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import jakarta.persistence.PersistenceException;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,35 +36,44 @@ public class App extends Application {
   @Override
   public void start(Stage stage) {
     MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
-    loadView("/views/Main.fxml");
+    loadView(View.MAIN);
     stage.setScene(scene);
     stage.show();
   }
 
-  public static void loadView(String view) {
+  /**
+   * Loads the view that is passed as a parameter in the selected language
+   * @param view View that shall be loaded
+   */
+  public static void loadView(View view) {
     Parent root;
 
+    ResourceBundle resourceBundle = null;
     try {
+      LogManager.getLogger().info("Loading View " + view.toString());
       FXMLLoader loader = new FXMLLoader();
-      ResourceBundle resourceBundle = ResourceBundle.getBundle("App", App.locale);
+      resourceBundle = ResourceBundle.getBundle("App", App.locale);
       loader.setResources(resourceBundle);
-      URL url = App.class.getResource(view);
+      URL url = App.class.getResource(view.toString());
       loader.setLocation(url);
       root = loader.load();
 
     } catch (IOException | NullPointerException e) {
-      var label = new Label("The view could not be loaded" + e.getMessage());
+      LogManager.getLogger().error("The view could not be loaded");
+      var label = new Label(resourceBundle.getString("viewExceptionScene") + e.getMessage());
       var viewExceptionScene = new Scene(new StackPane(label), 640, 480);
       root = viewExceptionScene.getRoot();
 
     } catch (PersistenceException e) {
-      var label = new Label("A database error occurred while starting the application: " + e.getMessage());
+      LogManager.getLogger().error("A database error occurred while starting the application:  ");
+      var label = new Label(resourceBundle.getString("dbExceptionScene") + e.getMessage());
       var dbExceptionScene = new Scene(new StackPane(label), 640, 480);
       root = dbExceptionScene.getRoot();
 
     } catch (Exception e) {
-      var label = new Label("An error occurred while starting the app: " + e.getMessage() +
-              "See system log for more information.");
+      LogManager.getLogger().error("An error occurred while starting the app");
+      var label = new Label(resourceBundle.getString("exceptionScene") + e.getMessage() +
+              resourceBundle.getString("seeSystemLog"));
       var exceptionScene = new Scene(new StackPane(label), 640, 480);
       root = exceptionScene.getRoot();
     }
