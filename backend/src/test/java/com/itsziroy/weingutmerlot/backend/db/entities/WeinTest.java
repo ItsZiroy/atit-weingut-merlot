@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class WeinTest {
 
   /**
-   * Utitlity method for creating random Wein
+   * Utility method for creating random Wein
    * @return Random Wein
    */
   static Wein createRandomWein(boolean persist) {

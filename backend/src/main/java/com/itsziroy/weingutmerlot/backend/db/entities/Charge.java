@@ -38,12 +38,12 @@ public class Charge {
     return id;
   }
 
-  public Wein getWeintyp() {
+  public Wein getWein() {
     return wein;
   }
 
-  public void setWeintyp(Wein weintyp) {
-    this.wein = weintyp;
+  public void setWein(Wein wein) {
+    this.wein = wein;
   }
 
   public Integer getJahrgang() {

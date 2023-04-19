@@ -16,7 +16,7 @@ class DBTest {
   }
 
   /**
-   * Getting entity manager with manual persistence Unit decleration
+   * Getting entity manager with manual persistence Unit declaration
    */
   @Test
   void getEntityManager() {
