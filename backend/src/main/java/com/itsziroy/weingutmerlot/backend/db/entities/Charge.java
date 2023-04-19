@@ -21,7 +21,7 @@ public class Charge {
   private String lagerungsort;
 
   @Column(name = "menge_in_liter", nullable = false)
-  private Integer mengeInLiter;
+  private Double mengeInLiter;
 
   public boolean isIstFertig() {
     return istFertig;
@@ -62,11 +62,11 @@ public class Charge {
     this.lagerungsort = lagerungsort;
   }
 
-  public Integer getMengeInLiter() {
+  public Double getMengeInLiter() {
     return mengeInLiter;
   }
 
-  public void setMengeInLiter(Integer mengeInLiter) {
+  public void setMengeInLiter(Double mengeInLiter) {
     this.mengeInLiter = mengeInLiter;
   }
 

@@ -76,6 +76,31 @@ class GaerungsprozessschrittTest {
     return schritt;
   }
 
+  // creates the given number of Gärungsprozessschritte for the given Gärungsprozess with ascending number of Schritte
+  static Gaerungsprozessschritt[] createNGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
+    Gaerungsprozessschritt[] gaerungsprozessschritte = new Gaerungsprozessschritt[number];
+    for(int i=1; i<number+1; i++) {
+      Gaerungsprozessschritt schritt = new Gaerungsprozessschritt();
+      schritt.setNachZeit((int) (Math.random() * 100));
+      schritt.setSollAlkohol((int) (Math.random() * 100));
+      schritt.setSollTemperatur((int) (Math.random() * 100));
+      schritt.setSollZucker((int) (Math.random() * 100));
+      schritt.setSchritt(i);
+
+      schritt.setGaerungsprozess(gaerungsprozess);
+
+      gaerungsprozessschritte[i-1]=schritt;
+
+      if (persist) {
+        DB.getEntityManager().getTransaction().begin();
+        DB.getEntityManager().persist(schritt);
+        DB.getEntityManager().getTransaction().commit();
+      }
+    }
+
+    return gaerungsprozessschritte;
+  }
+
   @Test
   void gaerungsprozessSchrittPersistence() {
     Assertions.assertDoesNotThrow(() -> createRandomGaerungsprozessschritt(true));
