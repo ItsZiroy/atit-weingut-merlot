@@ -19,7 +19,7 @@ public class UeberpruefungController {
    * initializes all the necessary ui components.
    *
    * @param gaerungsprozessschritt Gärungsprozesschritt the Überprüfung should be created for
-   * @param charge The charge that the Überpüfung should be created for
+   * @param charge The Charge that the Überpüfung should be created for
    */
   public void initializeData(Gaerungsprozessschritt gaerungsprozessschritt, Charge charge) {
     this.gaerungsprozessschritt = gaerungsprozessschritt;

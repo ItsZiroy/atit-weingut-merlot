@@ -25,7 +25,7 @@ public final class UeberpruefungManager {
     /*
      * Overview of the functionality:
      *
-     * 1. Find all chargen that have not been marked as ready yet
+     * 1. Find all Chargen that have not been marked as ready yet
      * 2. Find the latest created Überprüfungsschritt
      * 3. Find next Gärungsprozessschritt of above
      */
@@ -51,18 +51,21 @@ public final class UeberpruefungManager {
    * @return Date for next Überprüfung
    */
   public static Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
-    Gaerungsprozessschritt next = ueberpruefung.getGaerungsprozessschritt().getNextProzessschritt();
+    // Get the Gärungsprozessschritt of the latest Überprüfung
+    Gaerungsprozessschritt last = ueberpruefung.getGaerungsprozessschritt();
+    // The next/current Gaehrungsprozessschritt is relevant for the calculation
+    Gaerungsprozessschritt current = last.getNextProzessschritt();
 
-    // To calculate next date add difference to the last Überprüfung date
+    // To calculate next date of Überprüfung add the duration of the Gärungsprozessschritt to the last Überprüfung date
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(ueberpruefung.getDatum());
-    calendar.add(Calendar.DAY_OF_YEAR, next.getNachZeit());
+    calendar.add(Calendar.DAY_OF_YEAR, current.getNachZeit());
 
     return calendar.getTime();
   }
 
   /**
-   * Gets the latest created Überprüfung for a charge
+   * Gets the latest created Überprüfung for a Charge
    * @param charge Charge
    * @return Latest Überprüfung
    */
