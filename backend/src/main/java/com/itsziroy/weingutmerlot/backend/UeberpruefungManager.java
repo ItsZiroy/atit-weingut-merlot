@@ -72,7 +72,7 @@ public final class UeberpruefungManager {
   public static Ueberpruefung getCurrentUeberpruefung(Charge charge) {
     TypedQuery<Ueberpruefung> ueberpruefungQuery= DB.getEntityManager().createQuery(
             "select u from Ueberpruefung u where u.charge.id = :charge " +
-                    "order by u.gaerungsprozessschritt.schritt ASC", Ueberpruefung.class);
+                    "order by u.gaerungsprozessschritt.schritt DESC", Ueberpruefung.class);
 
     ueberpruefungQuery.setParameter("charge", charge.getId());
 

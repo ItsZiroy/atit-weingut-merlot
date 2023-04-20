@@ -76,12 +76,12 @@ class GaerungsprozessschrittTest {
     return schritt;
   }
 
-  // creates the given number of Gärungsprozessschritte for the given Gärungsprozess with ascending number of Schritte
+  // creates the given number of Gärungsprozessschritte after 10 days for the given Gärungsprozess with ascending number of Schritte
   static Gaerungsprozessschritt[] createNGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
     Gaerungsprozessschritt[] gaerungsprozessschritte = new Gaerungsprozessschritt[number];
     for(int i=1; i<number+1; i++) {
       Gaerungsprozessschritt schritt = new Gaerungsprozessschritt();
-      schritt.setNachZeit((int) (Math.random() * 100));
+      schritt.setNachZeit(10);
       schritt.setSollAlkohol((int) (Math.random() * 100));
       schritt.setSollTemperatur((int) (Math.random() * 100));
       schritt.setSollZucker((int) (Math.random() * 100));

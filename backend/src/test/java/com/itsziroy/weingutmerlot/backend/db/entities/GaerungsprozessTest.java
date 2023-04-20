@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class GaerungsprozessTest {
 
   /**
-   * Creates a random Gaerungsprozessschritt and optionally persists it
+   * Creates a random Gaerungsprozess including a Wein and optionally persists it
    * and all its dependencies to the test DB
    *
    * @param persist Persistence to DB
@@ -25,6 +25,7 @@ class GaerungsprozessTest {
     Wein wein = WeinTest.createRandomWein(persist);
 
     gaerungsprozess.setWein(wein);
+    //wein.setGaerungsprozess(gaerungsprozess);
 
     if(persist) {
       DB.getEntityManager().getTransaction().begin();

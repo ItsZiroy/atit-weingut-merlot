@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `weingutmerlot`.`chargen` (
   `weintyp_id` INT NOT NULL,
   `jahrgang` INT NOT NULL DEFAULT (YEAR(CURDATE())),
   `lagerungsort` VARCHAR(255) NULL,
-  `menge_in_liter` INT NOT NULL,
+  `menge_in_liter` DOUBLE NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_wein_weintyp1`
     FOREIGN KEY (`weintyp_id`)

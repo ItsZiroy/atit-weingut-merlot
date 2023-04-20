@@ -5,12 +5,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ChargeTest {
+
     static Charge createRandomCharge(boolean persist) {
 
+        Charge charge = new Charge();
+        charge.setJahrgang((int) (Math.random() * 2000));
+        charge.setLagerungsort("Test");
+        charge.setMengeInLiter(Math.random() * 1000);
         Wein wein = WeinTest.createRandomWein(true);
+        charge.setWein(wein);
+
+        if(persist) {
+            DB.getEntityManager().getTransaction().begin();
+            DB.getEntityManager().persist(charge);
+            DB.getEntityManager().getTransaction().commit();
+        }
+
+        return charge;
+    }
+    static Charge createRandomChargeForWein(boolean persist, Wein wein) {
 
         Charge charge = new Charge();
-        charge.setJahrgang((int) Math.random() * 2000);
+        charge.setJahrgang((int) (Math.random() * 2000));
         charge.setLagerungsort("Test");
         charge.setMengeInLiter(Math.random() * 1000);
         charge.setWein(wein);
