@@ -18,3 +18,11 @@ INSERT INTO weingutmerlot.gaerungsprozessschritte (id, gaerungsprozess_id, nach_
 INSERT INTO weingutmerlot.gaerungsprozessschritte_has_hefen (gaerungsprozessschritte_id, hefen_id, menge) VALUES (1, 1, 100);
 INSERT INTO weingutmerlot.gaerungsprozessschritte_has_hefen (gaerungsprozessschritte_id, hefen_id, menge) VALUES (2, 1, 50);
 INSERT INTO weingutmerlot.gaerungsprozessschritte_has_hefen (gaerungsprozessschritte_id, hefen_id, menge) VALUES (3, 2, 70);
+
+INSERT INTO weingutmerlot.chargen (id, weintyp_id, jahrgang, lagerungsort, menge_in_liter, istFertig) VALUES (1, 1, 2023, null, 100.000, false);
+INSERT INTO weingutmerlot.chargen (id, weintyp_id, jahrgang, lagerungsort, menge_in_liter, istFertig) VALUES (2, 1, 2023, null, 100.000, true);
+
+INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum) VALUES (1, 1, 1, 0, 0, 0, 610, 25, true, '2023-04-21 10:43:39');
+INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum) VALUES (2, 1, 2, 580, 25, 3, 0, 0, true, '2023-04-21 10:47:18');
+INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum) VALUES (3, 1, 3, 530, 25, 6, 10, 0, false, '2023-04-21 10:48:27');
+INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum) VALUES (4, 2, 1, 0, 0, 0, 610, 25, true, '2023-04-21 10:50:07');
