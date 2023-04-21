@@ -7,8 +7,9 @@ import javafx.event.ActionEvent;
 
 public class HomeButton extends MFXButton {
   public HomeButton() {
+    super();
     this.setOnAction(this::handleHomeButtonClicked);
-    this.setText(App.resourceBundle.getString("home"));
+    this.setText("Home");
   }
 
   private void handleHomeButtonClicked(ActionEvent actionEvent) {

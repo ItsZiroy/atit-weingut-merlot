@@ -2,8 +2,6 @@ package com.itsziroy.weingutmerlot.ui;
 
 import com.itsziroy.weingutmerlot.ui.Enums.View;
 import com.itsziroy.weingutmerlot.ui.controller.ErrorController;
-import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
-import io.github.palexdev.materialfx.css.themes.Themes;
 import jakarta.persistence.PersistenceException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,13 +29,13 @@ public class App extends Application {
     launch();
   }
 
-  private static final Scene scene = new Scene(new Pane());
+  private static Scene scene;
 
   public static ResourceBundle resourceBundle;
 
   @Override
   public void start(Stage stage) {
-    MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
+    scene = new Scene(new Pane());
     stage.setScene(scene);
     setView(View.DASHBOARD);
     stage.show();
@@ -94,7 +92,9 @@ public class App extends Application {
    * @param root Node to display
    */
   public static void setRoot(Parent root) {
+    LogManager.getLogger().info("Startet Setting Root");
     if(root != null) scene.setRoot(root);
+    LogManager.getLogger().info("Finished Setting Root");
   }
 
   /**
