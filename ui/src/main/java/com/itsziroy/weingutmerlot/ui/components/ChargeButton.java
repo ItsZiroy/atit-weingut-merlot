@@ -1,6 +1,8 @@
 package com.itsziroy.weingutmerlot.ui.components;
 
+import com.itsziroy.weingutmerlot.backend.ChargeManager;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
+import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.ui.App;
 import com.itsziroy.weingutmerlot.ui.Enums.View;
@@ -11,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.javatuples.Pair;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ChargeButton extends MFXButton {
@@ -30,8 +33,14 @@ public class ChargeButton extends MFXButton {
     this.charge = charge;
     this.date = date;
     this.ueberpruefung = ueberpruefung;
-
-    this.setText(date.toString());
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");
+    String dateString = simpleDateFormat.format(date);
+    int chargeId = charge.getId();
+    Gaerungsprozessschritt current = ChargeManager.getCurrentGaerungsprozessschritt(charge);
+    int gaerungsprozessschrittId = current.getSchritt();
+    String chargeString = App.resourceBundle.getString("charge");
+    String gaerungsprozessschritt = App.resourceBundle.getString("gaerungsprozessschritt");
+    this.setText(dateString + ", " + chargeString + ": " + chargeId +", " + gaerungsprozessschritt + ": " + gaerungsprozessschrittId);
 
     this.setOnAction(this::onUeberpruefungButtonClick);
   }
@@ -49,7 +58,9 @@ public class ChargeButton extends MFXButton {
 
     UeberpruefungController controller = loader.getController();
 
-    controller.initializeData(ueberpruefung.getGaerungsprozessschritt().getNextProzessschritt(), charge);
+    Gaerungsprozessschritt current = ueberpruefung.getGaerungsprozessschritt();
+    Gaerungsprozessschritt next = current.getNextProzessschritt();
+    controller.initializeData(next, charge);
 
     App.setRoot(root);
 

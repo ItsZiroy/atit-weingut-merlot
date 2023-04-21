@@ -56,19 +56,8 @@ public final class UeberpruefungManager {
    * @return Date for next Überprüfung
    */
   public static Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
-    // Get the Gärungsprozessschritt of the latest Überprüfung
-    Gaerungsprozessschritt last = ueberpruefung.getGaerungsprozessschritt();
-
-    // Get the current Gärungsprozessschritt
-    Gaerungsprozessschritt current;
-    // if the last Überprüfung was accepted
-    if(ueberpruefung.getNaechsterSchritt()){
-      // the current Gärungsprozessschritt is one higher than the last one
-      current = last.getNextProzessschritt();
-    } else{
-      // otherwise the current Gärungsprozessschritt is still the same
-      current = last;
-    }
+    Charge charge = ueberpruefung.getCharge();
+    Gaerungsprozessschritt current = ChargeManager.getCurrentGaerungsprozessschritt(charge);
 
     // To calculate next date of Überprüfung add the duration of the  current Gärungsprozessschritt to the last Überprüfung date
     Calendar calendar = Calendar.getInstance();

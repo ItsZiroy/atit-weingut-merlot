@@ -6,6 +6,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.DashboardController">
    <children>
-      <MFXListView fx:id="listView" layoutX="723.0" layoutY="46.0" />
+      <MFXListView fx:id="listView" layoutX="723.0" layoutY="46.0" minWidth="Infinity" />
    </children>
 </Pane>

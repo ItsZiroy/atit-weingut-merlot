@@ -12,9 +12,15 @@
    <children>
       <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="35.0" layoutY="80.0" prefHeight="28.0" prefWidth="147.0" />
       <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="35.0" layoutY="149.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="35.0" layoutY="216.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="35.0" layoutY="218.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="alkoholIst" floatingText="%alkohol_ist" layoutX="192.0" layoutY="80.0" prefHeight="28.0" prefWidth="147.0" onAction="#differenceAlkohol" />
+      <MFXTextField fx:id="zuckerIst" floatingText="%zucker_ist" layoutX="192.0" layoutY="149.0" prefHeight="28.0" prefWidth="147.0" onAction="#differenceZucker" />
+      <MFXTextField fx:id="temperaturIst" floatingText="%temperatur_ist" layoutX="192.0" layoutY="218.0" prefHeight="28.0" prefWidth="147.0" onAction="#differenceTemperatur" />
+      <Label fx:id="alkoholLabel" layoutX="349.0" layoutY="80.0" text="Label" />
+      <Label fx:id="zuckerLabel" layoutX="349.0" layoutY="149.0" text="Label" />
+      <Label fx:id="temperaturLabel" layoutX="349.0" layoutY="218.0" text="Label" />
       <Label fx:id="chargeLabel" layoutX="35.0" layoutY="46.0" text="Label" />
-      <MFXToggleButton layoutX="319.0" layoutY="247.0" />
+      <MFXToggleButton layoutX="319.0" layoutY="260.0" />
       <HomeButton layoutX="35.0" layoutY="14.0" />
    </children>
 </AnchorPane>
