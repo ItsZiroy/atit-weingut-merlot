@@ -2,10 +2,13 @@ package com.itsziroy.weingutmerlot.ui.controller;
 
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
+import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
 import com.itsziroy.weingutmerlot.ui.App;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 public class UeberpruefungController {
 
@@ -19,6 +22,11 @@ public class UeberpruefungController {
   public Label alkoholLabel;
   public Label zuckerLabel;
   public Label temperaturLabel;
+  public Label gaerungsprozessschrittLabel;
+  public Label nextGaerungsprozessschrittLabel;
+  public Label weinLabel;
+  public Label weinartLabel;
+  public MFXButton saveButton;
   private Gaerungsprozessschritt gaerungsprozessschritt;
   private Charge charge;
 
@@ -40,7 +48,12 @@ public class UeberpruefungController {
     zuckerSoll.setText(sollZucker + " g/l");
     temperaturSoll.setText(sollTemperatur + " °C");
 
-    chargeLabel.setText(App.resourceBundle.getString("charge") + ": " + this.charge.getId());
+    chargeLabel.setText(App.resourceBundle.getString("charge") + ": " + charge.getId());
+    gaerungsprozessschrittLabel.setText(App.resourceBundle.getString("gaerungsprozessschritt") + ": " + gaerungsprozessschritt.getSchritt());
+
+    Wein wein = charge.getWein();
+    weinLabel.setText(App.resourceBundle.getString("wein") + ": " + wein.getBeschreibung());
+    weinartLabel.setText(App.resourceBundle.getString("weinart") + ": " + wein.getWeinart());
 
   }
 
@@ -60,5 +73,9 @@ public class UeberpruefungController {
     double istTemperatur = Double.parseDouble(temperaturIst.getText());
     double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
     temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
+  }
+
+  public void persistUeberpruefung(MouseEvent mouseEvent) {
+
   }
 }

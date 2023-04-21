@@ -2,6 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities.enums;
 
 public enum Suessegrad {
   TROCKEN("Trocken"),
+  Trocken("Trocken"),
   HALBTROCKEN("Halbtrocken"),
   LIEBLICH("Lieblich"),
   SUESS("Suess"),

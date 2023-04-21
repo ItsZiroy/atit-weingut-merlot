@@ -9,7 +9,7 @@ public class HomeButton extends MFXButton {
   public HomeButton() {
     super();
     this.setOnAction(this::handleHomeButtonClicked);
-    this.setText("Home");
+    this.setText(App.resourceBundle.getString("home"));
   }
 
   private void handleHomeButtonClicked(ActionEvent actionEvent) {
