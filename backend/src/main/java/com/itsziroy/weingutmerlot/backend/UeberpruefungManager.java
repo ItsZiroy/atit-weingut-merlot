@@ -18,19 +18,21 @@ import java.util.List;
 public final class UeberpruefungManager {
 
   /**
-   * Gets all Überprüfungen that are due in the future.
-   * @return List of all upcoming Überprüfungen with Charge, Date and Überprüfung
+   * Gets for each Charge the next Überprüfung that is due in the future.
+   * @return List of all upcoming Überprüfungen with their Charge, Date and latest Überprüfung
    */
   public static List<Triplet<Charge,Date,Ueberpruefung>> getUpcomingUeberpruefungen() {
     /*
      * Overview of the functionality:
      *
      * 1. Find all Chargen that have not been marked as ready yet
-     * 2. Find the latest created Überprüfungsschritt
-     * 3. Find next Gärungsprozessschritt of above
+     * 2. Find the latest created Überprüfung for each Charge
+     * 3. Find the date for the next Überprüfung
      */
     List<Triplet<Charge,Date, Ueberpruefung>> nextUeberpruefungen = new ArrayList<>();
 
+
+    // 1.
     TypedQuery<Charge> chargeQuery = 
             DB.getEntityManager().createQuery(
                     "select c from Charge c where c.istFertig = false", Charge.class);
@@ -38,8 +40,11 @@ public final class UeberpruefungManager {
     List<Charge> chargen = chargeQuery.getResultList();
 
     for(Charge charge : chargen) {
+      // 2.
       Ueberpruefung ueberpruefung = getCurrentUeberpruefung(charge);
+      // 3.
       Date nextDate = getNextUeberpruefungDate(ueberpruefung);
+      // add triplet to the list
       nextUeberpruefungen.add(new Triplet<>(charge, nextDate, ueberpruefung));
     }
     return nextUeberpruefungen;
@@ -53,10 +58,19 @@ public final class UeberpruefungManager {
   public static Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
     // Get the Gärungsprozessschritt of the latest Überprüfung
     Gaerungsprozessschritt last = ueberpruefung.getGaerungsprozessschritt();
-    // The next/current Gaehrungsprozessschritt is relevant for the calculation
-    Gaerungsprozessschritt current = last.getNextProzessschritt();
 
-    // To calculate next date of Überprüfung add the duration of the Gärungsprozessschritt to the last Überprüfung date
+    // Get the current Gärungsprozessschritt
+    Gaerungsprozessschritt current;
+    // if the last Überprüfung was accepted
+    if(ueberpruefung.getNaechsterSchritt()){
+      // the current Gärungsprozessschritt is one higher than the last one
+      current = last.getNextProzessschritt();
+    } else{
+      // otherwise the current Gärungsprozessschritt is still the same
+      current = last;
+    }
+
+    // To calculate next date of Überprüfung add the duration of the  current Gärungsprozessschritt to the last Überprüfung date
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(ueberpruefung.getDatum());
     calendar.add(Calendar.DAY_OF_YEAR, current.getNachZeit());

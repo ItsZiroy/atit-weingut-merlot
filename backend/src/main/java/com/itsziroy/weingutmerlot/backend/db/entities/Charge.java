@@ -31,7 +31,7 @@ public class Charge {
     this.istFertig = istFertig;
   }
 
-  @Column(name = "ist_fertig", nullable = false)
+  @Column(name = "istfertig", nullable = false)
   private boolean istFertig;
 
   public Integer getId() {

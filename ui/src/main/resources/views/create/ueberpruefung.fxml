@@ -11,7 +11,7 @@
    <children>
       <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="35.0" layoutY="80.0" prefHeight="28.0" prefWidth="147.0" />
       <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="35.0" layoutY="149.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="\%temperatur_soll" layoutX="35.0" layoutY="216.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="35.0" layoutY="216.0" prefHeight="28.0" prefWidth="147.0" />
       <Label fx:id="chargeLabel" layoutX="35.0" layoutY="46.0" text="Label" />
       <MFXToggleButton layoutX="319.0" layoutY="247.0" />
       <HomeButton layoutX="35.0" layoutY="14.0" />
