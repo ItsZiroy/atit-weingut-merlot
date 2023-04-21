@@ -2,7 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.UeberpruefungManager;
 import com.itsziroy.weingutmerlot.backend.db.DB;
-import org.javatuples.Triplet;
+import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -88,15 +88,15 @@ class UeberpruefungManagerTest {
     @Test
     void getUpcomingUeberpruefungen() {
         // actual
-        List<Triplet<Charge,Date,Ueberpruefung>> actualList = UeberpruefungManager.getUpcomingUeberpruefungen();
-        Triplet<Charge,Date,Ueberpruefung> actualTriplet = actualList.get(0);
+        List<UpcomingUeberpruefung> actualList = UeberpruefungManager.getUpcomingUeberpruefungen();
+        UpcomingUeberpruefung actual = actualList.get(0);
 
         // expected
         // the current Gärungsprozesschritt is still the second
         // the next Überprüfung was set to 5 days after the latest Überprüfung
         Date expectedDate = convertStringToDate("25-04-2023");
-        Triplet<Charge,Date,Ueberpruefung> expectedTriplet = new Triplet<>(charge, expectedDate, ueberpruefung2);
-        assertEquals(expectedTriplet, actualTriplet);
+        UpcomingUeberpruefung expected = new UpcomingUeberpruefung(charge, expectedDate, ueberpruefung2);
+        assertEquals(expected, actual);
     }
 
     @Test

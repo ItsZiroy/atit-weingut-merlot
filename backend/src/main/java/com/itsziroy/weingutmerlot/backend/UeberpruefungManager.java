@@ -4,8 +4,8 @@ import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
+import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import jakarta.persistence.TypedQuery;
-import org.javatuples.Triplet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +21,7 @@ public final class UeberpruefungManager {
    * Gets for each Charge the next Überprüfung that is due in the future.
    * @return List of all upcoming Überprüfungen with their Charge, Date and latest Überprüfung
    */
-  public static List<Triplet<Charge,Date,Ueberpruefung>> getUpcomingUeberpruefungen() {
+  public static List<UpcomingUeberpruefung> getUpcomingUeberpruefungen() {
     /*
      * Overview of the functionality:
      *
@@ -29,7 +29,7 @@ public final class UeberpruefungManager {
      * 2. Find the latest created Überprüfung for each Charge
      * 3. Find the date for the next Überprüfung
      */
-    List<Triplet<Charge,Date, Ueberpruefung>> nextUeberpruefungen = new ArrayList<>();
+    List<UpcomingUeberpruefung> nextUeberpruefungen = new ArrayList<>();
 
 
     // 1.
@@ -45,7 +45,7 @@ public final class UeberpruefungManager {
       // 3.
       Date nextDate = getNextUeberpruefungDate(ueberpruefung);
       // add triplet to the list
-      nextUeberpruefungen.add(new Triplet<>(charge, nextDate, ueberpruefung));
+      nextUeberpruefungen.add(new UpcomingUeberpruefung(charge, nextDate, ueberpruefung));
     }
     return nextUeberpruefungen;
   }

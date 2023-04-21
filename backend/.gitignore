@@ -41,3 +41,4 @@ build/
 
 ### Persistence information ###
 /src/main/resources/META-INF/persistence.xml
+/dependency-reduced-pom.xml
