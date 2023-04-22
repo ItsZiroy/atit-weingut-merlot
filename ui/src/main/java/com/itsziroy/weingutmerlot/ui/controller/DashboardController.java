@@ -23,72 +23,72 @@ import java.util.Locale;
 
 public class DashboardController {
 
-  @FXML
-  public Label noUeberpruefungLabel;
-  @FXML
-  private MFXListView<ChargeButton> listView;
-  @FXML
-  public MFXComboBox<Locale> languageSelection;
+    @FXML
+    private Label noUeberpruefungLabel;
+    @FXML
+    private MFXListView<ChargeButton> listView;
+    @FXML
+    private MFXComboBox<Locale> languageSelection;
 
-  @FXML
-  public void initialize() {
+    @FXML
+    public void initialize() {
 
-    initalizeUpcomingUeberpruefungen();
-    initializeLanguageSelection();
-  }
+        initalizeUpcomingUeberpruefungen();
+        initializeLanguageSelection();
+    }
 
-  private void initializeLanguageSelection() {
-    ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
-    languageSelection.setItems(options);
-    languageSelection.getSelectionModel().selectItem(App.locale);
+    private void initializeLanguageSelection() {
+        ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
+        languageSelection.setItems(options);
+        languageSelection.getSelectionModel().selectItem(App.locale);
 
-    // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
-    languageSelection.setConverter(new StringConverter<>() {
-      @Override
-      public String toString(Locale locale) {
-        if(locale != null) {
-          return locale.getDisplayLanguage();
+        // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
+        languageSelection.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Locale locale) {
+                if (locale != null) {
+                    return locale.getDisplayLanguage();
+                }
+                return "";
+            }
+
+            @Override
+            public Locale fromString(String string) {
+                return new Locale.Builder().setLanguage(string).build();
+            }
+        });
+
+    }
+
+    private void initalizeUpcomingUeberpruefungen() {
+        List<UpcomingUeberpruefung> nextUe =
+                UeberpruefungManager.getUpcomingUeberpruefungen();
+
+        if (nextUe.isEmpty()) {
+            listView.setVisible(false);
+            noUeberpruefungLabel.setVisible(true);
         }
-        return "";
-      }
 
-      @Override
-      public Locale fromString(String string) {
-        return new Locale.Builder().setLanguage(string).build();
-      }
-    });
+        // Sort the list by date
+        nextUe.sort(Comparator.comparing(UpcomingUeberpruefung::nextDate));
 
-  }
+        nextUe.forEach(p -> {
+            Charge charge = p.charge();
+            Date date = p.nextDate();
+            Ueberpruefung ue = p.lastUeberpruefung();
 
-  private void initalizeUpcomingUeberpruefungen() {
-    List<UpcomingUeberpruefung> nextUe =
-            UeberpruefungManager.getUpcomingUeberpruefungen();
+            ChargeButton button = new ChargeButton(charge, date, ue);
 
-    if(nextUe.isEmpty()) {
-      listView.setVisible(false);
-      noUeberpruefungLabel.setVisible(true);
+            listView.getItems().add(button);
+        });
     }
 
-    // Sort the list by date
-    nextUe.sort(Comparator.comparing(UpcomingUeberpruefung::nextDate));
+    public void handleLanguageChange() {
+        Locale selection = languageSelection.getSelectionModel().getSelectedItem();
 
-    nextUe.forEach(p -> {
-      Charge charge = p.charge();
-      Date date = p.nextDate();
-      Ueberpruefung ue = p.lastUeberpruefung();
-
-      ChargeButton button = new ChargeButton(charge, date, ue);
-
-      listView.getItems().add(button);
-    });
-  }
-
-  public void handleLanguageChange() {
-    Locale selection = languageSelection.getSelectionModel().getSelectedItem();
-
-    if (selection != App.locale) {
-      App.locale = selection;
-      App.setView(View.DASHBOARD);
+        if (selection != App.locale) {
+            App.locale = selection;
+            App.setView(View.DASHBOARD);
+        }
     }
-  }
 }

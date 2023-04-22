@@ -8,10 +8,10 @@ import javafx.scene.text.Text;
  */
 public class ErrorController {
 
-  @FXML
-  public Text errorMessage;
+    @FXML
+    private Text errorMessage;
 
-  public void initializeData(String message) {
-      errorMessage.setText(message);
-  }
+    public void initializeData(String message) {
+        errorMessage.setText(message);
+    }
 }

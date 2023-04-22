@@ -12,49 +12,51 @@ import java.util.Locale;
 
 public class Main {
 
-  public MFXComboBox<Locale> languageSelection;
-  @FXML
-  public void initialize() {
-    initializeLanguageSelection();
-  }
+    @FXML
+    private MFXComboBox<Locale> languageSelection;
 
-  private void initializeLanguageSelection() {
-    ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
-    languageSelection.setItems(options);
-    languageSelection.getSelectionModel().selectItem(App.locale);
-
-    // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
-    languageSelection.setConverter(new StringConverter<>() {
-      @Override
-      public String toString(Locale locale) {
-        if(locale != null) {
-          return locale.getDisplayLanguage();
-        }
-        return "";
-      }
-
-      @Override
-      public Locale fromString(String string) {
-        return new Locale.Builder().setLanguage(string).build();
-      }
-    });
-
-  }
-
-  public void weinCreateButtonClicked() {
-    App.setView(View.CREATE_WEIN);
-  }
-
-  public void weinOverviewButtonClicked() {
-    App.setView(View.READ_WEIN);
-  }
-
-  public void handleLanguageChange() {
-    Locale selection = languageSelection.getSelectionModel().getSelectedItem();
-
-    if (selection != App.locale) {
-      App.locale = selection;
-      App.setView(View.MAIN);
+    @FXML
+    public void initialize() {
+        initializeLanguageSelection();
     }
-  }
+
+    private void initializeLanguageSelection() {
+        ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
+        languageSelection.setItems(options);
+        languageSelection.getSelectionModel().selectItem(App.locale);
+
+        // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
+        languageSelection.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Locale locale) {
+                if (locale != null) {
+                    return locale.getDisplayLanguage();
+                }
+                return "";
+            }
+
+            @Override
+            public Locale fromString(String string) {
+                return new Locale.Builder().setLanguage(string).build();
+            }
+        });
+
+    }
+
+    public void weinCreateButtonClicked() {
+        App.setView(View.CREATE_WEIN);
+    }
+
+    public void weinOverviewButtonClicked() {
+        App.setView(View.READ_WEIN);
+    }
+
+    public void handleLanguageChange() {
+        Locale selection = languageSelection.getSelectionModel().getSelectedItem();
+
+        if (selection != App.locale) {
+            App.locale = selection;
+            App.setView(View.MAIN);
+        }
+    }
 }

@@ -16,59 +16,57 @@ import java.util.List;
 
 public class WeinController {
 
-  @FXML
-  MFXSlider alkoholgehaltSlider;
+    @FXML
+    private MFXSlider alkoholgehaltSlider;
+    @FXML
+    private MFXTextField descriptionInput;
+    @FXML
+    private MFXFilterComboBox<Weinart> weinartCombobox;
+    @FXML
+    private MFXFilterComboBox<Suessegrad> suessegradCombobox;
 
-  @FXML
-  MFXTextField descriptionInput;
-
-  @FXML
-  MFXFilterComboBox<Weinart> weinartCombobox;
-
-  @FXML
-  MFXFilterComboBox<Suessegrad> suessegradCombobox;
-  @FXML
-  public void initialize() {
-    this.initializeWeinartComboxbox();
-    this.initializeSuessegradCombobox();
-  }
-
-  public void handleCreateButtonPress(MouseEvent event) {
-    Wein wein = new Wein();
-
-    String description = descriptionInput.getText();
-    Double alkohol = alkoholgehaltSlider.getValue();
-    Suessegrad suessegrad = suessegradCombobox.getValue();
-    Weinart weinart = weinartCombobox.getValue();
-
-    wein.setBeschreibung(description);
-    wein.setAlkoholgehalt(alkohol);
-    wein.setSuessegrad(suessegrad);
-    wein.setWeinart(weinart);
-
-    try {
-      DB.getEntityManager().getTransaction().begin();
-      DB.getEntityManager().persist(wein);
-      DB.getEntityManager().getTransaction().commit();
-    } catch (PersistenceException e) {
-      LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+    @FXML
+    public void initialize() {
+        this.initializeWeinartComboxbox();
+        this.initializeSuessegradCombobox();
     }
 
-  }
+    public void handleCreateButtonPress(MouseEvent event) {
+        Wein wein = new Wein();
 
-  private void initializeWeinartComboxbox() {
-    var query = DB.getEntityManager().createQuery("select p from Weinart p", Weinart.class);
-    List<Weinart> weinarten = query.getResultList();
-    for (var weinart:
-            weinarten) {
-      weinartCombobox.getItems().add(weinart);
-    }
-  }
+        String description = descriptionInput.getText();
+        Double alkohol = alkoholgehaltSlider.getValue();
+        Suessegrad suessegrad = suessegradCombobox.getValue();
+        Weinart weinart = weinartCombobox.getValue();
 
-  private void initializeSuessegradCombobox() {
-    for (var suessegrad: Suessegrad.values()) {
-      suessegradCombobox.getItems().add(suessegrad);
+        wein.setBeschreibung(description);
+        wein.setAlkoholgehalt(alkohol);
+        wein.setSuessegrad(suessegrad);
+        wein.setWeinart(weinart);
+
+        try {
+            DB.getEntityManager().getTransaction().begin();
+            DB.getEntityManager().persist(wein);
+            DB.getEntityManager().getTransaction().commit();
+        } catch (PersistenceException e) {
+            LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+        }
+
     }
-  }
+
+    private void initializeWeinartComboxbox() {
+        var query = DB.getEntityManager().createQuery("select p from Weinart p", Weinart.class);
+        List<Weinart> weinarten = query.getResultList();
+        for (var weinart :
+                weinarten) {
+            weinartCombobox.getItems().add(weinart);
+        }
+    }
+
+    private void initializeSuessegradCombobox() {
+        for (var suessegrad : Suessegrad.values()) {
+            suessegradCombobox.getItems().add(suessegrad);
+        }
+    }
 
 }
