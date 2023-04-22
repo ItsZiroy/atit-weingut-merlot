@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXListView?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.DashboardController">
    <children>
-      <MFXListView fx:id="listView" layoutX="723.0" layoutY="46.0" minWidth="Infinity" />
+      <MFXListView fx:id="listView" layoutX="723.0" layoutY="46.0" minWidth="300" />
+      <Label fx:id="noUeberpruefungLabel" layoutX="723.0" layoutY="46.0" text="%noUeberpruefung" visible="false" />
+      <MFXComboBox fx:id="languageSelection" floatingText="%sprache" layoutX="14.0" layoutY="14.0" onAction="#handleLanguageChange" prefHeight="41.0" prefWidth="170.0" />
    </children>
 </Pane>

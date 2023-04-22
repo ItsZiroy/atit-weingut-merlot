@@ -1,8 +1,8 @@
 INSERT INTO weingutmerlot.weinarten (id, name, art) VALUES (1, 'Riesling', 'Weißwein');
 INSERT INTO weingutmerlot.weinarten (id, name, art) VALUES (2, 'Portugieser', 'Rotwein');
 
-INSERT INTO weingutmerlot.weine (id, weinart_id, suessegrad, alkoholgehalt, beschreibung) VALUES (1, 1, 'Trocken', 11.95, 'Der beste Riesling in der Pflaz');
-INSERT INTO weingutmerlot.weine (id, weinart_id, suessegrad, alkoholgehalt, beschreibung) VALUES (3, 1, 'Lieblich', 10.85, 'Riesling Lieblich');
+INSERT INTO weingutmerlot.weine (id, weinart_id, suessegrad, alkoholgehalt, beschreibung) VALUES (1, 1, 'TROCKEN', 11.95, 'Der beste Riesling in der Pfalz');
+INSERT INTO weingutmerlot.weine (id, weinart_id, suessegrad, alkoholgehalt, beschreibung) VALUES (3, 1, 'LIEBLICH', 10.85, 'Riesling Lieblich');
 
 INSERT INTO weingutmerlot.gaerungsprozesse (id, weine_id, zuckergehalt, temperatur, dauer, lagerungsbehaelter) VALUES (1, 1, 610, 23, 42, 'Birkenholzfass');
 
