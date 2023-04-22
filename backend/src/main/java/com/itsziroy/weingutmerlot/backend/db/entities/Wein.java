@@ -17,6 +17,9 @@ public class Wein {
     @JoinColumn(name = "weinart_id", nullable = false)
     private Weinart weinart;
 
+    @OneToOne(mappedBy = "wein")
+    private Gaerungsprozess gaerungsprozess;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "suessegrad", nullable = false, length = 11)
     private Suessegrad suessegrad;

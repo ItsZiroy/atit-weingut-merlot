@@ -10,7 +10,7 @@ public class Gaerungsprozess {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "weine_id", nullable = false)
   private Wein wein;
 
