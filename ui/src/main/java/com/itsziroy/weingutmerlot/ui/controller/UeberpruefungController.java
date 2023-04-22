@@ -1,22 +1,28 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
-import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
-import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
-import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
+import com.itsziroy.weingutmerlot.backend.HefeManager;
+import com.itsziroy.weingutmerlot.backend.db.entities.*;
 import com.itsziroy.weingutmerlot.ui.App;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.itsziroy.weingutmerlot.ui.Enums.View;
+import io.github.palexdev.materialfx.controls.*;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+import java.util.List;
+
 public class UeberpruefungController {
 
+    public MFXDatePicker datePicker;
+    public MFXComboBox<Hefe> hefeComboBox;
     @FXML
-    private MFXTextField alkoholSoll, zuckerSoll, temperaturSoll;
+    private MFXToggleButton nachsterSchrittToggleButton;
     @FXML
-    private MFXTextField alkoholIst, zuckerIst, temperaturIst;
+    private MFXTextField alkoholSoll, zuckerSoll, temperaturSoll,
+            anpassungZucker, anpassungTemperatur,
+            alkoholIst, zuckerIst, temperaturIst;
     @FXML
     private Label chargeLabel, gaerungsprozessschrittLabel, weinLabel, weinartLabel;
     @FXML
@@ -25,6 +31,14 @@ public class UeberpruefungController {
     private MFXButton saveButton;
     private Gaerungsprozessschritt gaerungsprozessschritt;
     private Charge charge;
+
+    public void initialize() {
+        alkoholIst.textProperty().addListener(this::differenceAlkohol);
+        zuckerIst.textProperty().addListener(this::differenceZucker);
+        temperaturIst.textProperty().addListener(this::differenceTemperatur);
+
+        initializeHefenComboxbox();
+    }
 
     /**
      * This Method needs to be run before the View can be displayed properly and
@@ -53,25 +67,80 @@ public class UeberpruefungController {
 
     }
 
-    public void differenceAlkohol(ActionEvent actionEvent) {
-        double istAlkohol = Double.parseDouble(alkoholIst.getText());
-        double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
-        alkoholLabel.setText(String.valueOf(istAlkohol - sollAlkohol));
+    public void differenceAlkohol(Observable observable, String oldValue, String newValue) {
+        try {
+            double istAlkohol = Double.parseDouble(newValue);
+            if(istAlkohol < 0) {
+                throw new NumberFormatException();
+            }
+            double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
+            alkoholLabel.setText(String.valueOf(istAlkohol - sollAlkohol));
+        } catch (NumberFormatException e) {
+            alkoholLabel.setText("");
+        }
     }
 
-    public void differenceZucker(ActionEvent actionEvent) {
-        double istZucker = Double.parseDouble(zuckerIst.getText());
-        int sollZucker = this.gaerungsprozessschritt.getSollZucker();
-        zuckerLabel.setText(String.valueOf(istZucker - sollZucker));
+    public void differenceZucker(Observable observable, String oldValue, String newValue) {
+        try {
+            int istZucker = Integer.parseInt(newValue);
+            if(istZucker < 0) {
+                throw new NumberFormatException();
+            }
+            int sollZucker = this.gaerungsprozessschritt.getSollZucker();
+            zuckerLabel.setText(String.valueOf(istZucker - sollZucker));
+        } catch (NumberFormatException e) {
+            zuckerLabel.setText("");
+        }
     }
 
-    public void differenceTemperatur(ActionEvent actionEvent) {
-        double istTemperatur = Double.parseDouble(temperaturIst.getText());
-        double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
-        temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
+    public void differenceTemperatur(Observable observable, String oldValue, String newValue) {
+        try {
+            double istTemperatur = Double.parseDouble(newValue);
+            if(istTemperatur < 0) {
+                throw new NumberFormatException();
+            }
+            double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
+            temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
+        } catch (NumberFormatException e) {
+            temperaturLabel.setText("");
+        }
     }
 
-    public void persistUeberpruefung(MouseEvent mouseEvent) {
+    public void handleTakeOverZucker() {
+        try{
+            int zuckerDifference = Integer.parseInt(zuckerLabel.getText());
+            // When actual value higher than target value, you cannot put sugar out of the wine
+            if(zuckerDifference > 0){
+                zuckerDifference = 0;
+            }
+            anpassungZucker.setText(String.valueOf(zuckerDifference * (-1)));
+        } catch (NumberFormatException e) {
+            anpassungZucker.setText("");
+        }
+    }
 
+    public void handleTakeOverTemperatur() {
+        try{
+            double temperaturDifference = Double.parseDouble(temperaturLabel.getText()) * (-1);
+            anpassungTemperatur.setText(String.valueOf(temperaturDifference));
+        } catch (NumberFormatException e) {
+            anpassungTemperatur.setText("");
+        }
+    }
+
+    public void handleNextStepChange() {
+        datePicker.setVisible(!nachsterSchrittToggleButton.isSelected());
+    }
+
+    private void initializeHefenComboxbox() {
+        List<Hefe> hefen = HefeManager.getAllHefen();
+        for (var hefe : hefen) {
+            hefeComboBox.getItems().add(hefe);
+        }
+    }
+
+    public void handleSaveButtonClicked() {
+        // TODO
+        App.setView(View.DASHBOARD);
     }
 }

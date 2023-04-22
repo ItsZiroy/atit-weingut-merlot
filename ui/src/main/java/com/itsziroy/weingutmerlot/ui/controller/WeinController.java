@@ -31,7 +31,7 @@ public class WeinController {
         this.initializeSuessegradCombobox();
     }
 
-    public void handleCreateButtonPress(MouseEvent event) {
+    public void handleCreateButtonPress() {
         Wein wein = new Wein();
 
         String description = descriptionInput.getText();
@@ -57,8 +57,7 @@ public class WeinController {
     private void initializeWeinartComboxbox() {
         var query = DB.getEntityManager().createQuery("select p from Weinart p", Weinart.class);
         List<Weinart> weinarten = query.getResultList();
-        for (var weinart :
-                weinarten) {
+        for (var weinart : weinarten) {
             weinartCombobox.getItems().add(weinart);
         }
     }

@@ -42,6 +42,9 @@ public class Ueberpruefung {
   @Column(name = "next_date")
   private Date nextDate;
 
+  @Column(name = "datum", nullable = false)
+  private Date datum;
+
   @ManyToMany
   @JoinTable(
           name = "ueberpruefungen_has_hefen",
@@ -57,9 +60,6 @@ public class Ueberpruefung {
   public void setDatum(Date datum) {
     this.datum = datum;
   }
-
-  @Column(name = "datum", nullable = false)
-  private Date datum;
 
   public Integer getId() {
     return id;

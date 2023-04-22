@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.itsziroy.weingutmerlot.ui.components.HomeButton?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController">
+<?import com.itsziroy.weingutmerlot.ui.components.HomeButton?>
+<AnchorPane prefHeight="551.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController">
    <children>
       <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="35.0" layoutY="126.0" prefHeight="28.0" prefWidth="147.0" />
       <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="35.0" layoutY="195.0" prefHeight="28.0" prefWidth="147.0" />
       <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="35.0" layoutY="264.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="alkoholIst" floatingText="%alkohol_ist" layoutX="192.0" layoutY="126.0" onAction="#differenceAlkohol" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="zuckerIst" floatingText="%zucker_ist" layoutX="192.0" layoutY="195.0" onAction="#differenceZucker" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="temperaturIst" floatingText="%temperatur_ist" layoutX="192.0" layoutY="264.0" onAction="#differenceTemperatur" prefHeight="28.0" prefWidth="147.0" />
-      <Label fx:id="alkoholLabel" layoutX="349.0" layoutY="143.0" text="&quot;&quot;" />
-      <Label fx:id="zuckerLabel" layoutX="349.0" layoutY="212.0" text="&quot;&quot;" />
-      <Label fx:id="temperaturLabel" layoutX="349.0" layoutY="281.0" text="&quot;&quot;" />
+      <MFXTextField fx:id="alkoholIst" floatingText="%alkohol_ist" layoutX="192.0" layoutY="126.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="zuckerIst" floatingText="%zucker_ist" layoutX="192.0" layoutY="195.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturIst" floatingText="%temperatur_ist" layoutX="192.0" layoutY="264.0" prefHeight="28.0" prefWidth="147.0" />
+      <Label fx:id="alkoholLabel" layoutX="427.0" layoutY="138.0" prefHeight="25.0" prefWidth="50.0" text="" />
+      <Label fx:id="zuckerLabel" layoutX="427.0" layoutY="207.0" prefHeight="25.0" prefWidth="50.0" text="" />
+      <Label fx:id="temperaturLabel" layoutX="427.0" layoutY="276.0" prefHeight="25.0" prefWidth="50.0" text="" />
       <Label fx:id="chargeLabel" layoutX="35.0" layoutY="92.0" text="Label" />
-      <MFXToggleButton layoutX="89.0" layoutY="332.0" />
+      <MFXToggleButton fx:id="nachsterSchrittToggleButton" layoutX="89.0" layoutY="332.0" onAction="#handleNextStepChange" selected="true" />
       <HomeButton layoutX="35.0" layoutY="14.0" />
-      <Label fx:id="nextGaerungsprozessschrittLabel" layoutX="192.0" layoutY="344.0" text="%next_Gaerungsprozessschritt" />
+      <Label layoutX="192.0" layoutY="344.0" text="%next_Gaerungsprozessschritt" />
       <Label fx:id="gaerungsprozessschrittLabel" layoutX="191.0" layoutY="92.0" text="Label" />
       <Label fx:id="weinLabel" layoutX="35.0" layoutY="60.0" text="Label" />
-      <MFXButton fx:id="saveButton" layoutX="162.0" layoutY="373.0" text="%speichern" onMouseClicked="#persistUeberpruefung"/>
+      <MFXButton fx:id="saveButton" layoutX="162.0" layoutY="373.0" onMouseClicked="#handleSaveButtonClicked" text="%speichern" />
       <Label fx:id="weinartLabel" layoutX="251.0" layoutY="60.0" text="Label" />
+      <Label layoutX="353.0" layoutY="142.0" text="%abweichung" />
+      <Label layoutX="353.0" layoutY="211.0" text="%abweichung" />
+      <Label layoutX="353.0" layoutY="280.0" text="%abweichung" />
+      <MFXTextField floatingText="%menge" layoutX="775.0" layoutY="126.0" />
+      <MFXTextField fx:id="anpassungZucker" floatingText="%anpassung_zucker" layoutX="586.0" layoutY="195.0" prefHeight="49.0" prefWidth="176.0" />
+      <MFXTextField fx:id="anpassungTemperatur" floatingText="%anpassung_temperatur" layoutX="586.0" layoutY="264.0" prefHeight="49.0" prefWidth="176.0" />
+      <MFXComboBox fx:id="hefeComboBox" floatingText="%hefe" layoutX="586.0" layoutY="126.0" prefHeight="49.0" prefWidth="176.0" />
+      <MFXButton layoutX="456.0" layoutY="207.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXButton layoutX="456.0" layoutY="276.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXDatePicker fx:id="datePicker" layoutX="387.0" layoutY="334.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
    </children>
 </AnchorPane>
