@@ -39,6 +39,9 @@ public class Ueberpruefung {
   @Column(name = "naechster_schritt", nullable = false)
   private Boolean naechsterSchritt = false;
 
+  @Column(name = "next_date")
+  private Date nextDate;
+
   @ManyToMany
   @JoinTable(
           name = "ueberpruefungen_has_hefen",
@@ -118,7 +121,7 @@ public class Ueberpruefung {
     this.anpassungTemperatur = anpassungTemperatur;
   }
 
-  public Boolean getNaechsterSchritt() {
+  public Boolean isNaechsterSchritt() {
     return naechsterSchritt;
   }
 
@@ -126,4 +129,11 @@ public class Ueberpruefung {
     this.naechsterSchritt = naechsterSchritt;
   }
 
+  public Date getNextDate() {
+    return nextDate;
+  }
+
+  public void setNextDate(Date nextDate) {
+    this.nextDate = nextDate;
+  }
 }

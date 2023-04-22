@@ -25,8 +25,8 @@ class GaerungsprozessschrittTest {
    */
   @BeforeAll
   static void setUp() {
-
     DB.setPersistenceUnit("test");
+
     Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(false);
 
     DB.getEntityManager().getTransaction().begin();
@@ -76,7 +76,14 @@ class GaerungsprozessschrittTest {
     return schritt;
   }
 
-  // creates the given number of Gärungsprozessschritte after 10 days for the given Gärungsprozess with ascending number of Schritte
+  /**
+   * Creates the given number of Gärungsprozessschritte after <b>10</b> days for the given Gärungsprozess with
+   * ascending number of Schritte
+   * @param persist Persist in DB
+   * @param gaerungsprozess Gärungsprizess
+   * @param number Number of steps to generate
+   * @return Gärungsprozessschritte
+   */
   static Gaerungsprozessschritt[] createNGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
     Gaerungsprozessschritt[] gaerungsprozessschritte = new Gaerungsprozessschritt[number];
     for(int i=1; i<number+1; i++) {

@@ -56,6 +56,10 @@ public final class UeberpruefungManager {
    * @return Date for next Überprüfung
    */
   public static Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
+    if(!ueberpruefung.isNaechsterSchritt()) {
+      return ueberpruefung.getNextDate();
+    }
+
     Charge charge = ueberpruefung.getCharge();
     Gaerungsprozessschritt current = ChargeManager.getCurrentGaerungsprozessschritt(charge);
 

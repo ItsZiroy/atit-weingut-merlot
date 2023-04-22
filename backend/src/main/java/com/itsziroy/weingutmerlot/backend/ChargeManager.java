@@ -22,7 +22,7 @@ public final class ChargeManager {
         // Get the current Gärungsprozessschritt
         Gaerungsprozessschritt currentGaerungsprozessschritt;
         // if the last Überprüfung was accepted
-        if(currentUeberpruefung.getNaechsterSchritt()){
+        if(currentUeberpruefung.isNaechsterSchritt()){
             // the current Gärungsprozessschritt is one higher than the last one
             currentGaerungsprozessschritt = last.getNextProzessschritt();
         } else{
