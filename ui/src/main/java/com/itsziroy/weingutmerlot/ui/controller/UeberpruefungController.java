@@ -1,34 +1,41 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
 import com.itsziroy.weingutmerlot.backend.HefeManager;
+import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.*;
 import com.itsziroy.weingutmerlot.ui.App;
 import com.itsziroy.weingutmerlot.ui.Enums.View;
 import io.github.palexdev.materialfx.controls.*;
+import jakarta.persistence.PersistenceException;
 import javafx.beans.Observable;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class UeberpruefungController {
 
     public MFXDatePicker datePicker;
     public MFXComboBox<Hefe> hefeComboBox;
+    public MFXButton uebernehmenZucker, uebernehmenTemperatur;
     @FXML
     private MFXToggleButton nachsterSchrittToggleButton;
     @FXML
     private MFXTextField alkoholSoll, zuckerSoll, temperaturSoll,
             anpassungZucker, anpassungTemperatur,
-            alkoholIst, zuckerIst, temperaturIst;
+            alkoholIst, zuckerIst, temperaturIst,
+            mengeHefe;
     @FXML
     private Label chargeLabel, gaerungsprozessschrittLabel, weinLabel, weinartLabel;
     @FXML
     private Label alkoholLabel, zuckerLabel, temperaturLabel;
-    @FXML
-    private MFXButton saveButton;
+
     private Gaerungsprozessschritt gaerungsprozessschritt;
     private Charge charge;
 
@@ -87,7 +94,13 @@ public class UeberpruefungController {
                 throw new NumberFormatException();
             }
             int sollZucker = this.gaerungsprozessschritt.getSollZucker();
-            zuckerLabel.setText(String.valueOf(istZucker - sollZucker));
+            int difference = istZucker - sollZucker;
+            if(difference > 0){
+                uebernehmenZucker.setDisable(true);
+            } else {
+                uebernehmenZucker.setDisable(false);
+            }
+            zuckerLabel.setText(String.valueOf(difference));
         } catch (NumberFormatException e) {
             zuckerLabel.setText("");
         }
@@ -140,7 +153,85 @@ public class UeberpruefungController {
     }
 
     public void handleSaveButtonClicked() {
-        // TODO
+        Ueberpruefung ueberpruefung = new Ueberpruefung();
+
+        // set all attributes entered before
+        ueberpruefung.setCharge(charge);
+        ueberpruefung.setGaerungsprozessschritt(gaerungsprozessschritt);
+        ueberpruefung.setDatum(new Date());
+        int istZucker = Integer.parseInt(zuckerIst.getText());
+        ueberpruefung.setIstZucker(istZucker);
+        double istTemperatur = Double.parseDouble(temperaturIst.getText());
+        ueberpruefung.setIstTemperatur(istTemperatur);
+        double istAlkohol = Double.parseDouble(alkoholIst.getText());
+        ueberpruefung.setIstAlkohol(istAlkohol);
+        int anpassungZuckerInt = Integer.parseInt(anpassungZucker.getText());
+        ueberpruefung.setAnpassungZucker(anpassungZuckerInt);
+        double anpassungTemperaturDouble = Double.parseDouble(anpassungTemperatur.getText());
+        ueberpruefung.setAnpassungTemperatur(anpassungTemperaturDouble);
+
+        Hefe hefe = hefeComboBox.getSelectedItem();
+        int hefe_menge = Integer.parseInt(mengeHefe.getText());
+
+        //Hefen + Menge Setzen fehlt
+        //TODO
+        /*Set<Hefe> hefen;
+        hefen.add(hefe);
+        ueberpruefung.setHefen(hefen);*/
+
+
+        boolean naechsterSchritt = nachsterSchrittToggleButton.isSelected();
+        ueberpruefung.setNaechsterSchritt(naechsterSchritt);
+
+        // next date is only relevant if nachsterSchritt is deselected
+        if(!naechsterSchritt){
+            LocalDate localNextDate = datePicker.getValue();
+            Instant instant = Instant.from(localNextDate.atStartOfDay(ZoneId.systemDefault()));
+            Date nextDate = Date.from(instant);
+            ueberpruefung.setNextDate(nextDate);
+        }
+
+        // persist new Überprüfung
+        try {
+            DB.getEntityManager().getTransaction().begin();
+            DB.getEntityManager().persist(ueberpruefung);
+            DB.getEntityManager().getTransaction().commit();
+        } catch (PersistenceException e) {
+            LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+        }
+
+        // return to Dashboard view
         App.setView(View.DASHBOARD);
+    }
+
+    public int checkStringforValidInt(String string){
+        // TODO
+        int value;
+        try{
+            value = Integer.parseInt(string);
+        } catch(NumberFormatException e) {
+            value = -1;
+            // show message, no int was entered
+        }
+        if(value < 0){
+            value = -1;
+            // show message, no negative values are allowed
+        }
+        return value;
+    }
+
+    public double checkStringforValidDouble(String string){
+        // TODO
+        double value;
+        try{
+            value = Double.parseDouble(string);
+        } catch(NumberFormatException e) {
+            value = -1;
+            // show message, no double was entered
+        }
+        if(value < 0){
+            // show message, no negative values are allowed
+        }
+        return value;
     }
 }

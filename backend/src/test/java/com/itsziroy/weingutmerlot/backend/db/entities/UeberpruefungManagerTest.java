@@ -41,10 +41,10 @@ class UeberpruefungManagerTest {
         ueberpruefung1.setDatum(date);
         ueberpruefung1.setGaerungsprozessschritt(gaerungsprozessschritte[0]);
         ueberpruefung1.setNaechsterSchritt(true);
-        ueberpruefung1.setIstAlkohol(2);
-        ueberpruefung1.setIstTemperatur(25);
+        ueberpruefung1.setIstAlkohol(2.0);
+        ueberpruefung1.setIstTemperatur(25.0);
         ueberpruefung1.setIstZucker(200);
-        ueberpruefung1.setAnpassungTemperatur(0);
+        ueberpruefung1.setAnpassungTemperatur(0.0);
         ueberpruefung1.setAnpassungZucker(0);
 
         // Create not accepted Überprüfung for Gärungsprozessschritt 2
@@ -54,10 +54,10 @@ class UeberpruefungManagerTest {
         ueberpruefung2.setDatum(date);
         ueberpruefung2.setGaerungsprozessschritt(gaerungsprozessschritte[1]);
         ueberpruefung2.setNaechsterSchritt(false);
-        ueberpruefung2.setIstAlkohol(5);
-        ueberpruefung2.setIstTemperatur(25);
+        ueberpruefung2.setIstAlkohol(5.0);
+        ueberpruefung2.setIstTemperatur(25.0);
         ueberpruefung2.setIstZucker(150);
-        ueberpruefung2.setAnpassungTemperatur(0);
+        ueberpruefung2.setAnpassungTemperatur(0.0);
         ueberpruefung2.setAnpassungZucker(0);
         Date nextDate = new Date(2023, Calendar.APRIL, 25);
         ueberpruefung2.setNextDate(nextDate);

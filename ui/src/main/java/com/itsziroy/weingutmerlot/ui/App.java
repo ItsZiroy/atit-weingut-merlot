@@ -92,7 +92,7 @@ public class App extends Application {
    * @param root Node to display
    */
   public static void setRoot(Parent root) {
-    LogManager.getLogger().info("Startet Setting Root");
+    LogManager.getLogger().info("Started Setting Root");
     if(root != null) scene.setRoot(root);
     LogManager.getLogger().info("Finished Setting Root");
   }

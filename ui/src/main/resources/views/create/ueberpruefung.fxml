@@ -31,12 +31,12 @@
       <Label layoutX="353.0" layoutY="142.0" text="%abweichung" />
       <Label layoutX="353.0" layoutY="211.0" text="%abweichung" />
       <Label layoutX="353.0" layoutY="280.0" text="%abweichung" />
-      <MFXTextField floatingText="%menge" layoutX="775.0" layoutY="126.0" />
+      <MFXTextField fx:id="mengeHefe" floatingText="%menge" layoutX="775.0" layoutY="126.0" />
       <MFXTextField fx:id="anpassungZucker" floatingText="%anpassung_zucker" layoutX="586.0" layoutY="195.0" prefHeight="49.0" prefWidth="176.0" />
       <MFXTextField fx:id="anpassungTemperatur" floatingText="%anpassung_temperatur" layoutX="586.0" layoutY="264.0" prefHeight="49.0" prefWidth="176.0" />
       <MFXComboBox fx:id="hefeComboBox" floatingText="%hefe" layoutX="586.0" layoutY="126.0" prefHeight="49.0" prefWidth="176.0" />
-      <MFXButton layoutX="456.0" layoutY="207.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
-      <MFXButton layoutX="456.0" layoutY="276.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXButton fx:id="uebernehmenZucker" layoutX="456.0" layoutY="207.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXButton fx:id="uebernehmenTemperatur" layoutX="456.0" layoutY="276.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
       <MFXDatePicker fx:id="datePicker" layoutX="387.0" layoutY="334.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
    </children>
 </AnchorPane>

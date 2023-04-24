@@ -25,16 +25,16 @@ public class Ueberpruefung {
   private Integer istZucker;
 
   @Column(name = "ist_temperatur", nullable = false)
-  private Integer istTemperatur;
+  private Double istTemperatur;
 
   @Column(name = "ist_alkohol", nullable = false)
-  private Integer istAlkohol;
+  private Double istAlkohol;
 
   @Column(name = "anpassung_zucker", nullable = false)
   private Integer anpassungZucker;
 
   @Column(name = "anpassung_temperatur", nullable = false)
-  private Integer anpassungTemperatur;
+  private Double anpassungTemperatur;
 
   @Column(name = "naechster_schritt", nullable = false)
   private Boolean naechsterSchritt = false;
@@ -53,6 +53,7 @@ public class Ueberpruefung {
   )
   private Set<Hefe> hefen;
 
+
   public Date getDatum() {
     return datum;
   }
@@ -63,6 +64,14 @@ public class Ueberpruefung {
 
   public Integer getId() {
     return id;
+  }
+
+  public Set<Hefe> getHefen() {
+    return hefen;
+  }
+
+  public void setHefen(Set<Hefe> hefen) {
+    this.hefen = hefen;
   }
 
   public Charge getCharge() {
@@ -89,19 +98,19 @@ public class Ueberpruefung {
     this.istZucker = istZucker;
   }
 
-  public Integer getIstTemperatur() {
+  public Double getIstTemperatur() {
     return istTemperatur;
   }
 
-  public void setIstTemperatur(Integer istTemperatur) {
+  public void setIstTemperatur(Double istTemperatur) {
     this.istTemperatur = istTemperatur;
   }
 
-  public Integer getIstAlkohol() {
+  public Double getIstAlkohol() {
     return istAlkohol;
   }
 
-  public void setIstAlkohol(Integer istAlkohol) {
+  public void setIstAlkohol(Double istAlkohol) {
     this.istAlkohol = istAlkohol;
   }
 
@@ -113,11 +122,11 @@ public class Ueberpruefung {
     this.anpassungZucker = anpassungZucker;
   }
 
-  public Integer getAnpassungTemperatur() {
+  public Double getAnpassungTemperatur() {
     return anpassungTemperatur;
   }
 
-  public void setAnpassungTemperatur(Integer anpassungTemperatur) {
+  public void setAnpassungTemperatur(Double anpassungTemperatur) {
     this.anpassungTemperatur = anpassungTemperatur;
   }
 
