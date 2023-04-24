@@ -1,7 +1,10 @@
 package com.itsziroy.weingutmerlot.backend.db.entities;
 
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -18,21 +21,28 @@ public class Hefe {
     @Column(name = "temperatur", nullable = false)
     private Integer temperatur;
 
-    @ManyToMany
-    @JoinTable(
-            name = "gaerungsprozessschritte_has_hefen",
-            joinColumns = {@JoinColumn(name = "hefen_id")},
-            inverseJoinColumns = {@JoinColumn(name = "gaerungsprozessschritte_id")}
-    )
-    private Set<Gaerungsprozessschritt> gaerungsprozessschritte;
+    @OneToMany(mappedBy = "hefe")
+    private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "ueberpruefungen_has_hefen",
-            joinColumns = {@JoinColumn(name = "hefen_id")},
-            inverseJoinColumns = {@JoinColumn(name = "ueberpruefungen_id")}
-    )
-    private Set<Ueberpruefung> ueberpruefungen;
+    @OneToMany(mappedBy = "hefe")
+    private Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen = new LinkedHashSet<>();
+
+    public Set<GaerungsprozessschritteHasHefen> getGaerungsprozessschrittePivot() {
+        return gaerungsprozessschritteHasHefen;
+    }
+
+    public void setGaerungsprozessschrittePivot(Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen) {
+        this.gaerungsprozessschritteHasHefen = gaerungsprozessschritteHasHefen;
+    }
+
+    public Set<UeberpruefungenHasHefen> getUeberprufungenPivot() {
+        return ueberpruefungenHasHefen;
+    }
+
+    public void setUeberpruefungenPivot(Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen) {
+        this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
+    }
+
 
     public Integer getId() {
         return id;

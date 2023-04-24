@@ -1,8 +1,10 @@
 package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -35,13 +37,16 @@ public class Gaerungsprozessschritt {
   @Column(name = "schritt", nullable = false)
   private Integer schritt;
 
-  @ManyToMany
-  @JoinTable(
-          name = "gaerungsprozessschritte_has_hefen",
-          joinColumns = {@JoinColumn(name = "gaerungsprozessschritte_id")},
-          inverseJoinColumns = {@JoinColumn(name = "hefen_id")}
-  )
-  private Set<Hefe> hefen;
+  @OneToMany(mappedBy = "gaerungsprozessschritt")
+  private Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen = new LinkedHashSet<>();
+
+  public Set<GaerungsprozessschritteHasHefen> getHefenPivot() {
+    return gaerungsprozessschritteHasHefen;
+  }
+
+  public void setHefenPivot(Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen) {
+    this.gaerungsprozessschritteHasHefen = gaerungsprozessschritteHasHefen;
+  }
 
   public Integer getSchritt() {
     return schritt;

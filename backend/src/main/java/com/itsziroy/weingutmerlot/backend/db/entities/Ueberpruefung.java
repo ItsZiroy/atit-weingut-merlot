@@ -1,8 +1,10 @@
 package com.itsziroy.weingutmerlot.backend.db.entities;
 
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -45,13 +47,16 @@ public class Ueberpruefung {
   @Column(name = "datum", nullable = false)
   private Date datum;
 
-  @ManyToMany
-  @JoinTable(
-          name = "ueberpruefungen_has_hefen",
-          joinColumns = {@JoinColumn(name = "ueberpruefungen_id")},
-          inverseJoinColumns = {@JoinColumn(name = "hefen_id")}
-  )
-  private Set<Hefe> hefen;
+  @OneToMany(mappedBy = "ueberpruefung")
+  private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
+
+  public Set<UeberpruefungenHasHefen> getHefenPivot() {
+    return ueberpruefungenHasHefen;
+  }
+
+  public void setHefenPivot(Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen) {
+    this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
+  }
 
 
   public Date getDatum() {
@@ -64,14 +69,6 @@ public class Ueberpruefung {
 
   public Integer getId() {
     return id;
-  }
-
-  public Set<Hefe> getHefen() {
-    return hefen;
-  }
-
-  public void setHefen(Set<Hefe> hefen) {
-    this.hefen = hefen;
   }
 
   public Charge getCharge() {

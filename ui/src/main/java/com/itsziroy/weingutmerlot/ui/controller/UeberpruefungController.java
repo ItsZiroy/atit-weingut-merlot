@@ -3,48 +3,57 @@ package com.itsziroy.weingutmerlot.ui.controller;
 import com.itsziroy.weingutmerlot.backend.HefeManager;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.*;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import com.itsziroy.weingutmerlot.ui.App;
 import com.itsziroy.weingutmerlot.ui.Enums.View;
+import com.itsziroy.weingutmerlot.ui.helper.HefeMenge;
 import io.github.palexdev.materialfx.controls.*;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class UeberpruefungController {
 
     public MFXDatePicker datePicker;
     public MFXComboBox<Hefe> hefeComboBox;
+    @FXML
+    public ListView<HefeMenge> anpassungHefeList;
+    public ListView<HefeMenge> hefeSollList;
+
     public MFXButton uebernehmenZucker, uebernehmenTemperatur;
     @FXML
     private MFXToggleButton nachsterSchrittToggleButton;
     @FXML
     private MFXTextField alkoholSoll, zuckerSoll, temperaturSoll,
-            anpassungZucker, anpassungTemperatur,
-            alkoholIst, zuckerIst, temperaturIst,
-            mengeHefe;
+            anpassungZucker, anpassungTemperatur, anpasssungHefe,
+            alkoholIst, zuckerIst, temperaturIst;
     @FXML
     private Label chargeLabel, gaerungsprozessschrittLabel, weinLabel, weinartLabel;
     @FXML
     private Label alkoholLabel, zuckerLabel, temperaturLabel;
-
+    @FXML
+    private MFXButton saveButton;
     private Gaerungsprozessschritt gaerungsprozessschritt;
     private Charge charge;
+
+    private Map<Hefe, Double> hefeMenge = new HashMap<>();
 
     public void initialize() {
         alkoholIst.textProperty().addListener(this::differenceAlkohol);
         zuckerIst.textProperty().addListener(this::differenceZucker);
         temperaturIst.textProperty().addListener(this::differenceTemperatur);
 
-        initializeHefenComboxbox();
+        initializeHefenCombobox();
     }
 
     /**
@@ -72,6 +81,14 @@ public class UeberpruefungController {
         weinLabel.setText(App.resourceBundle.getString("wein") + ": " + wein.getBeschreibung());
         weinartLabel.setText(App.resourceBundle.getString("weinart") + ": " + wein.getWeinart());
 
+        Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen
+                = gaerungsprozessschritt.getHefenPivot();
+
+        System.out.println(gaerungsprozessschritt.getId());
+        gaerungsprozessschritteHasHefen.forEach(g -> {
+            hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge()));
+        });
+
     }
 
     public void differenceAlkohol(Observable observable, String oldValue, String newValue) {
@@ -95,11 +112,7 @@ public class UeberpruefungController {
             }
             int sollZucker = this.gaerungsprozessschritt.getSollZucker();
             int difference = istZucker - sollZucker;
-            if(difference > 0){
-                uebernehmenZucker.setDisable(true);
-            } else {
-                uebernehmenZucker.setDisable(false);
-            }
+            uebernehmenZucker.setDisable(difference > 0);
             zuckerLabel.setText(String.valueOf(difference));
         } catch (NumberFormatException e) {
             zuckerLabel.setText("");
@@ -145,7 +158,7 @@ public class UeberpruefungController {
         datePicker.setVisible(!nachsterSchrittToggleButton.isSelected());
     }
 
-    private void initializeHefenComboxbox() {
+    private void initializeHefenCombobox() {
         List<Hefe> hefen = HefeManager.getAllHefen();
         for (var hefe : hefen) {
             hefeComboBox.getItems().add(hefe);
@@ -170,15 +183,6 @@ public class UeberpruefungController {
         double anpassungTemperaturDouble = Double.parseDouble(anpassungTemperatur.getText());
         ueberpruefung.setAnpassungTemperatur(anpassungTemperaturDouble);
 
-        Hefe hefe = hefeComboBox.getSelectedItem();
-        int hefe_menge = Integer.parseInt(mengeHefe.getText());
-
-        //Hefen + Menge Setzen fehlt
-        //TODO
-        /*Set<Hefe> hefen;
-        hefen.add(hefe);
-        ueberpruefung.setHefen(hefen);*/
-
 
         boolean naechsterSchritt = nachsterSchrittToggleButton.isSelected();
         ueberpruefung.setNaechsterSchritt(naechsterSchritt);
@@ -195,13 +199,72 @@ public class UeberpruefungController {
         try {
             DB.getEntityManager().getTransaction().begin();
             DB.getEntityManager().persist(ueberpruefung);
+
+            for(HefeMenge h: anpassungHefeList.getItems()) {
+                UeberpruefungenHasHefen ueberpruefungenHasHefen = new UeberpruefungenHasHefen();
+                ueberpruefungenHasHefen.setAnpassung(h.menge());
+                ueberpruefungenHasHefen.setHefe(h.hefe());
+                ueberpruefungenHasHefen.setUeberpruefung(ueberpruefung);
+
+                DB.getEntityManager().persist(ueberpruefungenHasHefen);
+            }
+
+            TypedQuery<Gaerungsprozessschritt> lastStepQuery = DB.getEntityManager().createQuery(
+                    "select g from Gaerungsprozessschritt g where g.gaerungsprozess.id = :id " +
+                            "order by schritt desc", Gaerungsprozessschritt.class);
+            lastStepQuery.setParameter("id", ueberpruefung.getGaerungsprozessschritt().getGaerungsprozess().getId());
+            List<Gaerungsprozessschritt> result = lastStepQuery.getResultList();
+            Gaerungsprozessschritt lastStep = result.get(0);
+
+            // If current Überprüfung is set to be valid, and we proceed to the next step
+            // we need to check if it is the last process step because then the charge
+            // is finished.
+            if((ueberpruefung.getGaerungsprozessschritt().getSchritt() == lastStep.getSchritt()
+                    && ueberpruefung.isNaechsterSchritt())) {
+                charge.setIstFertig(true);
+                DB.getEntityManager().persist(charge);
+            }
+
             DB.getEntityManager().getTransaction().commit();
         } catch (PersistenceException e) {
             LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+            throw new RuntimeException(e);
         }
+
 
         // return to Dashboard view
         App.setView(View.DASHBOARD);
+    }
+
+    public void handleAddHefe() {
+        if(hefeComboBox.getSelectedItem() != null & !anpasssungHefe.getText().isBlank()) {
+            try {
+                double menge = Double.parseDouble(anpasssungHefe.getText());
+                Hefe hefe = hefeComboBox.getSelectedItem();
+                hefeMenge.put(hefe, menge);
+
+                hefeComboBox.clearSelection();
+                anpasssungHefe.clear();
+
+                reloadHefeSelection();
+            } catch (NumberFormatException e) {
+                LogManager.getLogger().warn("Invalid Number for Hefe Input.");
+            }
+        } else {
+            LogManager.getLogger().info("Selection or Text is Empty");
+        }
+    }
+
+    private void reloadHefeSelection() {
+        anpassungHefeList.getItems().clear();
+        hefeMenge.forEach((hefe, menge) ->
+                anpassungHefeList.getItems().add(new HefeMenge(hefe, menge)));
+    }
+
+    public void handleHefeListClicked() {
+        HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
+        hefeComboBox.selectItem(selected.hefe());
+        anpasssungHefe.setText(String.valueOf(selected.menge()));
     }
 
     public int checkStringforValidInt(String string){
