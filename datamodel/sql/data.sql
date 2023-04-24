@@ -20,7 +20,7 @@ INSERT INTO weingutmerlot.gaerungsprozessschritte_has_hefen (gaerungsprozessschr
 INSERT INTO weingutmerlot.gaerungsprozessschritte_has_hefen (gaerungsprozessschritte_id, hefen_id, menge) VALUES (3, 2, 70);
 
 INSERT INTO weingutmerlot.chargen (id, weintyp_id, jahrgang, lagerungsort, menge_in_liter, istFertig) VALUES (1, 1, 2023, null, 100.000, false);
-INSERT INTO weingutmerlot.chargen (id, weintyp_id, jahrgang, lagerungsort, menge_in_liter, istFertig) VALUES (2, 1, 2023, null, 100.000, true);
+INSERT INTO weingutmerlot.chargen (id, weintyp_id, jahrgang, lagerungsort, menge_in_liter, istFertig) VALUES (2, 1, 2023, null, 100.000, false);
 
 INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum, next_date) VALUES (1, 1, 1, 0, 0, 0, 610, 25, true, '2023-04-21 10:43:39', null);
 INSERT INTO weingutmerlot.ueberpruefungen (id, chargen_id, gaerungsprozessschritte_id, ist_zucker, ist_temperatur, ist_alkohol, anpassung_zucker, anpassung_temperatur, naechster_schritt, datum, next_date) VALUES (2, 1, 2, 580, 25, 3, 0, 0, true, '2023-04-21 10:47:18', null);
