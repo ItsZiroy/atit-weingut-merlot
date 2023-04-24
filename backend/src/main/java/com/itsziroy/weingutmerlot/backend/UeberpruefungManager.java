@@ -73,13 +73,15 @@ public final class UeberpruefungManager {
 
   /**
    * Gets the latest created Überprüfung for a Charge
+   * It is important to sort both by step and date because there might be multiple
+   * Überprüfungen for the same Gaerungsprozessschritt due to errors
    * @param charge Charge
    * @return Latest Überprüfung
    */
   public static Ueberpruefung getCurrentUeberpruefung(Charge charge) {
     TypedQuery<Ueberpruefung> ueberpruefungQuery= DB.getEntityManager().createQuery(
             "select u from Ueberpruefung u where u.charge.id = :charge " +
-                    "order by u.gaerungsprozessschritt.schritt DESC", Ueberpruefung.class);
+                    "order by u.gaerungsprozessschritt.schritt DESC, u.datum DESC", Ueberpruefung.class);
 
     ueberpruefungQuery.setParameter("charge", charge.getId());
 

@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UeberpruefungManagerTest {
 
-    static Ueberpruefung ueberpruefung1;
-    static Ueberpruefung ueberpruefung2;
+    static Ueberpruefung ueberpruefung1, ueberpruefung2, ueberpruefung3;
     static Charge charge;
     static Gaerungsprozessschritt[] gaerungsprozessschritte;
     // Idea: Gärungsprozess (including Wein)-> Gärungsprozessschritte -> Charge -> Überprüfungen
@@ -62,9 +61,23 @@ class UeberpruefungManagerTest {
         Date nextDate = new Date(2023, Calendar.APRIL, 25);
         ueberpruefung2.setNextDate(nextDate);
 
+        // Create a accepted Überprüfung for Gärungssschritt 2
+        ueberpruefung3 = new Ueberpruefung();
+        ueberpruefung3.setCharge(charge);
+        date = new Date(2023, Calendar.APRIL, 25);
+        ueberpruefung3.setDatum(date);
+        ueberpruefung3.setGaerungsprozessschritt(gaerungsprozessschritte[1]);
+        ueberpruefung3.setNaechsterSchritt(true);
+        ueberpruefung3.setIstAlkohol(5.0);
+        ueberpruefung3.setIstTemperatur(25.0);
+        ueberpruefung3.setIstZucker(150);
+        ueberpruefung3.setAnpassungTemperatur(0.0);
+        ueberpruefung3.setAnpassungZucker(0);
+
         DB.getEntityManager().getTransaction().begin();
         DB.getEntityManager().persist(ueberpruefung1);
         DB.getEntityManager().persist(ueberpruefung2);
+        DB.getEntityManager().persist(ueberpruefung3);
         DB.getEntityManager().getTransaction().commit();
 
         System.out.println(ueberpruefung2.getNextDate());
@@ -79,10 +92,10 @@ class UeberpruefungManagerTest {
         UpcomingUeberpruefung actual = actualList.get(0);
 
         // expected
-        // the current Gärungsprozesschritt is still the second
-        // the next Überprüfung was set to 5 days after the latest Überprüfung
-        Date expectedDate = new Date(2023, Calendar.APRIL, 25);
-        UpcomingUeberpruefung expected = new UpcomingUeberpruefung(charge, expectedDate, ueberpruefung2);
+        // the current Gärungsprozesschritt should be the 3rd
+        // the current date should therefore be 10 days after April 25th
+        Date expectedDate = new Date(2023, Calendar.MAY, 5);
+        UpcomingUeberpruefung expected = new UpcomingUeberpruefung(charge, expectedDate, ueberpruefung3);
         assertEquals(expected, actual);
     }
 
@@ -104,7 +117,7 @@ class UeberpruefungManagerTest {
     @Test
     void getCurrentUeberpruefung() {
         Ueberpruefung actual = UeberpruefungManager.getCurrentUeberpruefung(charge);
-        Ueberpruefung expected = ueberpruefung2;
+        Ueberpruefung expected = ueberpruefung3;
         assertEquals(expected, actual);
     }
 }
