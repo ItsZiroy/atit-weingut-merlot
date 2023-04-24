@@ -22,6 +22,8 @@ public class ChargeButton extends MFXButton {
   private Date date;
   private Ueberpruefung ueberpruefung;
 
+  private Gaerungsprozessschritt currentGaerungsprozessschritt;
+
   /**
    * The ChargeButton Component
    *
@@ -36,8 +38,11 @@ public class ChargeButton extends MFXButton {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");
     String dateString = simpleDateFormat.format(date);
     int chargeId = charge.getId();
-    Gaerungsprozessschritt current = ChargeManager.getCurrentGaerungsprozessschritt(charge);
-    int gaerungsprozessschrittId = current.getSchritt();
+
+    // If the next step is not reached, another Überprüfung is created
+    // for the same Gärungsprozessschritt again
+    currentGaerungsprozessschritt = ChargeManager.getCurrentGaerungsprozessschritt(charge);
+    int gaerungsprozessschrittId = currentGaerungsprozessschritt.getSchritt();
     String chargeString = App.resourceBundle.getString("charge");
     String gaerungsprozessschritt = App.resourceBundle.getString("gaerungsprozessschritt");
     this.setText(dateString + ", " + chargeString + ": " + chargeId +", " + gaerungsprozessschritt + ": " + gaerungsprozessschrittId);
@@ -58,9 +63,8 @@ public class ChargeButton extends MFXButton {
 
     UeberpruefungController controller = loader.getController();
 
-    Gaerungsprozessschritt current = ueberpruefung.getGaerungsprozessschritt();
-    Gaerungsprozessschritt next = current.getNextProzessschritt();
-    controller.initializeData(next, charge);
+    controller.initializeData(currentGaerungsprozessschritt, charge);
+
 
     App.setRoot(root);
 
