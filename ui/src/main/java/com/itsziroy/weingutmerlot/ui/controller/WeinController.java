@@ -4,12 +4,12 @@ import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
 import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
 import com.itsziroy.weingutmerlot.backend.db.entities.Weinart;
 import com.itsziroy.weingutmerlot.backend.db.DB;
+import com.itsziroy.weingutmerlot.ui.App;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXSlider;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import jakarta.persistence.PersistenceException;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
@@ -50,6 +50,7 @@ public class WeinController {
             DB.getEntityManager().getTransaction().commit();
         } catch (PersistenceException e) {
             LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+            App.error(App.resourceBundle.getString("errorDatenbank"));
         }
 
     }

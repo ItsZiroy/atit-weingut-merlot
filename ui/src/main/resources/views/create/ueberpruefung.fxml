@@ -36,9 +36,10 @@
       <MFXTextField fx:id="anpassungZucker" floatingText="%anpassung_zucker" layoutX="592.0" layoutY="129.0" prefHeight="49.0" prefWidth="176.0" />
       <MFXTextField fx:id="anpassungTemperatur" floatingText="%anpassung_temperatur" layoutX="592.0" layoutY="198.0" prefHeight="49.0" prefWidth="176.0" />
       <MFXComboBox fx:id="hefeComboBox" floatingText="%hefe" layoutX="592.0" layoutY="263.0" prefHeight="49.0" prefWidth="176.0" />
-      <MFXButton fx:id="uebernehmenZucker" layoutX="472.0" layoutY="141.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
-      <MFXButton fx:id="uebernehmenTemperatur" layoutX="472.0" layoutY="210.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />  <MFXDatePicker fx:id="datePicker" layoutX="392.0" layoutY="450.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
-      <MFXButton layoutX="878.0" layoutY="276.0" onAction="#handleAddHefe" text="%add" />
+      <MFXButton fx:id="uebernehmenZucker" layoutX="472.0" layoutY="141.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" disable="true"/>
+      <MFXButton fx:id="uebernehmenTemperatur" layoutX="472.0" layoutY="210.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" disable="true"/>
+      <MFXDatePicker fx:id="datePicker" layoutX="392.0" layoutY="450.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
+      <MFXButton fx:id="hinzufuegenHefeButton" layoutX="878.0" layoutY="276.0" onAction="#handleAddHefe" text="%add" disable="true"/>
       <ListView fx:id="anpassungHefeList" layoutX="592.0" layoutY="343.0" onMouseClicked="#handleHefeListClicked" prefHeight="80.0" prefWidth="176.0" />
       <ListView fx:id="hefeSollList" layoutX="41.0" layoutY="343.0" prefHeight="80.0" prefWidth="176.0" />
       <Label layoutX="41.0" layoutY="324.0" text="%hefe_soll" />

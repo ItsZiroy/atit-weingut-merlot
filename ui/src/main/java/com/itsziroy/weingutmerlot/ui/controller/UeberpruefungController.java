@@ -30,7 +30,7 @@ public class UeberpruefungController {
     public ListView<HefeMenge> anpassungHefeList;
     public ListView<HefeMenge> hefeSollList;
 
-    public MFXButton uebernehmenZucker, uebernehmenTemperatur;
+    public MFXButton uebernehmenZucker, uebernehmenTemperatur, hinzufuegenHefeButton;
     @FXML
     private MFXToggleButton nachsterSchrittToggleButton;
     @FXML
@@ -52,6 +52,8 @@ public class UeberpruefungController {
         alkoholIst.textProperty().addListener(this::differenceAlkohol);
         zuckerIst.textProperty().addListener(this::differenceZucker);
         temperaturIst.textProperty().addListener(this::differenceTemperatur);
+        hefeComboBox.textProperty().addListener(this::addHefe);
+        anpasssungHefe.textProperty().addListener(this::addHefe);
 
         initializeHefenCombobox();
     }
@@ -115,6 +117,7 @@ public class UeberpruefungController {
             uebernehmenZucker.setDisable(difference > 0);
             zuckerLabel.setText(String.valueOf(difference));
         } catch (NumberFormatException e) {
+            uebernehmenZucker.setDisable(true);
             zuckerLabel.setText("");
         }
     }
@@ -125,9 +128,11 @@ public class UeberpruefungController {
             if(istTemperatur < 0) {
                 throw new NumberFormatException();
             }
+            uebernehmenTemperatur.setDisable(false);
             double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
             temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
         } catch (NumberFormatException e) {
+            uebernehmenTemperatur.setDisable(true);
             temperaturLabel.setText("");
         }
     }
@@ -171,35 +176,39 @@ public class UeberpruefungController {
         // set all attributes entered before
         ueberpruefung.setCharge(charge);
         ueberpruefung.setGaerungsprozessschritt(gaerungsprozessschritt);
-        ueberpruefung.setDatum(new Date());
-        int istZucker = Integer.parseInt(zuckerIst.getText());
-        ueberpruefung.setIstZucker(istZucker);
-        double istTemperatur = Double.parseDouble(temperaturIst.getText());
-        ueberpruefung.setIstTemperatur(istTemperatur);
-        double istAlkohol = Double.parseDouble(alkoholIst.getText());
-        ueberpruefung.setIstAlkohol(istAlkohol);
-        int anpassungZuckerInt = Integer.parseInt(anpassungZucker.getText());
-        ueberpruefung.setAnpassungZucker(anpassungZuckerInt);
-        double anpassungTemperaturDouble = Double.parseDouble(anpassungTemperatur.getText());
-        ueberpruefung.setAnpassungTemperatur(anpassungTemperaturDouble);
+        Date currentDate = new Date();
+        ueberpruefung.setDatum(currentDate);
+        try{
+            int istZucker = Integer.parseInt(zuckerIst.getText());
+            ueberpruefung.setIstZucker(istZucker);
+            double istTemperatur = Double.parseDouble(temperaturIst.getText());
+            ueberpruefung.setIstTemperatur(istTemperatur);
+            double istAlkohol = Double.parseDouble(alkoholIst.getText());
+            ueberpruefung.setIstAlkohol(istAlkohol);
+            int anpassungZuckerInt = Integer.parseInt(anpassungZucker.getText());
+            ueberpruefung.setAnpassungZucker(anpassungZuckerInt);
+            double anpassungTemperaturDouble = Double.parseDouble(anpassungTemperatur.getText());
+            ueberpruefung.setAnpassungTemperatur(anpassungTemperaturDouble);
 
+            boolean naechsterSchritt = nachsterSchrittToggleButton.isSelected();
+            ueberpruefung.setNaechsterSchritt(naechsterSchritt);
 
-        boolean naechsterSchritt = nachsterSchrittToggleButton.isSelected();
-        ueberpruefung.setNaechsterSchritt(naechsterSchritt);
+            // next date is only relevant if nachsterSchritt is deselected
+            if(!naechsterSchritt){
+                LocalDate localNextDate = datePicker.getValue();
+                Instant instant = Instant.from(localNextDate.atStartOfDay(ZoneId.systemDefault()));
+                Date nextDate = Date.from(instant);
+                if(nextDate.before(currentDate)){
+                    throw new IllegalArgumentException();
+                }
+                ueberpruefung.setNextDate(nextDate);
+            }
 
-        // next date is only relevant if nachsterSchritt is deselected
-        if(!naechsterSchritt){
-            LocalDate localNextDate = datePicker.getValue();
-            Instant instant = Instant.from(localNextDate.atStartOfDay(ZoneId.systemDefault()));
-            Date nextDate = Date.from(instant);
-            ueberpruefung.setNextDate(nextDate);
-        }
-
-        // persist new Überprüfung
-        try {
+            // persist new Überprüfung
             DB.getEntityManager().getTransaction().begin();
             DB.getEntityManager().persist(ueberpruefung);
 
+            // persist new ueberpruefungHasHefen
             for(HefeMenge h: anpassungHefeList.getItems()) {
                 UeberpruefungenHasHefen ueberpruefungenHasHefen = new UeberpruefungenHasHefen();
                 ueberpruefungenHasHefen.setAnpassung(h.menge());
@@ -209,6 +218,7 @@ public class UeberpruefungController {
                 DB.getEntityManager().persist(ueberpruefungenHasHefen);
             }
 
+            // Get the last Gärungsprozessschritt of the current Gärungsprozess
             TypedQuery<Gaerungsprozessschritt> lastStepQuery = DB.getEntityManager().createQuery(
                     "select g from Gaerungsprozessschritt g where g.gaerungsprozess.id = :id " +
                             "order by schritt desc", Gaerungsprozessschritt.class);
@@ -226,14 +236,21 @@ public class UeberpruefungController {
             }
 
             DB.getEntityManager().getTransaction().commit();
+            // return to Dashboard view
+            App.setView(View.DASHBOARD);
+        } catch(NumberFormatException e){
+            LogManager.getLogger().error("Umwandlung der Eingabe in eine Zahl fehlgeschlagen");
+            App.error(App.resourceBundle.getString("errorUmwandlungInZahl"));
+            //throw new RuntimeException(e);
+        } catch(IllegalArgumentException e){
+            LogManager.getLogger().error("Dieses Datum ist als Argument nicht erlaubt");
+            App.error(App.resourceBundle.getString("errorDatum"));
+            //throw new RuntimeException(e);
         } catch (PersistenceException e) {
             LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
-            throw new RuntimeException(e);
+            App.error(App.resourceBundle.getString("errorDatenbank"));
+            //throw new RuntimeException(e);
         }
-
-
-        // return to Dashboard view
-        App.setView(View.DASHBOARD);
     }
 
     public void handleAddHefe() {
@@ -265,6 +282,24 @@ public class UeberpruefungController {
         HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
         hefeComboBox.selectItem(selected.hefe());
         anpasssungHefe.setText(String.valueOf(selected.menge()));
+    }
+
+    private void addHefe(Observable observable) {
+        int anpassungHefeInt;
+        try{
+            anpassungHefeInt = Integer.parseInt(anpasssungHefe.getText());
+            if(anpassungHefeInt < 0){
+                throw new RuntimeException();
+            }
+        } catch(RuntimeException e){
+            anpassungHefeInt = -1;
+            hinzufuegenHefeButton.setDisable(true);
+        }
+        if(hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1){
+            hinzufuegenHefeButton.setDisable(true);
+        } else {
+            hinzufuegenHefeButton.setDisable(false);
+        }
     }
 
     public int checkStringforValidInt(String string){
