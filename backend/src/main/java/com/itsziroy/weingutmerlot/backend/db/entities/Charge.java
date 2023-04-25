@@ -23,15 +23,7 @@ public class Charge {
   @Column(name = "menge_in_liter", nullable = false)
   private Double mengeInLiter;
 
-  public boolean isIstFertig() {
-    return istFertig;
-  }
-
-  public void setIstFertig(boolean istFertig) {
-    this.istFertig = istFertig;
-  }
-
-  @Column(name = "istfertig", nullable = false)
+  @Column(name = "istFertig", nullable = false)
   private boolean istFertig;
 
   public Integer getId() {
@@ -68,6 +60,13 @@ public class Charge {
 
   public void setMengeInLiter(Double mengeInLiter) {
     this.mengeInLiter = mengeInLiter;
+  }
+
+  public boolean isIstFertig() {
+    return istFertig;
+  }
+  public void setIstFertig(boolean istFertig) {
+    this.istFertig = istFertig;
   }
 
 }
