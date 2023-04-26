@@ -162,10 +162,14 @@ public class UeberpruefungController {
     public void handleNextStepChange() {
         // when the next step is enabled, the date picker, toggle Button and label should not be visible
         // when the next step is disabled, these should be visible
-        boolean visible = !nachsterSchrittToggleButton.isSelected();
-        datePicker.setVisible(visible);
-        irreversibelToggleButton.setVisible(visible);
-        irreversibleLabel.setVisible(visible);
+        boolean nextStepSelected = nachsterSchrittToggleButton.isSelected();
+        datePicker.setVisible(!nextStepSelected);
+        irreversibelToggleButton.setVisible(!nextStepSelected);
+        irreversibleLabel.setVisible(!nextStepSelected);
+        if(!nextStepSelected){
+            // if the next step is not selected the irreversible toggle button should not be selected
+            irreversibelToggleButton.setSelected(false);
+        }
     }
 
     private void initializeHefenCombobox() {
