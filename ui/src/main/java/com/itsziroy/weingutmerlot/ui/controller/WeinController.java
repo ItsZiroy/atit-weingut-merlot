@@ -50,7 +50,7 @@ public class WeinController {
             DB.getEntityManager().getTransaction().commit();
         } catch (PersistenceException e) {
             LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
-            App.error(App.resourceBundle.getString("errorDatenbank"));
+            App.error(App.getResourceBundle().getString("errorDatenbank"));
         }
 
     }

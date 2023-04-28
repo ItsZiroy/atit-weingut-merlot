@@ -2,7 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities.pivot;
 
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Hefe;
-import com.itsziroy.weingutmerlot.backend.db.entities.pivot.compositeKeys.GaerungsprozessschritteHasHefenId;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.composite_keys.GaerungsprozessschritteHasHefenId;
 import jakarta.persistence.*;
 
 @Entity

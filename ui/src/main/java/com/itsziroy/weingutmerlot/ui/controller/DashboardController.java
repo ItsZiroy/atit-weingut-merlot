@@ -6,7 +6,7 @@ import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import com.itsziroy.weingutmerlot.ui.App;
-import com.itsziroy.weingutmerlot.ui.Enums.View;
+import com.itsziroy.weingutmerlot.ui.View;
 import com.itsziroy.weingutmerlot.ui.components.ChargeButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXListView;
@@ -40,7 +40,7 @@ public class DashboardController {
     private void initializeLanguageSelection() {
         ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
         languageSelection.setItems(options);
-        languageSelection.getSelectionModel().selectItem(App.locale);
+        languageSelection.getSelectionModel().selectItem(App.getLocale());
 
         // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
         languageSelection.setConverter(new StringConverter<>() {
@@ -88,8 +88,8 @@ public class DashboardController {
     public void handleLanguageChange() {
         Locale selection = languageSelection.getSelectionModel().getSelectedItem();
 
-        if (selection != App.locale) {
-            App.locale = selection;
+        if (selection != App.getLocale()) {
+            App.setLocale(selection);
             App.setView(View.DASHBOARD);
         }
     }

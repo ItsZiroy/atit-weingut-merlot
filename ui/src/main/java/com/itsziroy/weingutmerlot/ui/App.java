@@ -1,7 +1,7 @@
 package com.itsziroy.weingutmerlot.ui;
 
-import com.itsziroy.weingutmerlot.ui.Enums.View;
 import com.itsziroy.weingutmerlot.ui.controller.ErrorController;
+import com.itsziroy.weingutmerlot.ui.helper.LoadedView;
 import jakarta.persistence.PersistenceException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
-import org.javatuples.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +22,7 @@ import java.util.ResourceBundle;
 public class App extends Application {
 
   // default language is German
-  public static Locale locale = new Locale("de");
+  private static Locale locale = new Locale("de");
 
   public static void main(String[] args) {
     launch();
@@ -31,7 +30,7 @@ public class App extends Application {
 
   private static Scene scene;
 
-  public static ResourceBundle resourceBundle;
+  private static ResourceBundle resourceBundle;
 
   @Override
   public void start(Stage stage) {
@@ -46,7 +45,7 @@ public class App extends Application {
    * @param view View that shall be loaded
    * @return Pair of the loaded Parent Node and the Loader Object
    */
-  public static Pair<Parent, FXMLLoader> loadView(View view) {
+  public static LoadedView loadView(View view) {
     Parent root;
     FXMLLoader loader = new FXMLLoader();
 
@@ -75,7 +74,7 @@ public class App extends Application {
               resourceBundle.getString("seeSystemLog"));
       throw new RuntimeException(e);
     }
-    return new Pair<>(root, loader);
+    return new LoadedView(root, loader);
   }
 
   /**
@@ -83,7 +82,7 @@ public class App extends Application {
    * @param view View
    */
   public static void setView(View view) {
-    Parent root = loadView(view).getValue0();
+    Parent root = loadView(view).parent();
     if(root != null) scene.setRoot(root);
   }
 
@@ -103,11 +102,23 @@ public class App extends Application {
    * @param message The message to display
    */
   public static void error(String message) {
-    Pair<Parent, FXMLLoader> pair = loadView(View.ERROR);
-    FXMLLoader loader = pair.getValue1();
+    LoadedView loadedView = loadView(View.ERROR);
+    FXMLLoader loader = loadedView.loader();
 
     ErrorController controller = loader.getController();
     controller.initializeData(message);
-    App.setRoot(pair.getValue0());
+    App.setRoot(loadedView.parent());
+  }
+
+  public static ResourceBundle getResourceBundle() {
+    return resourceBundle;
+  }
+
+  public static Locale getLocale() {
+    return locale;
+  }
+
+  public static void setLocale(Locale locale) {
+    App.locale = locale;
   }
 }

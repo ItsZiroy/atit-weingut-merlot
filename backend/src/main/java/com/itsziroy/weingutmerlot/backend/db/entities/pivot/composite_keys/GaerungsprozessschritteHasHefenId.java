@@ -1,4 +1,4 @@
-package com.itsziroy.weingutmerlot.backend.db.entities.pivot.compositeKeys;
+package com.itsziroy.weingutmerlot.backend.db.entities.pivot.composite_keys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

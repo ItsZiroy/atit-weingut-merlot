@@ -2,7 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities.pivot;
 
 import com.itsziroy.weingutmerlot.backend.db.entities.Hefe;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
-import com.itsziroy.weingutmerlot.backend.db.entities.pivot.compositeKeys.UeberpruefungenHasHefenId;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.composite_keys.UeberpruefungenHasHefenId;
 import jakarta.persistence.*;
 
 @Entity

@@ -84,7 +84,7 @@ class GaerungsprozessschrittTest {
    * @param number Number of steps to generate
    * @return Gärungsprozessschritte
    */
-  static Gaerungsprozessschritt[] createNGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
+  static Gaerungsprozessschritt[] createGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
     Gaerungsprozessschritt[] gaerungsprozessschritte = new Gaerungsprozessschritt[number];
     for(int i=1; i<number+1; i++) {
       Gaerungsprozessschritt schritt = new Gaerungsprozessschritt();

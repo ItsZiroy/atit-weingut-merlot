@@ -62,10 +62,10 @@ public class Charge {
     this.mengeInLiter = mengeInLiter;
   }
 
-  public boolean isIstFertig() {
+  public boolean isFertig() {
     return istFertig;
   }
-  public void setIstFertig(boolean istFertig) {
+  public void setFertig(boolean istFertig) {
     this.istFertig = istFertig;
   }
 

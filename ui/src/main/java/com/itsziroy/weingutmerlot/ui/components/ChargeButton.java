@@ -6,13 +6,13 @@ import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.ui.App;
-import com.itsziroy.weingutmerlot.ui.Enums.View;
+import com.itsziroy.weingutmerlot.ui.View;
 import com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController;
+import com.itsziroy.weingutmerlot.ui.helper.LoadedView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import org.javatuples.Pair;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,8 +45,8 @@ public class ChargeButton extends MFXButton {
     // for the same Gärungsprozessschritt again
     currentGaerungsprozessschritt = chargeService.getCurrentGaerungsprozessschritt(charge);
     int gaerungsprozessschrittId = currentGaerungsprozessschritt.getSchritt();
-    String chargeString = App.resourceBundle.getString("charge");
-    String gaerungsprozessschritt = App.resourceBundle.getString("gaerungsprozessschritt");
+    String chargeString = App.getResourceBundle().getString("charge");
+    String gaerungsprozessschritt = App.getResourceBundle().getString("gaerungsprozessschritt");
     this.setText(dateString + ", " + chargeString + ": " + chargeId +", " + gaerungsprozessschritt + ": " + gaerungsprozessschrittId);
 
     this.setOnAction(this::onUeberpruefungButtonClick);
@@ -58,10 +58,10 @@ public class ChargeButton extends MFXButton {
    * @param e ActionEvent
    */
   private void onUeberpruefungButtonClick(ActionEvent e) {
-    Pair<Parent, FXMLLoader> pair = App.loadView(View.UEBERPRUEFUNG);
+    LoadedView loadedView = App.loadView(View.UEBERPRUEFUNG);
 
-    Parent root = pair.getValue0();
-    FXMLLoader loader = pair.getValue1();
+    Parent root = loadedView.parent();
+    FXMLLoader loader = loadedView.loader();
 
     UeberpruefungController controller = loader.getController();
 

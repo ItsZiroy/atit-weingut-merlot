@@ -1,9 +1,8 @@
-package com.itsziroy.weingutmerlot.ui.Enums;
+package com.itsziroy.weingutmerlot.ui;
 
 public enum View {
     CREATE_WEIN("/views/create/wein.fxml"),
     READ_WEIN("/views/read/wein.fxml"),
-    MAIN("/views/Main.fxml"),
     DASHBOARD("/views/Dashboard.fxml"),
     UEBERPRUEFUNG("/views/create/ueberpruefung.fxml"),
     ERROR("/views/Error.fxml");

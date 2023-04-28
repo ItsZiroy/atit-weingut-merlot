@@ -25,7 +25,6 @@ class GaerungsprozessTest {
     Wein wein = WeinTest.createRandomWein(persist);
 
     gaerungsprozess.setWein(wein);
-    //wein.setGaerungsprozess(gaerungsprozess);
 
     if(persist) {
       DB.getEntityManager().getTransaction().begin();

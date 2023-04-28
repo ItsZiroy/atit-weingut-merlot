@@ -5,7 +5,7 @@ import com.itsziroy.weingutmerlot.backend.db.entities.*;
 import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
 import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import com.itsziroy.weingutmerlot.ui.App;
-import com.itsziroy.weingutmerlot.ui.Enums.View;
+import com.itsziroy.weingutmerlot.ui.View;
 import com.itsziroy.weingutmerlot.ui.helper.HefeMenge;
 import io.github.palexdev.materialfx.controls.*;
 import jakarta.persistence.PersistenceException;
@@ -46,7 +46,7 @@ public class UeberpruefungController {
 
     private Gaerungsprozessschritt gaerungsprozessschritt;
     private Charge charge;
-    private Map<Hefe, Double> hefeMenge = new HashMap<>();
+    private final Map<Hefe, Double> hefeMenge = new HashMap<>();
 
     public void initialize() {
         alkoholIst.textProperty().addListener(this::differenceAlkohol);
@@ -76,19 +76,18 @@ public class UeberpruefungController {
         zuckerSoll.setText(sollZucker + " g/l");
         temperaturSoll.setText(sollTemperatur + " °C");
 
-        chargeLabel.setText(App.resourceBundle.getString("charge") + ": " + charge.getId());
-        gaerungsprozessschrittLabel.setText(App.resourceBundle.getString("gaerungsprozessschritt") + ": " + gaerungsprozessschritt.getSchritt());
+        chargeLabel.setText(App.getResourceBundle().getString("charge") + ": " + charge.getId());
+        gaerungsprozessschrittLabel.setText(App.getResourceBundle().getString("gaerungsprozessschritt") + ": " + gaerungsprozessschritt.getSchritt());
 
         Wein wein = charge.getWein();
-        weinLabel.setText(App.resourceBundle.getString("wein") + ": " + wein.getBeschreibung());
-        weinartLabel.setText(App.resourceBundle.getString("weinart") + ": " + wein.getWeinart());
+        weinLabel.setText(App.getResourceBundle().getString("wein") + ": " + wein.getBeschreibung());
+        weinartLabel.setText(App.getResourceBundle().getString("weinart") + ": " + wein.getWeinart());
 
         Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen
                 = gaerungsprozessschritt.getHefenPivot();
 
-        gaerungsprozessschritteHasHefen.forEach(g -> {
-            hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge()));
-        });
+        gaerungsprozessschritteHasHefen.forEach(g ->
+                hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge())));
 
     }
 
@@ -182,7 +181,7 @@ public class UeberpruefungController {
         // if the Gaerungsprozess cannot be continued
         if (irreversibelToggleButton.isSelected()) {
             // finish Charge and exit method
-            charge.setIstFertig(true);
+            charge.setFertig(true);
             LogManager.getLogger().info("The charge with id " + charge.getId() + " was irreversible damaged.");
             // persist Charge
             DB.getEntityManager().getTransaction().begin();
@@ -251,9 +250,9 @@ public class UeberpruefungController {
             // If current Überprüfung is set to be valid, and we proceed to the next step
             // we need to check if it is the last process step because then the charge
             // is finished.
-            if ((ueberpruefung.getGaerungsprozessschritt().getSchritt() == lastStep.getSchritt()
+            if ((Objects.equals(ueberpruefung.getGaerungsprozessschritt().getSchritt(), lastStep.getSchritt())
                     && ueberpruefung.isNaechsterSchritt())) {
-                charge.setIstFertig(true);
+                charge.setFertig(true);
                 DB.getEntityManager().persist(charge);
             }
 
@@ -262,21 +261,21 @@ public class UeberpruefungController {
             App.setView(View.DASHBOARD);
         } catch (NumberFormatException e) {
             LogManager.getLogger().error("Umwandlung der Eingabe in eine Zahl fehlgeschlagen");
-            App.error(App.resourceBundle.getString("errorUmwandlungInZahl"));
-            //throw new RuntimeException(e);
+            App.error(App.getResourceBundle().getString("errorUmwandlungInZahl"));
+            throw new RuntimeException(e);
         } catch (IllegalArgumentException | NullPointerException e) {
             LogManager.getLogger().error("Dieses Datum ist als Argument nicht erlaubt");
-            App.error(App.resourceBundle.getString("errorDatum"));
-            //throw new RuntimeException(e);
+            App.error(App.getResourceBundle().getString("errorDatum"));
+            throw new RuntimeException(e);
         } catch (PersistenceException e) {
             LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
-            App.error(App.resourceBundle.getString("errorDatenbank"));
-            //throw new RuntimeException(e);
+            App.error(App.getResourceBundle().getString("errorDatenbank"));
+            throw new RuntimeException(e);
         }
     }
 
     public void handleAddHefe() {
-        if (hefeComboBox.getSelectedItem() != null & !anpasssungHefe.getText().isBlank()) {
+        if (hefeComboBox.getSelectedItem() != null && !anpasssungHefe.getText().isBlank()) {
             try {
                 double menge = Double.parseDouble(anpasssungHefe.getText());
                 Hefe hefe = hefeComboBox.getSelectedItem();
@@ -317,11 +316,8 @@ public class UeberpruefungController {
             anpassungHefeInt = -1;
             hinzufuegenHefeButton.setDisable(true);
         }
-        if (hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1) {
-            hinzufuegenHefeButton.setDisable(true);
-        } else {
-            hinzufuegenHefeButton.setDisable(false);
-        }
+
+        hinzufuegenHefeButton.setDisable(hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1);
     }
 
     public int checkStringforValidInt(String string) {
