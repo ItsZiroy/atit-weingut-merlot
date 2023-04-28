@@ -1,5 +1,7 @@
-package com.itsziroy.weingutmerlot.backend;
+package com.itsziroy.weingutmerlot.backend.db.managers;
 
+import com.itsziroy.weingutmerlot.backend.ChargeService;
+import com.itsziroy.weingutmerlot.backend.UebererpruefungService;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
@@ -7,21 +9,15 @@ import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import jakarta.persistence.TypedQuery;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Manager for {@link Ueberpruefung} Entity
  */
-public final class UeberpruefungManager {
+public class UeberpruefungManager implements UebererpruefungService {
 
-  /**
-   * Gets for each Charge the next Überprüfung that is due in the future.
-   * @return List of all upcoming Überprüfungen with their Charge, Date and latest Überprüfung
-   */
-  public static List<UpcomingUeberpruefung> getUpcomingUeberpruefungen() {
+  @Override
+  public List<UpcomingUeberpruefung> getUpcomingUeberpruefungen() {
     /*
      * Overview of the functionality:
      *
@@ -50,18 +46,16 @@ public final class UeberpruefungManager {
     return nextUeberpruefungen;
   }
 
-  /**
-   * Gets date for the next Überprüfung
-   * @param ueberpruefung Current Überprüfung
-   * @return Date for next Überprüfung
-   */
-  public static Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
+  @Override
+  public Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
     if(!ueberpruefung.isNaechsterSchritt()) {
       return ueberpruefung.getNextDate();
     }
 
+    ChargeService chargeService = DB.getChargeManager();
+
     Charge charge = ueberpruefung.getCharge();
-    Gaerungsprozessschritt current = ChargeManager.getCurrentGaerungsprozessschritt(charge);
+    Gaerungsprozessschritt current = chargeService.getCurrentGaerungsprozessschritt(charge);
 
     // To calculate next date of Überprüfung add the duration of the  current Gärungsprozessschritt to the last Überprüfung date
     Calendar calendar = Calendar.getInstance();
@@ -71,14 +65,8 @@ public final class UeberpruefungManager {
     return calendar.getTime();
   }
 
-  /**
-   * Gets the latest created Überprüfung for a Charge
-   * It is important to sort both by step and date because there might be multiple
-   * Überprüfungen for the same Gaerungsprozessschritt due to errors
-   * @param charge Charge
-   * @return Latest Überprüfung
-   */
-  public static Ueberpruefung getCurrentUeberpruefung(Charge charge) {
+  @Override
+  public Ueberpruefung getCurrentUeberpruefung(Charge charge) {
     TypedQuery<Ueberpruefung> ueberpruefungQuery= DB.getEntityManager().createQuery(
             "select u from Ueberpruefung u where u.charge.id = :charge " +
                     "order by u.gaerungsprozessschritt.schritt DESC, u.datum DESC", Ueberpruefung.class);
@@ -88,5 +76,15 @@ public final class UeberpruefungManager {
     List<Ueberpruefung> ueberpruefungen = ueberpruefungQuery.getResultList();
 
     return ueberpruefungen.get(0);
+  }
+
+  @Override
+  public List<Ueberpruefung> getAll() {
+    return DB.getEntityManager().createQuery("select u from Ueberpruefung u", Ueberpruefung.class).getResultList();
+  }
+
+  @Override
+  public Ueberpruefung getOne(int id) {
+    return DB.getEntityManager().find(Ueberpruefung.class, id);
   }
 }

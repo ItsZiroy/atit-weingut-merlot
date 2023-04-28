@@ -1,6 +1,5 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
-import com.itsziroy.weingutmerlot.backend.HefeManager;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.*;
 import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
@@ -173,7 +172,7 @@ public class UeberpruefungController {
     }
 
     private void initializeHefenCombobox() {
-        List<Hefe> hefen = HefeManager.getAllHefen();
+        List<Hefe> hefen = DB.getHefeManager().getAll();
         for (var hefe : hefen) {
             hefeComboBox.getItems().add(hefe);
         }

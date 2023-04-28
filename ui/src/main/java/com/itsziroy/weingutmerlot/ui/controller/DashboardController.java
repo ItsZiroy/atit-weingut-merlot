@@ -1,6 +1,7 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
-import com.itsziroy.weingutmerlot.backend.UeberpruefungManager;
+import com.itsziroy.weingutmerlot.backend.UebererpruefungService;
+import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
@@ -11,7 +12,6 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.StringConverter;
@@ -61,8 +61,10 @@ public class DashboardController {
     }
 
     private void initalizeUpcomingUeberpruefungen() {
+
+        UebererpruefungService uebererpruefungService = DB.getUeberpruefungManager();
         List<UpcomingUeberpruefung> nextUe =
-                UeberpruefungManager.getUpcomingUeberpruefungen();
+                uebererpruefungService.getUpcomingUeberpruefungen();
 
         if (nextUe.isEmpty()) {
             listView.setVisible(false);

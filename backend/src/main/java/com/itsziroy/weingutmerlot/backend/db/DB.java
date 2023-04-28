@@ -1,5 +1,9 @@
 package com.itsziroy.weingutmerlot.backend.db;
 
+import com.itsziroy.weingutmerlot.backend.*;
+import com.itsziroy.weingutmerlot.backend.db.managers.ChargeManager;
+import com.itsziroy.weingutmerlot.backend.db.managers.HefeManager;
+import com.itsziroy.weingutmerlot.backend.db.managers.UeberpruefungManager;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -16,6 +20,9 @@ public final class DB {
   private static String persistenceUnitName = "default";
   private static EntityManager entityManager = null;
 
+  private static final UeberpruefungManager ueberpruefungManager = new UeberpruefungManager();
+  private static final HefeManager hefeManager = new HefeManager();
+  private static final ChargeManager chargeManager = new ChargeManager();
   /**
    * Initializes a new EntityManager
    *
@@ -74,5 +81,17 @@ public final class DB {
       setPersistenceUnit(p_unit_name);
     }
     return entityManager;
+  }
+
+  public static UebererpruefungService getUeberpruefungManager() {
+    return ueberpruefungManager;
+  }
+
+  public static ChargeManager getChargeManager() {
+    return chargeManager;
+  }
+
+  public static HefeManager getHefeManager() {
+    return hefeManager;
   }
 }

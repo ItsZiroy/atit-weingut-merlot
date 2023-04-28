@@ -1,6 +1,6 @@
 package com.itsziroy.weingutmerlot.backend.helper;
 
-import com.itsziroy.weingutmerlot.backend.UeberpruefungManager;
+import com.itsziroy.weingutmerlot.backend.db.managers.UeberpruefungManager;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 

@@ -1,6 +1,7 @@
 package com.itsziroy.weingutmerlot.ui.components;
 
-import com.itsziroy.weingutmerlot.backend.ChargeManager;
+import com.itsziroy.weingutmerlot.backend.ChargeService;
+import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
@@ -39,9 +40,10 @@ public class ChargeButton extends MFXButton {
     String dateString = simpleDateFormat.format(date);
     int chargeId = charge.getId();
 
+    ChargeService chargeService = DB.getChargeManager();
     // If the next step is not reached, another Überprüfung is created
     // for the same Gärungsprozessschritt again
-    currentGaerungsprozessschritt = ChargeManager.getCurrentGaerungsprozessschritt(charge);
+    currentGaerungsprozessschritt = chargeService.getCurrentGaerungsprozessschritt(charge);
     int gaerungsprozessschrittId = currentGaerungsprozessschritt.getSchritt();
     String chargeString = App.resourceBundle.getString("charge");
     String gaerungsprozessschritt = App.resourceBundle.getString("gaerungsprozessschritt");

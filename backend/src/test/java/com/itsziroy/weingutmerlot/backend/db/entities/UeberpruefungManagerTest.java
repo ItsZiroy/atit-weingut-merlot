@@ -1,6 +1,6 @@
 package com.itsziroy.weingutmerlot.backend.db.entities;
 
-import com.itsziroy.weingutmerlot.backend.UeberpruefungManager;
+import com.itsziroy.weingutmerlot.backend.UebererpruefungService;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,11 +17,16 @@ class UeberpruefungManagerTest {
     static Ueberpruefung ueberpruefung1, ueberpruefung2, ueberpruefung3;
     static Charge charge;
     static Gaerungsprozessschritt[] gaerungsprozessschritte;
+
+    static UebererpruefungService uebererpruefungService;
     // Idea: Gärungsprozess (including Wein)-> Gärungsprozessschritte -> Charge -> Überprüfungen
     @BeforeAll
     static void setUp() {
         DB.setPersistenceUnit("test");
 
+        uebererpruefungService = DB.getUeberpruefungManager();
+
+        System.out.println(uebererpruefungService);
         Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(true);
 
         // Get Wein of the Gärungsprozess
@@ -88,7 +93,7 @@ class UeberpruefungManagerTest {
     @Test
     void getUpcomingUeberpruefungen() {
         // actual
-        List<UpcomingUeberpruefung> actualList = UeberpruefungManager.getUpcomingUeberpruefungen();
+        List<UpcomingUeberpruefung> actualList = uebererpruefungService.getUpcomingUeberpruefungen();
         UpcomingUeberpruefung actual = actualList.get(0);
 
         // expected
@@ -101,14 +106,14 @@ class UeberpruefungManagerTest {
 
     @Test
     void getNextUeberpruefungDateAcceptedNextStep() {
-       Date actual = UeberpruefungManager.getNextUeberpruefungDate(ueberpruefung1);
+       Date actual = uebererpruefungService.getNextUeberpruefungDate(ueberpruefung1);
        // Date of ueberpruefung2 is 20.04.2023, Gärungsprozesschritt 3 shall be tested again after 5 days
        Date expected = new Date(2023, Calendar.APRIL, 20);
        assertEquals(expected, actual);
     }
     @Test
     void getNextUeberpruefungDateDeclinedNextStep() {
-        Date actual = UeberpruefungManager.getNextUeberpruefungDate(ueberpruefung2);
+        Date actual = uebererpruefungService.getNextUeberpruefungDate(ueberpruefung2);
         // Date of ueberpruefung2 is 20.04.2023, Gärungsprozesschritt 3 shall be tested again after 5 days
         Date expected =  new Date(2023, Calendar.APRIL, 25);
         assertEquals(expected, actual);
@@ -116,7 +121,7 @@ class UeberpruefungManagerTest {
 
     @Test
     void getCurrentUeberpruefung() {
-        Ueberpruefung actual = UeberpruefungManager.getCurrentUeberpruefung(charge);
+        Ueberpruefung actual = uebererpruefungService.getCurrentUeberpruefung(charge);
         Ueberpruefung expected = ueberpruefung3;
         assertEquals(expected, actual);
     }
