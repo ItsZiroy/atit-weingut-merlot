@@ -36,11 +36,19 @@ public class ChargeManager implements ChargeService {
         return currentGaerungsprozessschritt;
     }
 
+    /**
+     * Gets and returns all available Chargen from the DB.
+     * @return List of Chargen
+     */
     @Override
     public List<Charge> getAll() {
         return DB.getEntityManager().createQuery("select c from Charge c", Charge.class).getResultList();
     }
 
+    /**
+     * Gets and returns a single Charge by its id.
+     * @return Charge
+     */
     @Override
     public Charge getOne(int id) {
         return DB.getEntityManager().find(Charge.class, id);

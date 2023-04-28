@@ -78,11 +78,19 @@ public class UeberpruefungManager implements UebererpruefungService {
     return ueberpruefungen.get(0);
   }
 
+  /**
+   * Gets and returns all available Überprüfungen from the DB.
+   * @return List of Überprüfungen
+   */
   @Override
   public List<Ueberpruefung> getAll() {
     return DB.getEntityManager().createQuery("select u from Ueberpruefung u", Ueberpruefung.class).getResultList();
   }
 
+  /**
+   * Gets and returns a single Überprüfung by its id.
+   * @return Überprüfung
+   */
   @Override
   public Ueberpruefung getOne(int id) {
     return DB.getEntityManager().find(Ueberpruefung.class, id);
