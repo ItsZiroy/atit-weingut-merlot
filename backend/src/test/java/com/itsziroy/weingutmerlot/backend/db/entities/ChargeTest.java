@@ -4,9 +4,9 @@ import com.itsziroy.weingutmerlot.backend.db.DB;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class ChargeTest {
+public class ChargeTest {
 
-    static Charge createRandomCharge(boolean persist) {
+    public static Charge createRandomCharge(boolean persist) {
 
         Charge charge = new Charge();
         charge.setJahrgang((int) (Math.random() * 2000));
@@ -23,7 +23,7 @@ class ChargeTest {
 
         return charge;
     }
-    static Charge createRandomChargeForWein(boolean persist, Wein wein) {
+    public static Charge createRandomChargeForWein(boolean persist, Wein wein) {
 
         Charge charge = new Charge();
         charge.setJahrgang((int) (Math.random() * 2000));

@@ -1,15 +1,16 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
+import com.itsziroy.weingutmerlot.backend.UebererpruefungService;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.*;
 import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
 import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
+import com.itsziroy.weingutmerlot.backend.db.managers.ChargeManager;
 import com.itsziroy.weingutmerlot.ui.App;
 import com.itsziroy.weingutmerlot.ui.View;
 import com.itsziroy.weingutmerlot.ui.helper.HefeMenge;
 import io.github.palexdev.materialfx.controls.*;
 import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -69,9 +70,14 @@ public class UeberpruefungController {
         this.gaerungsprozessschritt = gaerungsprozessschritt;
         this.charge = charge;
 
-        double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
-        int sollZucker = this.gaerungsprozessschritt.getSollZucker();
-        double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
+        initializeComponents();
+
+    }
+
+    private void initializeComponents() {
+        double sollAlkohol = gaerungsprozessschritt.getSollAlkohol();
+        int sollZucker = gaerungsprozessschritt.getSollZucker();
+        double sollTemperatur = gaerungsprozessschritt.getSollTemperatur();
         alkoholSoll.setText(sollAlkohol + " Vol-%");
         zuckerSoll.setText(sollZucker + " g/l");
         temperaturSoll.setText(sollTemperatur + " °C");
@@ -88,14 +94,20 @@ public class UeberpruefungController {
 
         gaerungsprozessschritteHasHefen.forEach(g ->
                 hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge())));
-
     }
 
-    public void differenceAlkohol(Observable observable, String oldValue, String newValue) {
+    /**
+     * Handler method for text value change of actual alcohol
+     * Calculates the difference between the actual value of alcohol and the target value and displays it
+     * @param observable not used
+     * @param oldValue of actual alcohol
+     * @param newValue of actual alcohol
+     */
+    private void differenceAlkohol(Observable observable, String oldValue, String newValue) {
         try {
             double istAlkohol = Double.parseDouble(newValue);
             if (istAlkohol < 0) {
-                throw new NumberFormatException();
+                throw new NumberFormatException("Alcohol value cannot be negative");
             }
             double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
             alkoholLabel.setText(String.valueOf(istAlkohol - sollAlkohol));
@@ -104,11 +116,18 @@ public class UeberpruefungController {
         }
     }
 
-    public void differenceZucker(Observable observable, String oldValue, String newValue) {
+    /**
+     * Handler method for text value change of actual sugar
+     * Calculates the difference between the actual value of sugar and the target value and displays it
+     * @param observable not used
+     * @param oldValue of actual sugar
+     * @param newValue of actual sugar
+     */
+    private void differenceZucker(Observable observable, String oldValue, String newValue) {
         try {
             int istZucker = Integer.parseInt(newValue);
             if (istZucker < 0) {
-                throw new NumberFormatException();
+                throw new NumberFormatException("Sugar value cannot be negative");
             }
             int sollZucker = this.gaerungsprozessschritt.getSollZucker();
             int difference = istZucker - sollZucker;
@@ -120,11 +139,18 @@ public class UeberpruefungController {
         }
     }
 
-    public void differenceTemperatur(Observable observable, String oldValue, String newValue) {
+    /**
+     * Handler method for text value change of actual temperature
+     * Calculates the difference between the actual value of temperature and the target value and displays it
+     * @param observable not used
+     * @param oldValue of actual temperature
+     * @param newValue of actual temperature
+     */
+    private void differenceTemperatur(Observable observable, String oldValue, String newValue) {
         try {
             double istTemperatur = Double.parseDouble(newValue);
             if (istTemperatur < 0) {
-                throw new NumberFormatException();
+                throw new NumberFormatException("Temperature value cannot be negative");
             }
             uebernehmenTemperatur.setDisable(false);
             double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
@@ -135,6 +161,9 @@ public class UeberpruefungController {
         }
     }
 
+    /**
+     * Handler method for "Übernehmen" button clicked for sugar
+     */
     public void handleTakeOverZucker() {
         try {
             int zuckerDifference = Integer.parseInt(zuckerLabel.getText());
@@ -144,19 +173,25 @@ public class UeberpruefungController {
             }
             anpassungZucker.setText(String.valueOf(zuckerDifference * (-1)));
         } catch (NumberFormatException e) {
-            anpassungZucker.setText("");
+            anpassungZucker.setText("0");
         }
     }
 
+    /**
+     * Handler method for "Übernehmen" button clicked for temperature
+     */
     public void handleTakeOverTemperatur() {
         try {
             double temperaturDifference = Double.parseDouble(temperaturLabel.getText()) * (-1);
             anpassungTemperatur.setText(String.valueOf(temperaturDifference));
         } catch (NumberFormatException e) {
-            anpassungTemperatur.setText("");
+            anpassungTemperatur.setText("0");
         }
     }
 
+    /**
+     * Handler method for "Nächster Gärungsprozessschritt" toggle button changed
+     */
     public void handleNextStepChange() {
         // when the next step is enabled, the date picker, toggle Button and label should not be visible
         // when the next step is disabled, these should be visible
@@ -164,9 +199,10 @@ public class UeberpruefungController {
         datePicker.setVisible(!nextStepSelected);
         irreversibelToggleButton.setVisible(!nextStepSelected);
         irreversibleLabel.setVisible(!nextStepSelected);
-        if(!nextStepSelected){
-            // if the next step is not selected the irreversible toggle button should not be selected
+        if(nextStepSelected){
+            // if the next step is selected the irreversible toggle button should not be selected and the date should be cleared
             irreversibelToggleButton.setSelected(false);
+            datePicker.clear();
         }
     }
 
@@ -177,16 +213,14 @@ public class UeberpruefungController {
         }
     }
 
+    /**
+     * Handler method for "Speichern" button clicked
+     */
     public void handleSaveButtonClicked() {
         // if the Gaerungsprozess cannot be continued
         if (irreversibelToggleButton.isSelected()) {
-            // finish Charge and exit method
-            charge.setFertig(true);
-            LogManager.getLogger().info("The charge with id " + charge.getId() + " was irreversible damaged.");
-            // persist Charge
-            DB.getEntityManager().getTransaction().begin();
-            DB.getEntityManager().persist(charge);
-            DB.getEntityManager().getTransaction().commit();
+            ChargeManager chargeManager = DB.getChargeManager();
+            chargeManager.setIrreversiblyDamaged(charge);
             // return to Dashboard view
             App.setView(View.DASHBOARD);
             return;
@@ -220,57 +254,36 @@ public class UeberpruefungController {
                 Instant instant = Instant.from(localNextDate.atStartOfDay(ZoneId.systemDefault()));
                 Date nextDate = Date.from(instant);
                 if (nextDate.before(currentDate)) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Next date cannot be before current date");
                 }
                 ueberpruefung.setNextDate(nextDate);
             }
 
-            // persist new Überprüfung
-            DB.getEntityManager().getTransaction().begin();
-            DB.getEntityManager().persist(ueberpruefung);
+            List<UeberpruefungenHasHefen> ueberpruefungenHasHefenList = new ArrayList<>();
 
-            // persist new ueberpruefungHasHefen
             for (HefeMenge h : anpassungHefeList.getItems()) {
                 UeberpruefungenHasHefen ueberpruefungenHasHefen = new UeberpruefungenHasHefen();
                 ueberpruefungenHasHefen.setAnpassung(h.menge());
                 ueberpruefungenHasHefen.setHefe(h.hefe());
-                ueberpruefungenHasHefen.setUeberpruefung(ueberpruefung);
-
-                DB.getEntityManager().persist(ueberpruefungenHasHefen);
+                ueberpruefungenHasHefenList.add(ueberpruefungenHasHefen);
             }
 
-            // Get the last Gärungsprozessschritt of the current Gärungsprozess
-            TypedQuery<Gaerungsprozessschritt> lastStepQuery = DB.getEntityManager().createQuery(
-                    "select g from Gaerungsprozessschritt g where g.gaerungsprozess.id = :id " +
-                            "order by schritt desc", Gaerungsprozessschritt.class);
-            lastStepQuery.setParameter("id", ueberpruefung.getGaerungsprozessschritt().getGaerungsprozess().getId());
-            List<Gaerungsprozessschritt> result = lastStepQuery.getResultList();
-            Gaerungsprozessschritt lastStep = result.get(0);
+            // persist Ueberpruefung and UeberpruefungHasHefen to database
+            UebererpruefungService uebererpruefungService = DB.getUeberpruefungManager();
+            uebererpruefungService.save(ueberpruefung, ueberpruefungenHasHefenList);
 
-            // If current Überprüfung is set to be valid, and we proceed to the next step
-            // we need to check if it is the last process step because then the charge
-            // is finished.
-            if ((Objects.equals(ueberpruefung.getGaerungsprozessschritt().getSchritt(), lastStep.getSchritt())
-                    && ueberpruefung.isNaechsterSchritt())) {
-                charge.setFertig(true);
-                DB.getEntityManager().persist(charge);
-            }
-
-            DB.getEntityManager().getTransaction().commit();
             // return to Dashboard view
             App.setView(View.DASHBOARD);
-        } catch (NumberFormatException e) {
-            LogManager.getLogger().error("Umwandlung der Eingabe in eine Zahl fehlgeschlagen");
+
+        } catch (NumberFormatException | NullPointerException e) {
+            LogManager.getLogger().error("Umwandlung einer Eingabe in eine Zahl fehlgeschlagen", e);
             App.error(App.getResourceBundle().getString("errorUmwandlungInZahl"));
-            throw new RuntimeException(e);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            LogManager.getLogger().error("Dieses Datum ist als Argument nicht erlaubt");
-            App.error(App.getResourceBundle().getString("errorDatum"));
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            LogManager.getLogger().error("Validierungsfehler aufgetreten", e);
+            App.error(App.getResourceBundle().getString("errorValidierung"));
         } catch (PersistenceException e) {
-            LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen");
+            LogManager.getLogger().error("Datenbank-Transaktion fehlgeschlagen", e);
             App.error(App.getResourceBundle().getString("errorDatenbank"));
-            throw new RuntimeException(e);
         }
     }
 
@@ -318,36 +331,5 @@ public class UeberpruefungController {
         }
 
         hinzufuegenHefeButton.setDisable(hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1);
-    }
-
-    public int checkStringforValidInt(String string) {
-        // TODO
-        int value;
-        try {
-            value = Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            value = -1;
-            // show message, no int was entered
-        }
-        if (value < 0) {
-            value = -1;
-            // show message, no negative values are allowed
-        }
-        return value;
-    }
-
-    public double checkStringforValidDouble(String string) {
-        // TODO
-        double value;
-        try {
-            value = Double.parseDouble(string);
-        } catch (NumberFormatException e) {
-            value = -1;
-            // show message, no double was entered
-        }
-        if (value < 0) {
-            // show message, no negative values are allowed
-        }
-        return value;
     }
 }

@@ -26,6 +26,9 @@ public class Charge {
   @Column(name = "istFertig", nullable = false)
   private boolean istFertig;
 
+  @Column(name = "istVerworfen", nullable = false)
+  private boolean istVerworfen;
+
   public Integer getId() {
     return id;
   }
@@ -67,6 +70,14 @@ public class Charge {
   }
   public void setFertig(boolean istFertig) {
     this.istFertig = istFertig;
+  }
+
+  public boolean isVerworfen() {
+    return istVerworfen;
+  }
+
+  public void setIstVerworfen(boolean istVerworfen) {
+    this.istVerworfen = istVerworfen;
   }
 
 }

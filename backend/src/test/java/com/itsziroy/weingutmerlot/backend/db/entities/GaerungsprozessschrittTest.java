@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GaerungsprozessschrittTest {
+public class GaerungsprozessschrittTest {
 
   /**
    * A set of Gaerungsprozessschritte to use for Sibling testing
@@ -55,7 +55,7 @@ class GaerungsprozessschrittTest {
    * @param persist Persistence to DB
    * @return Gaerungsprozessschritt
    */
-  static Gaerungsprozessschritt createRandomGaerungsprozessschritt(boolean persist) {
+  public static Gaerungsprozessschritt createRandomGaerungsprozessschritt(boolean persist) {
     Gaerungsprozessschritt schritt = new Gaerungsprozessschritt();
     schritt.setNachZeit((int) (Math.random() * 100));
     schritt.setSollAlkohol((int) (Math.random() * 100));
@@ -84,7 +84,7 @@ class GaerungsprozessschrittTest {
    * @param number Number of steps to generate
    * @return Gärungsprozessschritte
    */
-  static Gaerungsprozessschritt[] createGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
+  public static Gaerungsprozessschritt[] createGaerungsprozessschritteForGaerungsprozess(boolean persist, Gaerungsprozess gaerungsprozess, int number) {
     Gaerungsprozessschritt[] gaerungsprozessschritte = new Gaerungsprozessschritt[number];
     for(int i=1; i<number+1; i++) {
       Gaerungsprozessschritt schritt = new Gaerungsprozessschritt();

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class GaerungsprozessTest {
+public class GaerungsprozessTest {
 
   /**
    * Creates a random Gaerungsprozess including a Wein and optionally persists it
@@ -15,7 +15,7 @@ class GaerungsprozessTest {
    * @param persist Persistence to DB
    * @return Gaerungsprozessschritt
    */
-  static Gaerungsprozess createRandomGaerungsprozess(boolean persist) {
+  public static Gaerungsprozess createRandomGaerungsprozess(boolean persist) {
     Gaerungsprozess gaerungsprozess = new Gaerungsprozess();
     gaerungsprozess.setLagerungsbehaelter("Holz");
     gaerungsprozess.setTemperatur((int) (Math.random() * 100));

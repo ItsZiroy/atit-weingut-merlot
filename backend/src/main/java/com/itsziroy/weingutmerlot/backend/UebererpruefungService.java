@@ -2,7 +2,9 @@ package com.itsziroy.weingutmerlot.backend;
 
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
+import jakarta.persistence.PersistenceException;
 
 import java.util.Date;
 import java.util.List;
@@ -29,5 +31,29 @@ public interface UebererpruefungService extends Service<Ueberpruefung> {
      * @return Latest Überprüfung
      */
     Ueberpruefung getCurrentUeberpruefung(Charge charge);
+
+    /**
+     * Persists Überprüfung with Hefen
+     * @param ueberpruefung Ueberpruefung
+     * @param ueberpruefungenHasHefenList List of related Hefen
+     * @throws PersistenceException database error
+     * @throws IllegalArgumentException validation error see {@link #validate(Ueberpruefung)}
+     */
+    void save(Ueberpruefung ueberpruefung, List<UeberpruefungenHasHefen> ueberpruefungenHasHefenList)
+            throws PersistenceException, IllegalArgumentException;
+
+    /**
+     * Validates Überprüfung
+     * @param ueberpruefung Ueberpruefung
+     * @throws IllegalArgumentException validation error
+     */
+    void validate(Ueberpruefung ueberpruefung) throws IllegalArgumentException;
+
+    /**
+     * Validates Hefen relation
+     * @param ueberpruefungenHasHefen UeberpruefungHasHefen
+     * @throws IllegalArgumentException validation error
+     */
+    void validateHasHefen(UeberpruefungenHasHefen ueberpruefungenHasHefen) throws IllegalArgumentException;
 
 }

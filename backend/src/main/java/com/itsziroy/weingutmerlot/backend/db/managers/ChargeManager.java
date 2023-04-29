@@ -6,6 +6,8 @@ import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Charge;
 import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
+import jakarta.persistence.PersistenceException;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
  * Manager for {@link Charge} Entity
  */
 public class ChargeManager implements ChargeService {
+
 
     @Override
     public Gaerungsprozessschritt getCurrentGaerungsprozessschritt(Charge charge) {
@@ -34,6 +37,18 @@ public class ChargeManager implements ChargeService {
             currentGaerungsprozessschritt = last;
         }
         return currentGaerungsprozessschritt;
+    }
+
+    @Override
+    public void setIrreversiblyDamaged(Charge charge) throws PersistenceException {
+        // finish Charge and exit method
+        charge.setFertig(true);
+        charge.setIstVerworfen(true);
+        LogManager.getLogger().info("The charge with id " + charge.getId() + " was irreversible damaged.");
+        // persist Charge
+        DB.getEntityManager().getTransaction().begin();
+        DB.getEntityManager().persist(charge);
+        DB.getEntityManager().getTransaction().commit();
     }
 
     /**

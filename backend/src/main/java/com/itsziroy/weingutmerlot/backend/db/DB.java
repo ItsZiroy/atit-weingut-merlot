@@ -2,6 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db;
 
 import com.itsziroy.weingutmerlot.backend.*;
 import com.itsziroy.weingutmerlot.backend.db.managers.ChargeManager;
+import com.itsziroy.weingutmerlot.backend.db.managers.GaerungsprozessManager;
 import com.itsziroy.weingutmerlot.backend.db.managers.HefeManager;
 import com.itsziroy.weingutmerlot.backend.db.managers.UeberpruefungManager;
 import jakarta.persistence.EntityManager;
@@ -23,6 +24,7 @@ public final class DB {
   private static final UeberpruefungManager ueberpruefungManager = new UeberpruefungManager();
   private static final HefeManager hefeManager = new HefeManager();
   private static final ChargeManager chargeManager = new ChargeManager();
+  private static final GaerungsprozessManager gaerungsprozessManager = new GaerungsprozessManager();
   /**
    * Initializes a new EntityManager
    *
@@ -94,4 +96,9 @@ public final class DB {
   public static HefeManager getHefeManager() {
     return hefeManager;
   }
+
+  public static GaerungsprozessManager getGaerungsprozessManager() {
+    return gaerungsprozessManager;
+  }
+
 }
