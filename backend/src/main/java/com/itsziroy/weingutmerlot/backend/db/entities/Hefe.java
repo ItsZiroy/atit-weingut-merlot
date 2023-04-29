@@ -19,7 +19,7 @@ public class Hefe {
     private String art;
 
     @Column(name = "temperatur", nullable = false)
-    private Integer temperatur;
+    private Double temperatur;
 
     @OneToMany(mappedBy = "hefe")
     private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
@@ -56,11 +56,11 @@ public class Hefe {
         this.art = art;
     }
 
-    public Integer getTemperatur() {
+    public Double getTemperatur() {
         return temperatur;
     }
 
-    public void setTemperatur(Integer temperatur) {
+    public void setTemperatur(Double temperatur) {
         this.temperatur = temperatur;
     }
 

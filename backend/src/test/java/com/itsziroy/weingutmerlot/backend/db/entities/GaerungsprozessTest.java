@@ -18,7 +18,7 @@ public class GaerungsprozessTest {
   public static Gaerungsprozess createRandomGaerungsprozess(boolean persist) {
     Gaerungsprozess gaerungsprozess = new Gaerungsprozess();
     gaerungsprozess.setLagerungsbehaelter("Holz");
-    gaerungsprozess.setTemperatur((int) (Math.random() * 100));
+    gaerungsprozess.setTemperatur((Math.random() * 100));
     gaerungsprozess.setZuckergehalt((int) (Math.random() * 100));
     gaerungsprozess.setDauer((int) (Math.random() * 100));
 

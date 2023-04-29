@@ -18,7 +18,7 @@ public class Gaerungsprozess {
   private Integer zuckergehalt;
 
   @Column(name = "temperatur", nullable = false)
-  private Integer temperatur;
+  private Double temperatur;
 
   @Column(name = "dauer")
   private Integer dauer;
@@ -46,11 +46,11 @@ public class Gaerungsprozess {
     this.zuckergehalt = zuckergehalt;
   }
 
-  public Integer getTemperatur() {
+  public Double getTemperatur() {
     return temperatur;
   }
 
-  public void setTemperatur(Integer temperatur) {
+  public void setTemperatur(Double temperatur) {
     this.temperatur = temperatur;
   }
 
