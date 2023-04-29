@@ -10,136 +10,124 @@ import java.util.Set;
 @Entity
 @Table(name = "ueberpruefungen")
 public class Ueberpruefung {
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Column(name = "anpassung_temperatur", nullable = false)
+    private Double anpassungTemperatur;
+    @Column(name = "anpassung_zucker", nullable = false)
+    private Integer anpassungZucker;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "chargen_id", nullable = false)
+    private Charge charge;
+    @Column(name = "datum", nullable = false)
+    private Date datum;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "gaerungsprozessschritte_id", nullable = false)
+    private Gaerungsprozessschritt gaerungsprozessschritt;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "ist_alkohol", nullable = false)
+    private Double istAlkohol;
+    @Column(name = "ist_temperatur", nullable = false)
+    private Double istTemperatur;
+    @Column(name = "ist_zucker", nullable = false)
+    private Integer istZucker;
+    @Column(name = "naechster_schritt", nullable = false)
+    private Boolean naechsterSchritt = false;
+    @Column(name = "next_date")
+    private Date nextDate;
+    @OneToMany(mappedBy = "ueberpruefung")
+    private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "chargen_id", nullable = false)
-  private Charge charge;
+    public Double getAnpassungTemperatur() {
+        return anpassungTemperatur;
+    }
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "gaerungsprozessschritte_id", nullable = false)
-  private Gaerungsprozessschritt gaerungsprozessschritt;
+    public void setAnpassungTemperatur(Double anpassungTemperatur) {
+        this.anpassungTemperatur = anpassungTemperatur;
+    }
 
-  @Column(name = "ist_zucker", nullable = false)
-  private Integer istZucker;
+    public Integer getAnpassungZucker() {
+        return anpassungZucker;
+    }
 
-  @Column(name = "ist_temperatur", nullable = false)
-  private Double istTemperatur;
+    public void setAnpassungZucker(Integer anpassungZucker) {
+        this.anpassungZucker = anpassungZucker;
+    }
 
-  @Column(name = "ist_alkohol", nullable = false)
-  private Double istAlkohol;
+    public Charge getCharge() {
+        return charge;
+    }
 
-  @Column(name = "anpassung_zucker", nullable = false)
-  private Integer anpassungZucker;
+    public void setCharge(Charge charge) {
+        this.charge = charge;
+    }
 
-  @Column(name = "anpassung_temperatur", nullable = false)
-  private Double anpassungTemperatur;
+    public Date getDatum() {
+        return datum;
+    }
 
-  @Column(name = "naechster_schritt", nullable = false)
-  private Boolean naechsterSchritt = false;
+    public void setDatum(Date datum) {
+        this.datum = datum;
+    }
 
-  @Column(name = "next_date")
-  private Date nextDate;
+    public Gaerungsprozessschritt getGaerungsprozessschritt() {
+        return gaerungsprozessschritt;
+    }
 
-  @Column(name = "datum", nullable = false)
-  private Date datum;
+    public void setGaerungsprozessschritt(Gaerungsprozessschritt gaerungsprozessschritt) {
+        this.gaerungsprozessschritt = gaerungsprozessschritt;
+    }
 
-  @OneToMany(mappedBy = "ueberpruefung")
-  private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
+    public Set<UeberpruefungenHasHefen> getHefenPivot() {
+        return ueberpruefungenHasHefen;
+    }
 
-  public Set<UeberpruefungenHasHefen> getHefenPivot() {
-    return ueberpruefungenHasHefen;
-  }
+    public void setHefenPivot(Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen) {
+        this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
+    }
 
-  public void setHefenPivot(Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen) {
-    this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
-  }
+    public Integer getId() {
+        return id;
+    }
 
+    public Double getIstAlkohol() {
+        return istAlkohol;
+    }
 
-  public Date getDatum() {
-    return datum;
-  }
+    public void setIstAlkohol(Double istAlkohol) {
+        this.istAlkohol = istAlkohol;
+    }
 
-  public void setDatum(Date datum) {
-    this.datum = datum;
-  }
+    public Double getIstTemperatur() {
+        return istTemperatur;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public void setIstTemperatur(Double istTemperatur) {
+        this.istTemperatur = istTemperatur;
+    }
 
-  public Charge getCharge() {
-    return charge;
-  }
+    public Integer getIstZucker() {
+        return istZucker;
+    }
 
-  public void setCharge(Charge charge) {
-    this.charge = charge;
-  }
+    public void setIstZucker(Integer istZucker) {
+        this.istZucker = istZucker;
+    }
 
-  public Gaerungsprozessschritt getGaerungsprozessschritt() {
-    return gaerungsprozessschritt;
-  }
+    public Date getNextDate() {
+        return nextDate;
+    }
 
-  public void setGaerungsprozessschritt(Gaerungsprozessschritt gaerungsprozessschritt) {
-    this.gaerungsprozessschritt = gaerungsprozessschritt;
-  }
+    public void setNextDate(Date nextDate) {
+        this.nextDate = nextDate;
+    }
 
-  public Integer getIstZucker() {
-    return istZucker;
-  }
+    public Boolean isNaechsterSchritt() {
+        return naechsterSchritt;
+    }
 
-  public void setIstZucker(Integer istZucker) {
-    this.istZucker = istZucker;
-  }
-
-  public Double getIstTemperatur() {
-    return istTemperatur;
-  }
-
-  public void setIstTemperatur(Double istTemperatur) {
-    this.istTemperatur = istTemperatur;
-  }
-
-  public Double getIstAlkohol() {
-    return istAlkohol;
-  }
-
-  public void setIstAlkohol(Double istAlkohol) {
-    this.istAlkohol = istAlkohol;
-  }
-
-  public Integer getAnpassungZucker() {
-    return anpassungZucker;
-  }
-
-  public void setAnpassungZucker(Integer anpassungZucker) {
-    this.anpassungZucker = anpassungZucker;
-  }
-
-  public Double getAnpassungTemperatur() {
-    return anpassungTemperatur;
-  }
-
-  public void setAnpassungTemperatur(Double anpassungTemperatur) {
-    this.anpassungTemperatur = anpassungTemperatur;
-  }
-
-  public Boolean isNaechsterSchritt() {
-    return naechsterSchritt;
-  }
-
-  public void setNaechsterSchritt(Boolean naechsterSchritt) {
-    this.naechsterSchritt = naechsterSchritt;
-  }
-
-  public Date getNextDate() {
-    return nextDate;
-  }
-
-  public void setNextDate(Date nextDate) {
-    this.nextDate = nextDate;
-  }
+    public void setNaechsterSchritt(Boolean naechsterSchritt) {
+        this.naechsterSchritt = naechsterSchritt;
+    }
 }

@@ -25,168 +25,58 @@ import java.util.*;
 public class UeberpruefungController {
 
     @FXML
-    private MFXDatePicker datePicker;
-    @FXML
-    private MFXComboBox<Hefe> hefeComboBox;
-    @FXML
-    private ListView<HefeMenge> anpassungHefeList;
-    @FXML
-    private ListView<HefeMenge> hefeSollList;
-    @FXML
-    private MFXButton uebernehmenZucker, uebernehmenTemperatur, hinzufuegenHefeButton;
-    @FXML
-    private MFXToggleButton nachsterSchrittToggleButton, irreversibelToggleButton;
+    private Label alkoholLabel, zuckerLabel, temperaturLabel, irreversibleLabel;
     @FXML
     private MFXTextField alkoholSoll, zuckerSoll, temperaturSoll,
             anpassungZucker, anpassungTemperatur, anpasssungHefe,
             alkoholIst, zuckerIst, temperaturIst;
     @FXML
+    private ListView<HefeMenge> anpassungHefeList;
+    private Charge charge;
+    @FXML
     private Label chargeLabel, gaerungsprozessschrittLabel, weinLabel, weinartLabel;
     @FXML
-    private Label alkoholLabel, zuckerLabel, temperaturLabel, irreversibleLabel;
-
+    private MFXDatePicker datePicker;
     private Gaerungsprozessschritt gaerungsprozessschritt;
-    private Charge charge;
+    @FXML
+    private MFXComboBox<Hefe> hefeComboBox;
+    @FXML
+    private ListView<HefeMenge> hefeSollList;
+    @FXML
+    private MFXToggleButton nachsterSchrittToggleButton, irreversibelToggleButton;
+    @FXML
+    private MFXButton uebernehmenZucker, uebernehmenTemperatur, hinzufuegenHefeButton;
     private final Map<Hefe, Double> hefeMenge = new HashMap<>();
 
-    public void initialize() {
-        alkoholIst.textProperty().addListener(this::differenceAlkohol);
-        zuckerIst.textProperty().addListener(this::differenceZucker);
-        temperaturIst.textProperty().addListener(this::differenceTemperatur);
-        hefeComboBox.textProperty().addListener(this::addHefe);
-        anpasssungHefe.textProperty().addListener(this::addHefe);
+    public void handleAddHefe() {
+        if (hefeComboBox.getSelectedItem() != null && !anpasssungHefe.getText().isBlank()) {
+            try {
+                double menge = Double.parseDouble(anpasssungHefe.getText());
+                Hefe hefe = hefeComboBox.getSelectedItem();
+                hefeMenge.put(hefe, menge);
 
-        initializeHefenCombobox();
-    }
+                hefeComboBox.clearSelection();
+                anpasssungHefe.clear();
 
-    /**
-     * This Method needs to be run before the View can be displayed properly and
-     * initializes all the necessary ui components.
-     *
-     * @param gaerungsprozessschritt Gärungsprozesschritt the Überprüfung should be created for
-     * @param charge                 The Charge that the Überpüfung should be created for
-     */
-    public void initializeData(Gaerungsprozessschritt gaerungsprozessschritt, Charge charge) {
-        this.gaerungsprozessschritt = gaerungsprozessschritt;
-        this.charge = charge;
-
-        initializeComponents();
-
-    }
-
-    private void initializeComponents() {
-        double sollAlkohol = gaerungsprozessschritt.getSollAlkohol();
-        int sollZucker = gaerungsprozessschritt.getSollZucker();
-        double sollTemperatur = gaerungsprozessschritt.getSollTemperatur();
-        alkoholSoll.setText(sollAlkohol + " Vol-%");
-        zuckerSoll.setText(sollZucker + " g/l");
-        temperaturSoll.setText(sollTemperatur + " °C");
-
-        chargeLabel.setText(App.getResourceBundle().getString("charge") + ": " + charge.getId());
-        gaerungsprozessschrittLabel.setText(App.getResourceBundle().getString("gaerungsprozessschritt") + ": " + gaerungsprozessschritt.getSchritt());
-
-        Wein wein = charge.getWein();
-        weinLabel.setText(App.getResourceBundle().getString("wein") + ": " + wein.getBeschreibung());
-        weinartLabel.setText(App.getResourceBundle().getString("weinart") + ": " + wein.getWeinart());
-
-        Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen
-                = gaerungsprozessschritt.getHefenPivot();
-
-        gaerungsprozessschritteHasHefen.forEach(g ->
-                hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge())));
-    }
-
-    /**
-     * Handler method for text value change of actual alcohol
-     * Calculates the difference between the actual value of alcohol and the target value and displays it
-     * @param observable not used
-     * @param oldValue of actual alcohol
-     * @param newValue of actual alcohol
-     */
-    private void differenceAlkohol(Observable observable, String oldValue, String newValue) {
-        try {
-            double istAlkohol = Double.parseDouble(newValue);
-            if (istAlkohol < 0) {
-                throw new NumberFormatException("Alcohol value cannot be negative");
+                reloadHefeSelection();
+            } catch (NumberFormatException e) {
+                LogManager.getLogger().warn("Invalid Number for Hefe Input.");
             }
-            double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
-            alkoholLabel.setText(String.valueOf(istAlkohol - sollAlkohol));
-        } catch (NumberFormatException e) {
-            alkoholLabel.setText("");
+        } else {
+            LogManager.getLogger().info("Selection or Text is Empty");
         }
     }
 
-    /**
-     * Handler method for text value change of actual sugar
-     * Calculates the difference between the actual value of sugar and the target value and displays it
-     * @param observable not used
-     * @param oldValue of actual sugar
-     * @param newValue of actual sugar
-     */
-    private void differenceZucker(Observable observable, String oldValue, String newValue) {
-        try {
-            int istZucker = Integer.parseInt(newValue);
-            if (istZucker < 0) {
-                throw new NumberFormatException("Sugar value cannot be negative");
-            }
-            int sollZucker = this.gaerungsprozessschritt.getSollZucker();
-            int difference = istZucker - sollZucker;
-            uebernehmenZucker.setDisable(difference > 0);
-            zuckerLabel.setText(String.valueOf(difference));
-        } catch (NumberFormatException e) {
-            uebernehmenZucker.setDisable(true);
-            zuckerLabel.setText("");
-        }
+    private void reloadHefeSelection() {
+        anpassungHefeList.getItems().clear();
+        hefeMenge.forEach((hefe, menge) ->
+                anpassungHefeList.getItems().add(new HefeMenge(hefe, menge)));
     }
 
-    /**
-     * Handler method for text value change of actual temperature
-     * Calculates the difference between the actual value of temperature and the target value and displays it
-     * @param observable not used
-     * @param oldValue of actual temperature
-     * @param newValue of actual temperature
-     */
-    private void differenceTemperatur(Observable observable, String oldValue, String newValue) {
-        try {
-            double istTemperatur = Double.parseDouble(newValue);
-            if (istTemperatur < 0) {
-                throw new NumberFormatException("Temperature value cannot be negative");
-            }
-            uebernehmenTemperatur.setDisable(false);
-            double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
-            temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
-        } catch (NumberFormatException e) {
-            uebernehmenTemperatur.setDisable(true);
-            temperaturLabel.setText("");
-        }
-    }
-
-    /**
-     * Handler method for "Übernehmen" button clicked for sugar
-     */
-    public void handleTakeOverZucker() {
-        try {
-            int zuckerDifference = Integer.parseInt(zuckerLabel.getText());
-            // When actual value higher than target value, you cannot put sugar out of the wine
-            if (zuckerDifference > 0) {
-                zuckerDifference = 0;
-            }
-            anpassungZucker.setText(String.valueOf(zuckerDifference * (-1)));
-        } catch (NumberFormatException e) {
-            anpassungZucker.setText("0");
-        }
-    }
-
-    /**
-     * Handler method for "Übernehmen" button clicked for temperature
-     */
-    public void handleTakeOverTemperatur() {
-        try {
-            double temperaturDifference = Double.parseDouble(temperaturLabel.getText()) * (-1);
-            anpassungTemperatur.setText(String.valueOf(temperaturDifference));
-        } catch (NumberFormatException e) {
-            anpassungTemperatur.setText("0");
-        }
+    public void handleHefeListClicked() {
+        HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
+        hefeComboBox.selectItem(selected.hefe());
+        anpasssungHefe.setText(String.valueOf(selected.menge()));
     }
 
     /**
@@ -199,17 +89,10 @@ public class UeberpruefungController {
         datePicker.setVisible(!nextStepSelected);
         irreversibelToggleButton.setVisible(!nextStepSelected);
         irreversibleLabel.setVisible(!nextStepSelected);
-        if(nextStepSelected){
+        if (nextStepSelected) {
             // if the next step is selected the irreversible toggle button should not be selected and the date should be cleared
             irreversibelToggleButton.setSelected(false);
             datePicker.clear();
-        }
-    }
-
-    private void initializeHefenCombobox() {
-        List<Hefe> hefen = DB.getHefeManager().getAll();
-        for (var hefe : hefen) {
-            hefeComboBox.getItems().add(hefe);
         }
     }
 
@@ -287,35 +170,110 @@ public class UeberpruefungController {
         }
     }
 
-    public void handleAddHefe() {
-        if (hefeComboBox.getSelectedItem() != null && !anpasssungHefe.getText().isBlank()) {
-            try {
-                double menge = Double.parseDouble(anpasssungHefe.getText());
-                Hefe hefe = hefeComboBox.getSelectedItem();
-                hefeMenge.put(hefe, menge);
-
-                hefeComboBox.clearSelection();
-                anpasssungHefe.clear();
-
-                reloadHefeSelection();
-            } catch (NumberFormatException e) {
-                LogManager.getLogger().warn("Invalid Number for Hefe Input.");
-            }
-        } else {
-            LogManager.getLogger().info("Selection or Text is Empty");
+    /**
+     * Handler method for "Übernehmen" button clicked for temperature
+     */
+    public void handleTakeOverTemperatur() {
+        try {
+            double temperaturDifference = Double.parseDouble(temperaturLabel.getText()) * (-1);
+            anpassungTemperatur.setText(String.valueOf(temperaturDifference));
+        } catch (NumberFormatException e) {
+            anpassungTemperatur.setText("0");
         }
     }
 
-    private void reloadHefeSelection() {
-        anpassungHefeList.getItems().clear();
-        hefeMenge.forEach((hefe, menge) ->
-                anpassungHefeList.getItems().add(new HefeMenge(hefe, menge)));
+    /**
+     * Handler method for "Übernehmen" button clicked for sugar
+     */
+    public void handleTakeOverZucker() {
+        try {
+            int zuckerDifference = Integer.parseInt(zuckerLabel.getText());
+            // When actual value higher than target value, you cannot put sugar out of the wine
+            if (zuckerDifference > 0) {
+                zuckerDifference = 0;
+            }
+            anpassungZucker.setText(String.valueOf(zuckerDifference * (-1)));
+        } catch (NumberFormatException e) {
+            anpassungZucker.setText("0");
+        }
     }
 
-    public void handleHefeListClicked() {
-        HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
-        hefeComboBox.selectItem(selected.hefe());
-        anpasssungHefe.setText(String.valueOf(selected.menge()));
+    public void initialize() {
+        alkoholIst.textProperty().addListener(this::differenceAlkohol);
+        zuckerIst.textProperty().addListener(this::differenceZucker);
+        temperaturIst.textProperty().addListener(this::differenceTemperatur);
+        hefeComboBox.textProperty().addListener(this::addHefe);
+        anpasssungHefe.textProperty().addListener(this::addHefe);
+
+        initializeHefenCombobox();
+    }
+
+    /**
+     * Handler method for text value change of actual alcohol
+     * Calculates the difference between the actual value of alcohol and the target value and displays it
+     *
+     * @param observable not used
+     * @param oldValue   of actual alcohol
+     * @param newValue   of actual alcohol
+     */
+    private void differenceAlkohol(Observable observable, String oldValue, String newValue) {
+        try {
+            double istAlkohol = Double.parseDouble(newValue);
+            if (istAlkohol < 0) {
+                throw new NumberFormatException("Alcohol value cannot be negative");
+            }
+            double sollAlkohol = this.gaerungsprozessschritt.getSollAlkohol();
+            alkoholLabel.setText(String.valueOf(istAlkohol - sollAlkohol));
+        } catch (NumberFormatException e) {
+            alkoholLabel.setText("");
+        }
+    }
+
+    /**
+     * Handler method for text value change of actual sugar
+     * Calculates the difference between the actual value of sugar and the target value and displays it
+     *
+     * @param observable not used
+     * @param oldValue   of actual sugar
+     * @param newValue   of actual sugar
+     */
+    private void differenceZucker(Observable observable, String oldValue, String newValue) {
+        try {
+            int istZucker = Integer.parseInt(newValue);
+            if (istZucker < 0) {
+                throw new NumberFormatException("Sugar value cannot be negative");
+            }
+            int sollZucker = this.gaerungsprozessschritt.getSollZucker();
+            int difference = istZucker - sollZucker;
+            uebernehmenZucker.setDisable(difference > 0);
+            zuckerLabel.setText(String.valueOf(difference));
+        } catch (NumberFormatException e) {
+            uebernehmenZucker.setDisable(true);
+            zuckerLabel.setText("");
+        }
+    }
+
+    /**
+     * Handler method for text value change of actual temperature
+     * Calculates the difference between the actual value of temperature and the target value and displays it
+     *
+     * @param observable not used
+     * @param oldValue   of actual temperature
+     * @param newValue   of actual temperature
+     */
+    private void differenceTemperatur(Observable observable, String oldValue, String newValue) {
+        try {
+            double istTemperatur = Double.parseDouble(newValue);
+            if (istTemperatur < 0) {
+                throw new NumberFormatException("Temperature value cannot be negative");
+            }
+            uebernehmenTemperatur.setDisable(false);
+            double sollTemperatur = this.gaerungsprozessschritt.getSollTemperatur();
+            temperaturLabel.setText(String.valueOf(istTemperatur - sollTemperatur));
+        } catch (NumberFormatException e) {
+            uebernehmenTemperatur.setDisable(true);
+            temperaturLabel.setText("");
+        }
     }
 
     private void addHefe(Observable observable) {
@@ -331,5 +289,49 @@ public class UeberpruefungController {
         }
 
         hinzufuegenHefeButton.setDisable(hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1);
+    }
+
+    private void initializeHefenCombobox() {
+        List<Hefe> hefen = DB.getHefeManager().getAll();
+        for (var hefe : hefen) {
+            hefeComboBox.getItems().add(hefe);
+        }
+    }
+
+    /**
+     * This Method needs to be run before the View can be displayed properly and
+     * initializes all the necessary ui components.
+     *
+     * @param gaerungsprozessschritt Gärungsprozesschritt the Überprüfung should be created for
+     * @param charge                 The Charge that the Überpüfung should be created for
+     */
+    public void initializeData(Gaerungsprozessschritt gaerungsprozessschritt, Charge charge) {
+        this.gaerungsprozessschritt = gaerungsprozessschritt;
+        this.charge = charge;
+
+        initializeComponents();
+
+    }
+
+    private void initializeComponents() {
+        double sollAlkohol = gaerungsprozessschritt.getSollAlkohol();
+        int sollZucker = gaerungsprozessschritt.getSollZucker();
+        double sollTemperatur = gaerungsprozessschritt.getSollTemperatur();
+        alkoholSoll.setText(sollAlkohol + " Vol-%");
+        zuckerSoll.setText(sollZucker + " g/l");
+        temperaturSoll.setText(sollTemperatur + " °C");
+
+        chargeLabel.setText(App.getResourceBundle().getString("charge") + ": " + charge.getId());
+        gaerungsprozessschrittLabel.setText(App.getResourceBundle().getString("gaerungsprozessschritt") + ": " + gaerungsprozessschritt.getSchritt());
+
+        Wein wein = charge.getWein();
+        weinLabel.setText(App.getResourceBundle().getString("wein") + ": " + wein.getBeschreibung());
+        weinartLabel.setText(App.getResourceBundle().getString("weinart") + ": " + wein.getWeinart());
+
+        Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen
+                = gaerungsprozessschritt.getHefenPivot();
+
+        gaerungsprozessschritteHasHefen.forEach(g ->
+                hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge())));
     }
 }

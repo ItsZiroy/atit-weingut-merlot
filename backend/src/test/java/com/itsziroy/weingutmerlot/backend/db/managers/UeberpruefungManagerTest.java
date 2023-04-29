@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UeberpruefungManagerTest {
 
-    static Ueberpruefung ueberpruefung1, ueberpruefung2;
     static Charge charge;
     static Gaerungsprozessschritt[] gaerungsprozessschritte;
-
+    static Ueberpruefung ueberpruefung1, ueberpruefung2;
     static UebererpruefungService ueberpruefungService;
+
     // Idea: Gärungsprozess (including Wein)-> Gärungsprozessschritte -> Charge -> Überprüfungen
     @BeforeAll
     static void setUp() {
@@ -78,6 +78,29 @@ class UeberpruefungManagerTest {
     }
 
     @Test
+    void getCurrentUeberpruefung() {
+        Ueberpruefung actual = ueberpruefungService.getCurrentUeberpruefung(charge);
+        Ueberpruefung expected = ueberpruefung2;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getNextUeberpruefungDateAcceptedNextStep() {
+        Date actual = ueberpruefungService.getNextUeberpruefungDate(ueberpruefung2);
+        // Date of ueberpruefung1 is 25.04.2023, Gärungsprozesschritt 3 shall be tested again after 10 days
+        Date expected = new Date(2023, Calendar.MAY, 5);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getNextUeberpruefungDateDeclinedNextStep() {
+        Date actual = ueberpruefungService.getNextUeberpruefungDate(ueberpruefung1);
+        // Date of ueberpruefung2 is 20.04.2023, Gärungsprozesschritt 3 shall be tested again after 5 days
+        Date expected = new Date(2023, Calendar.APRIL, 25);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void getUpcomingUeberpruefungen() {
         // actual
         List<UpcomingUeberpruefung> actualList = ueberpruefungService.getUpcomingUeberpruefungen();
@@ -92,39 +115,17 @@ class UeberpruefungManagerTest {
     }
 
     @Test
-    void getNextUeberpruefungDateAcceptedNextStep() {
-       Date actual = ueberpruefungService.getNextUeberpruefungDate(ueberpruefung2);
-       // Date of ueberpruefung1 is 25.04.2023, Gärungsprozesschritt 3 shall be tested again after 10 days
-       Date expected = new Date(2023, Calendar.MAY, 5);
-       assertEquals(expected, actual);
-    }
-    @Test
-    void getNextUeberpruefungDateDeclinedNextStep() {
-        Date actual = ueberpruefungService.getNextUeberpruefungDate(ueberpruefung1);
-        // Date of ueberpruefung2 is 20.04.2023, Gärungsprozesschritt 3 shall be tested again after 5 days
-        Date expected =  new Date(2023, Calendar.APRIL, 25);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void getCurrentUeberpruefung() {
-        Ueberpruefung actual = ueberpruefungService.getCurrentUeberpruefung(charge);
-        Ueberpruefung expected = ueberpruefung2;
-        assertEquals(expected, actual);
+    void validateActualAlcoholNotNegative() {
+        Ueberpruefung ueberpruefung = new Ueberpruefung();
+        ueberpruefung.setIstZucker(200);
+        ueberpruefung.setIstAlkohol(-1.0);
+        assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
     }
 
     @Test
     void validateActualSugarNotNegative() {
         Ueberpruefung ueberpruefung = new Ueberpruefung();
         ueberpruefung.setIstZucker(-1);
-        assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
-    }
-
-    @Test
-    void validateActualAlcoholNotNegative() {
-        Ueberpruefung ueberpruefung = new Ueberpruefung();
-        ueberpruefung.setIstZucker(200);
-        ueberpruefung.setIstAlkohol(-1.0);
         assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
     }
 
@@ -138,6 +139,13 @@ class UeberpruefungManagerTest {
     }
 
     @Test
+    void validateHasHefenAdaptionNotNegative() {
+        UeberpruefungenHasHefen ueberpruefungenHasHefen = new UeberpruefungenHasHefen();
+        ueberpruefungenHasHefen.setAnpassung(-1.0);
+        assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validateHasHefen(ueberpruefungenHasHefen));
+    }
+
+    @Test
     void validateNextDateNotBeforeToday() {
         Ueberpruefung ueberpruefung = new Ueberpruefung();
         ueberpruefung.setIstZucker(200);
@@ -146,7 +154,7 @@ class UeberpruefungManagerTest {
         // Date must be before nextDate, so we test whether both dates are before the current date
         // otherwise it would be a duplication of the test validateNextDateNotBeforeUeberpruefungDate
         ueberpruefung.setDatum(new Date(98, Calendar.DECEMBER, 24));
-        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY,1));
+        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY, 1));
         assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
     }
 
@@ -157,7 +165,7 @@ class UeberpruefungManagerTest {
         ueberpruefung.setIstAlkohol(5.0);
         ueberpruefung.setAnpassungZucker(5);
         ueberpruefung.setDatum(new Date(2023, Calendar.APRIL, 29));
-        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY,1));
+        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY, 1));
         assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
     }
 
@@ -168,15 +176,8 @@ class UeberpruefungManagerTest {
         ueberpruefung.setIstAlkohol(5.0);
         ueberpruefung.setAnpassungZucker(5);
         ueberpruefung.setDatum(new Date(99, Calendar.JANUARY, 1));
-        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY,2));
+        ueberpruefung.setNextDate(new Date(99, Calendar.JANUARY, 2));
         ueberpruefung.setNaechsterSchritt(true);
         assertThrows(IllegalArgumentException.class, () -> ueberpruefungService.validate(ueberpruefung));
-    }
-
-    @Test
-    void validateHasHefenAdaptionNotNegative() {
-        UeberpruefungenHasHefen ueberpruefungenHasHefen = new UeberpruefungenHasHefen();
-        ueberpruefungenHasHefen.setAnpassung(-1.0);
-        assertThrows(IllegalArgumentException.class, ()-> ueberpruefungService.validateHasHefen(ueberpruefungenHasHefen));
     }
 }

@@ -10,22 +10,18 @@ import java.util.Set;
 @Entity
 @Table(name = "hefen")
 public class Hefe {
+    @Column(name = "art", nullable = false)
+    private String art;
+    @OneToMany(mappedBy = "hefe")
+    private Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen = new LinkedHashSet<>();
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "art", nullable = false)
-    private String art;
-
     @Column(name = "temperatur", nullable = false)
     private Double temperatur;
-
     @OneToMany(mappedBy = "hefe")
     private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "hefe")
-    private Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen = new LinkedHashSet<>();
 
     public Set<GaerungsprozessschritteHasHefen> getGaerungsprozessschrittePivot() {
         return gaerungsprozessschritteHasHefen;
@@ -33,6 +29,10 @@ public class Hefe {
 
     public void setGaerungsprozessschrittePivot(Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen) {
         this.gaerungsprozessschritteHasHefen = gaerungsprozessschritteHasHefen;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Set<UeberpruefungenHasHefen> getUeberprufungenPivot() {
@@ -43,9 +43,9 @@ public class Hefe {
         this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
     }
 
-
-    public Integer getId() {
-        return id;
+    @Override
+    public String toString() {
+        return getArt() + " (" + getTemperatur() + "°C)";
     }
 
     public String getArt() {
@@ -62,11 +62,6 @@ public class Hefe {
 
     public void setTemperatur(Double temperatur) {
         this.temperatur = temperatur;
-    }
-
-    @Override
-    public String toString() {
-        return getArt() + " (" + getTemperatur() + "°C)";
     }
 
 }

@@ -17,6 +17,26 @@ import java.util.List;
 public class ChargeManager implements ChargeService {
 
 
+    /**
+     * Gets and returns all available Chargen from the DB.
+     *
+     * @return List of Chargen
+     */
+    @Override
+    public List<Charge> getAll() {
+        return DB.getEntityManager().createQuery("select c from Charge c", Charge.class).getResultList();
+    }
+
+    /**
+     * Gets and returns a single Charge by its id.
+     *
+     * @return Charge
+     */
+    @Override
+    public Charge getOne(int id) {
+        return DB.getEntityManager().find(Charge.class, id);
+    }
+
     @Override
     public Gaerungsprozessschritt getCurrentGaerungsprozessschritt(Charge charge) {
         UebererpruefungService uebererpruefungService = DB.getUeberpruefungManager();
@@ -29,10 +49,10 @@ public class ChargeManager implements ChargeService {
         // Get the current Gärungsprozessschritt
         Gaerungsprozessschritt currentGaerungsprozessschritt;
         // if the last Überprüfung was accepted
-        if(currentUeberpruefung.isNaechsterSchritt()){
+        if (currentUeberpruefung.isNaechsterSchritt()) {
             // the current Gärungsprozessschritt is one higher than the last one
             currentGaerungsprozessschritt = last.getNextProzessschritt();
-        } else{
+        } else {
             // otherwise the current Gärungsprozessschritt is still the same
             currentGaerungsprozessschritt = last;
         }
@@ -49,23 +69,5 @@ public class ChargeManager implements ChargeService {
         DB.getEntityManager().getTransaction().begin();
         DB.getEntityManager().persist(charge);
         DB.getEntityManager().getTransaction().commit();
-    }
-
-    /**
-     * Gets and returns all available Chargen from the DB.
-     * @return List of Chargen
-     */
-    @Override
-    public List<Charge> getAll() {
-        return DB.getEntityManager().createQuery("select c from Charge c", Charge.class).getResultList();
-    }
-
-    /**
-     * Gets and returns a single Charge by its id.
-     * @return Charge
-     */
-    @Override
-    public Charge getOne(int id) {
-        return DB.getEntityManager().find(Charge.class, id);
     }
 }

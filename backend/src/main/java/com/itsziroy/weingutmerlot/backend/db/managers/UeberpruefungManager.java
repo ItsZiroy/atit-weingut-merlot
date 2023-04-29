@@ -21,6 +21,26 @@ import java.util.*;
  */
 public class UeberpruefungManager implements UebererpruefungService {
 
+    /**
+     * Gets and returns all available Überprüfungen from the DB.
+     *
+     * @return List of Überprüfungen
+     */
+    @Override
+    public List<Ueberpruefung> getAll() {
+        return DB.getEntityManager().createQuery("select u from Ueberpruefung u", Ueberpruefung.class).getResultList();
+    }
+
+    /**
+     * Gets and returns a single Überprüfung by its id.
+     *
+     * @return Überprüfung
+     */
+    @Override
+    public Ueberpruefung getOne(int id) {
+        return DB.getEntityManager().find(Ueberpruefung.class, id);
+    }
+
     @Override
     public List<UpcomingUeberpruefung> getUpcomingUeberpruefungen() {
         /*
@@ -117,26 +137,6 @@ public class UeberpruefungManager implements UebererpruefungService {
         DB.getEntityManager().getTransaction().commit();
     }
 
-    /**
-     * Gets and returns all available Überprüfungen from the DB.
-     *
-     * @return List of Überprüfungen
-     */
-    @Override
-    public List<Ueberpruefung> getAll() {
-        return DB.getEntityManager().createQuery("select u from Ueberpruefung u", Ueberpruefung.class).getResultList();
-    }
-
-    /**
-     * Gets and returns a single Überprüfung by its id.
-     *
-     * @return Überprüfung
-     */
-    @Override
-    public Ueberpruefung getOne(int id) {
-        return DB.getEntityManager().find(Ueberpruefung.class, id);
-    }
-
     @Override
     public void validate(Ueberpruefung ueberpruefung) throws IllegalArgumentException {
         if (ueberpruefung.getIstZucker() < 0) {
@@ -148,15 +148,15 @@ public class UeberpruefungManager implements UebererpruefungService {
         if (ueberpruefung.getAnpassungZucker() < 0) {
             throw new IllegalArgumentException("Sugar adaption value cannot be negative");
         }
-        if(ueberpruefung.getNextDate() != null) {
+        if (ueberpruefung.getNextDate() != null) {
             if (ueberpruefung.getNextDate().before(ueberpruefung.getDatum())) {
                 throw new IllegalArgumentException("Next date cannot be before the date of the Ueberpruefung");
             }
-            if (ueberpruefung.getNextDate().before(Date.from(Instant.now()))){
+            if (ueberpruefung.getNextDate().before(Date.from(Instant.now()))) {
                 throw new IllegalArgumentException("Next date cannot be before current date");
             }
             // When the next step is enabled, there must not be a next date
-            if (ueberpruefung.isNaechsterSchritt()){
+            if (ueberpruefung.isNaechsterSchritt()) {
                 throw new IllegalArgumentException("When the next step is enabled, there must not be a next date");
             }
         }

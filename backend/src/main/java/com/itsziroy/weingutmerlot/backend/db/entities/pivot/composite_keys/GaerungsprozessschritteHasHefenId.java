@@ -33,17 +33,17 @@ public class GaerungsprozessschritteHasHefenId implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(gaerungsprozessschritteId, hefenId);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         GaerungsprozessschritteHasHefenId entity = (GaerungsprozessschritteHasHefenId) o;
         return Objects.equals(this.gaerungsprozessschritteId, entity.gaerungsprozessschritteId) &&
                 Objects.equals(this.hefenId, entity.hefenId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(gaerungsprozessschritteId, hefenId);
     }
 
 }

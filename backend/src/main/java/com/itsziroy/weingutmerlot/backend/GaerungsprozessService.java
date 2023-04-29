@@ -6,6 +6,7 @@ import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 public interface GaerungsprozessService extends Service<Gaerungsprozess> {
     /**
      * Returns the last Gaerungsprozessschritt of the Gaerungsprozess
+     *
      * @param gaerungsprozess Gaerungsprozess
      * @return last Gaerungsprozessschritt
      */

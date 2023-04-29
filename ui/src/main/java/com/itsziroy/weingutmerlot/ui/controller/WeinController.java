@@ -1,9 +1,9 @@
 package com.itsziroy.weingutmerlot.ui.controller;
 
-import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
+import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Wein;
 import com.itsziroy.weingutmerlot.backend.db.entities.Weinart;
-import com.itsziroy.weingutmerlot.backend.db.DB;
+import com.itsziroy.weingutmerlot.backend.db.entities.enums.Suessegrad;
 import com.itsziroy.weingutmerlot.ui.App;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXSlider;
@@ -21,15 +21,9 @@ public class WeinController {
     @FXML
     private MFXTextField descriptionInput;
     @FXML
-    private MFXFilterComboBox<Weinart> weinartCombobox;
-    @FXML
     private MFXFilterComboBox<Suessegrad> suessegradCombobox;
-
     @FXML
-    public void initialize() {
-        this.initializeWeinartComboxbox();
-        this.initializeSuessegradCombobox();
-    }
+    private MFXFilterComboBox<Weinart> weinartCombobox;
 
     public void handleCreateButtonPress() {
         Wein wein = new Wein();
@@ -53,6 +47,12 @@ public class WeinController {
             App.error(App.getResourceBundle().getString("errorDatenbank"));
         }
 
+    }
+
+    @FXML
+    public void initialize() {
+        this.initializeWeinartComboxbox();
+        this.initializeSuessegradCombobox();
     }
 
     private void initializeWeinartComboxbox() {

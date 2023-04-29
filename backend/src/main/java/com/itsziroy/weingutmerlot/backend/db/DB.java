@@ -1,6 +1,6 @@
 package com.itsziroy.weingutmerlot.backend.db;
 
-import com.itsziroy.weingutmerlot.backend.*;
+import com.itsziroy.weingutmerlot.backend.UebererpruefungService;
 import com.itsziroy.weingutmerlot.backend.db.managers.ChargeManager;
 import com.itsziroy.weingutmerlot.backend.db.managers.GaerungsprozessManager;
 import com.itsziroy.weingutmerlot.backend.db.managers.HefeManager;
@@ -17,88 +17,90 @@ import jakarta.persistence.PersistenceException;
  */
 public final class DB {
 
-  private DB () {}
-  private static String persistenceUnitName = "default";
-  private static EntityManager entityManager = null;
+    private static final ChargeManager chargeManager = new ChargeManager();
+    private static final GaerungsprozessManager gaerungsprozessManager = new GaerungsprozessManager();
+    private static final HefeManager hefeManager = new HefeManager();
+    private static final UeberpruefungManager ueberpruefungManager = new UeberpruefungManager();
+    private static EntityManager entityManager = null;
+    private static String persistenceUnitName = "default";
 
-  private static final UeberpruefungManager ueberpruefungManager = new UeberpruefungManager();
-  private static final HefeManager hefeManager = new HefeManager();
-  private static final ChargeManager chargeManager = new ChargeManager();
-  private static final GaerungsprozessManager gaerungsprozessManager = new GaerungsprozessManager();
-  /**
-   * Initializes a new EntityManager
-   *
-   * @throws PersistenceException An error with persistence config
-   */
-  private static void initialize() throws PersistenceException {
-    EntityManagerFactory entityManagerFactory =
-            Persistence.createEntityManagerFactory(persistenceUnitName);
-
-    entityManager = entityManagerFactory.createEntityManager();
-  }
-
-  /**
-   * Sets the persistence unit and reinitialized the DB connector.
-   *
-   * @param name Name of persistence unit
-   * @throws PersistenceException An error with persistence config
-   */
-  public static void setPersistenceUnit(String name) throws PersistenceException {
-    persistenceUnitName = name;
-    initialize();
-  }
-
-  /**
-   * @return Persistence Unit Name
-   */
-  public static String getPersistenceUnitName() {
-    return persistenceUnitName;
-  }
-
-  /**
-   * Gets the entity manager for the current persistence unit
-   *
-   * @return EntityManager
-   * @throws PersistenceException An error with persistence config
-   */
-  public static EntityManager getEntityManager() throws PersistenceException {
-    if(entityManager == null) {
-      initialize();
+    private DB() {
     }
-    return entityManager;
-  }
 
-  /**
-   * A shorthand functions that combines
-   * {@link #setPersistenceUnit(String)} and {@link #getEntityManager()}
-   * to create an entity manager for a specific persistence unit. This
-   * is especially helpful for creating tests.
-   *
-   * @param p_unit_name Persistence Unit name
-   * @return Entity Manager
-   * @throws PersistenceException An error with persistence config
-   */
-  public static EntityManager getEntityManager(String p_unit_name) throws PersistenceException {
-    if(entityManager == null || !p_unit_name.equals(persistenceUnitName)) {
-      setPersistenceUnit(p_unit_name);
+    public static ChargeManager getChargeManager() {
+        return chargeManager;
     }
-    return entityManager;
-  }
 
-  public static UebererpruefungService getUeberpruefungManager() {
-    return ueberpruefungManager;
-  }
+    /**
+     * A shorthand functions that combines
+     * {@link #setPersistenceUnit(String)} and {@link #getEntityManager()}
+     * to create an entity manager for a specific persistence unit. This
+     * is especially helpful for creating tests.
+     *
+     * @param p_unit_name Persistence Unit name
+     * @return Entity Manager
+     * @throws PersistenceException An error with persistence config
+     */
+    public static EntityManager getEntityManager(String p_unit_name) throws PersistenceException {
+        if (entityManager == null || !p_unit_name.equals(persistenceUnitName)) {
+            setPersistenceUnit(p_unit_name);
+        }
+        return entityManager;
+    }
 
-  public static ChargeManager getChargeManager() {
-    return chargeManager;
-  }
+    /**
+     * Sets the persistence unit and reinitialized the DB connector.
+     *
+     * @param name Name of persistence unit
+     * @throws PersistenceException An error with persistence config
+     */
+    public static void setPersistenceUnit(String name) throws PersistenceException {
+        persistenceUnitName = name;
+        initialize();
+    }
 
-  public static HefeManager getHefeManager() {
-    return hefeManager;
-  }
+    /**
+     * Initializes a new EntityManager
+     *
+     * @throws PersistenceException An error with persistence config
+     */
+    private static void initialize() throws PersistenceException {
+        EntityManagerFactory entityManagerFactory =
+                Persistence.createEntityManagerFactory(persistenceUnitName);
 
-  public static GaerungsprozessManager getGaerungsprozessManager() {
-    return gaerungsprozessManager;
-  }
+        entityManager = entityManagerFactory.createEntityManager();
+    }
+
+    /**
+     * Gets the entity manager for the current persistence unit
+     *
+     * @return EntityManager
+     * @throws PersistenceException An error with persistence config
+     */
+    public static EntityManager getEntityManager() throws PersistenceException {
+        if (entityManager == null) {
+            initialize();
+        }
+        return entityManager;
+    }
+
+    public static GaerungsprozessManager getGaerungsprozessManager() {
+        return gaerungsprozessManager;
+    }
+
+    public static HefeManager getHefeManager() {
+        return hefeManager;
+    }
+
+    /**
+     * @return Persistence Unit Name
+     */
+    public static String getPersistenceUnitName() {
+        return persistenceUnitName;
+    }
+
+    public static UebererpruefungService getUeberpruefungManager() {
+        return ueberpruefungManager;
+    }
 
 }

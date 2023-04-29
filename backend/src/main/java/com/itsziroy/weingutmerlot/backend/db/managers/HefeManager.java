@@ -10,6 +10,7 @@ public class HefeManager implements HefeService {
 
     /**
      * Gets and returns all available Hefen from the DB.
+     *
      * @return List of Hefen
      */
     @Override
@@ -19,6 +20,7 @@ public class HefeManager implements HefeService {
 
     /**
      * Gets and returns a single Hefe by its id.
+     *
      * @return Hefe
      */
     @Override

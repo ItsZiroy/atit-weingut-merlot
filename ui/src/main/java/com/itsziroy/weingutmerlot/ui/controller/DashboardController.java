@@ -24,40 +24,26 @@ import java.util.Locale;
 public class DashboardController {
 
     @FXML
-    private Label noUeberpruefungLabel;
+    private MFXComboBox<Locale> languageSelection;
     @FXML
     private MFXListView<ChargeButton> listView;
     @FXML
-    private MFXComboBox<Locale> languageSelection;
+    private Label noUeberpruefungLabel;
+
+    public void handleLanguageChange() {
+        Locale selection = languageSelection.getSelectionModel().getSelectedItem();
+
+        if (selection != App.getLocale()) {
+            App.setLocale(selection);
+            App.setView(View.DASHBOARD);
+        }
+    }
 
     @FXML
     public void initialize() {
 
         initalizeUpcomingUeberpruefungen();
         initializeLanguageSelection();
-    }
-
-    private void initializeLanguageSelection() {
-        ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
-        languageSelection.setItems(options);
-        languageSelection.getSelectionModel().selectItem(App.getLocale());
-
-        // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
-        languageSelection.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(Locale locale) {
-                if (locale != null) {
-                    return locale.getDisplayLanguage();
-                }
-                return "";
-            }
-
-            @Override
-            public Locale fromString(String string) {
-                return new Locale.Builder().setLanguage(string).build();
-            }
-        });
-
     }
 
     private void initalizeUpcomingUeberpruefungen() {
@@ -85,12 +71,26 @@ public class DashboardController {
         });
     }
 
-    public void handleLanguageChange() {
-        Locale selection = languageSelection.getSelectionModel().getSelectedItem();
+    private void initializeLanguageSelection() {
+        ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
+        languageSelection.setItems(options);
+        languageSelection.getSelectionModel().selectItem(App.getLocale());
 
-        if (selection != App.getLocale()) {
-            App.setLocale(selection);
-            App.setView(View.DASHBOARD);
-        }
+        // The Converter transforms the locale so a proper name for the locale is displayed in the format English, German, French,...
+        languageSelection.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Locale locale) {
+                if (locale != null) {
+                    return locale.getDisplayLanguage();
+                }
+                return "";
+            }
+
+            @Override
+            public Locale fromString(String string) {
+                return new Locale.Builder().setLanguage(string).build();
+            }
+        });
+
     }
 }

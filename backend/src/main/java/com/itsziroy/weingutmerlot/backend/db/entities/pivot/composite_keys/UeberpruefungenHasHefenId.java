@@ -10,19 +10,10 @@ import java.util.Objects;
 @Embeddable
 public class UeberpruefungenHasHefenId implements Serializable {
     private static final long serialVersionUID = 6567144087401199505L;
-    @Column(name = "ueberpruefungen_id", nullable = false)
-    private Integer ueberpruefungenId;
-
     @Column(name = "hefen_id", nullable = false)
     private Integer hefenId;
-
-    public Integer getUeberpruefungenId() {
-        return ueberpruefungenId;
-    }
-
-    public void setUeberpruefungenId(Integer ueberpruefungenId) {
-        this.ueberpruefungenId = ueberpruefungenId;
-    }
+    @Column(name = "ueberpruefungen_id", nullable = false)
+    private Integer ueberpruefungenId;
 
     public Integer getHefenId() {
         return hefenId;
@@ -32,6 +23,19 @@ public class UeberpruefungenHasHefenId implements Serializable {
         this.hefenId = hefenId;
     }
 
+    public Integer getUeberpruefungenId() {
+        return ueberpruefungenId;
+    }
+
+    public void setUeberpruefungenId(Integer ueberpruefungenId) {
+        this.ueberpruefungenId = ueberpruefungenId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hefenId, ueberpruefungenId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,11 +43,6 @@ public class UeberpruefungenHasHefenId implements Serializable {
         UeberpruefungenHasHefenId entity = (UeberpruefungenHasHefenId) o;
         return Objects.equals(this.hefenId, entity.hefenId) &&
                 Objects.equals(this.ueberpruefungenId, entity.ueberpruefungenId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(hefenId, ueberpruefungenId);
     }
 
 }

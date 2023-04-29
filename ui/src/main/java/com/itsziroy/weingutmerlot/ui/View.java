@@ -7,11 +7,10 @@ public enum View {
     UEBERPRUEFUNG("/views/create/ueberpruefung.fxml"),
     ERROR("/views/Error.fxml");
 
-    private final String name;
-
     View(String name) {
         this.name = name;
     }
+    private final String name;
 
     @Override
     public String toString() {
