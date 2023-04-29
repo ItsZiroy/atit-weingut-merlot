@@ -5,24 +5,24 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "agragebiete")
 public class Agragebiet {
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(name = "size", nullable = false)
-  private Integer size;
+    @Column(name = "size", nullable = false)
+    private Integer size;
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public Integer getSize() {
-    return size;
-  }
+    public Integer getSize() {
+        return size;
+    }
 
-  public void setSize(Integer size) {
-    this.size = size;
-  }
+    public void setSize(Integer size) {
+        this.size = size;
+    }
 
 }

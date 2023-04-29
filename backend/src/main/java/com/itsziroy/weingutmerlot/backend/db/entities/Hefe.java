@@ -1,57 +1,67 @@
 package com.itsziroy.weingutmerlot.backend.db.entities;
 
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.GaerungsprozessschritteHasHefen;
+import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHefen;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "hefen")
 public class Hefe {
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Column(name = "art", nullable = false)
+    private String art;
+    @OneToMany(mappedBy = "hefe")
+    private Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen = new LinkedHashSet<>();
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "temperatur", nullable = false)
+    private Double temperatur;
+    @OneToMany(mappedBy = "hefe")
+    private Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen = new LinkedHashSet<>();
 
-  @Column(name = "art", nullable = false)
-  private String art;
+    public Set<GaerungsprozessschritteHasHefen> getGaerungsprozessschrittePivot() {
+        return gaerungsprozessschritteHasHefen;
+    }
 
-  @Column(name = "temperatur", nullable = false)
-  private Integer temperatur;
+    public void setGaerungsprozessschrittePivot(Set<GaerungsprozessschritteHasHefen> gaerungsprozessschritteHasHefen) {
+        this.gaerungsprozessschritteHasHefen = gaerungsprozessschritteHasHefen;
+    }
 
-  @ManyToMany
-  @JoinTable(
-          name = "gaerungsprozessschritte_has_hefen",
-          joinColumns = {@JoinColumn(name = "hefen_id")},
-          inverseJoinColumns = {@JoinColumn(name = "gaerungsprozessschritte_id")}
-  )
-  private Set<Gaerungsprozessschritt> gaerungsprozessschritte;
+    public Integer getId() {
+        return id;
+    }
 
-  @ManyToMany
-  @JoinTable(
-          name = "ueberpruefungen_has_hefen",
-          joinColumns = {@JoinColumn(name = "hefen_id")},
-          inverseJoinColumns = {@JoinColumn(name = "ueberpruefungen_id")}
-  )
-  private Set<Ueberpruefung> ueberpruefungen;
+    public Set<UeberpruefungenHasHefen> getUeberprufungenPivot() {
+        return ueberpruefungenHasHefen;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public void setUeberpruefungenPivot(Set<UeberpruefungenHasHefen> ueberpruefungenHasHefen) {
+        this.ueberpruefungenHasHefen = ueberpruefungenHasHefen;
+    }
 
-  public String getArt() {
-    return art;
-  }
+    @Override
+    public String toString() {
+        return getArt() + " (" + getTemperatur() + "°C)";
+    }
 
-  public void setArt(String art) {
-    this.art = art;
-  }
+    public String getArt() {
+        return art;
+    }
 
-  public Integer getTemperatur() {
-    return temperatur;
-  }
+    public void setArt(String art) {
+        this.art = art;
+    }
 
-  public void setTemperatur(Integer temperatur) {
-    this.temperatur = temperatur;
-  }
+    public Double getTemperatur() {
+        return temperatur;
+    }
+
+    public void setTemperatur(Double temperatur) {
+        this.temperatur = temperatur;
+    }
 
 }

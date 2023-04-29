@@ -7,32 +7,32 @@ import java.util.Set;
 @Entity
 @Table(name = "weinreben")
 public class Weinrebe {
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-  @ManyToMany
-  @JoinTable(
-          name = "weinarten_has_weinreben",
-          joinColumns = {@JoinColumn(name = "weinreben_id")},
-          inverseJoinColumns = {@JoinColumn(name = "weinarten_id")}
-  )
-  private Set<Weinart> weinarten;
+    @ManyToMany
+    @JoinTable(
+            name = "weinarten_has_weinreben",
+            joinColumns = {@JoinColumn(name = "weinreben_id")},
+            inverseJoinColumns = {@JoinColumn(name = "weinarten_id")}
+    )
+    private Set<Weinart> weinarten;
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

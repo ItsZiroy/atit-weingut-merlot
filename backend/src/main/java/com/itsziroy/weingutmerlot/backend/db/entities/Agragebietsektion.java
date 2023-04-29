@@ -5,48 +5,45 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "agragebietsektionen")
 public class Agragebietsektion {
-  @Id
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "agragebiet_id", nullable = false)
+    private Agragebiet agragebiet;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "size", nullable = false)
+    private Integer size;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "weinrebe_id", nullable = false)
+    private Weinrebe weinrebe;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "agragebiet_id", nullable = false)
-  private Agragebiet agragebiet;
+    public Agragebiet getAgragebiet() {
+        return agragebiet;
+    }
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "weinrebe_id", nullable = false)
-  private Weinrebe weinrebe;
+    public void setAgragebiet(Agragebiet agragebiet) {
+        this.agragebiet = agragebiet;
+    }
 
-  @Column(name = "size", nullable = false)
-  private Integer size;
+    public Integer getId() {
+        return id;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getSize() {
+        return size;
+    }
 
-  public Agragebiet getAgragebiet() {
-    return agragebiet;
-  }
+    public void setSize(Integer size) {
+        this.size = size;
+    }
 
-  public void setAgragebiet(Agragebiet agragebiet) {
-    this.agragebiet = agragebiet;
-  }
+    public Weinrebe getWeinrebe() {
+        return weinrebe;
+    }
 
-  public Weinrebe getWeinrebe() {
-    return weinrebe;
-  }
-
-  public void setWeinrebe(Weinrebe weinrebe) {
-    this.weinrebe = weinrebe;
-  }
-
-  public Integer getSize() {
-    return size;
-  }
-
-  public void setSize(Integer size) {
-    this.size = size;
-  }
+    public void setWeinrebe(Weinrebe weinrebe) {
+        this.weinrebe = weinrebe;
+    }
 
 }

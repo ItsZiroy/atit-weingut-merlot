@@ -32,7 +32,7 @@ git clone https://github.com/ItsZiroy/atit-weingut-merlot.git
 cd atit-weingut-merlot
 
 mvn clean install
-# If you don't want or don't need to run dependency vulnrability checks you
+# If you don't want or don't need to run dependency vulnerability checks you
 # can skip them:
 mvn clean install --Ddependency-check.skip=true
 ```
