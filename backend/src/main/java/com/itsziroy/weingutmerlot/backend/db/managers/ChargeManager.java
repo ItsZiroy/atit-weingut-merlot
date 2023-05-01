@@ -24,6 +24,7 @@ public class ChargeManager implements ChargeService {
      */
     @Override
     public List<Charge> getAll() {
+        LogManager.getLogger().debug("Getting all Chargen");
         return DB.getEntityManager().createQuery("select c from Charge c", Charge.class).getResultList();
     }
 
@@ -34,11 +35,14 @@ public class ChargeManager implements ChargeService {
      */
     @Override
     public Charge getOne(int id) {
+        LogManager.getLogger().debug("Getting Charge " + id);
         return DB.getEntityManager().find(Charge.class, id);
     }
 
     @Override
     public Gaerungsprozessschritt getCurrentGaerungsprozessschritt(Charge charge) {
+        LogManager.getLogger().debug("Getting current Gaerungsprozessschritt for Charge " + charge.getId());
+
         UebererpruefungService uebererpruefungService = DB.getUeberpruefungManager();
 
         Ueberpruefung currentUeberpruefung = uebererpruefungService.getCurrentUeberpruefung(charge);

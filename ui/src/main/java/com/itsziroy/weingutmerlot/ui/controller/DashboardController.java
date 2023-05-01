@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.StringConverter;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -34,6 +35,7 @@ public class DashboardController {
         Locale selection = languageSelection.getSelectionModel().getSelectedItem();
 
         if (selection != App.getLocale()) {
+            LogManager.getLogger().info("Setting display language to " + selection.getDisplayLanguage());
             App.setLocale(selection);
             App.setView(View.DASHBOARD);
         }
@@ -41,7 +43,6 @@ public class DashboardController {
 
     @FXML
     public void initialize() {
-
         initalizeUpcomingUeberpruefungen();
         initializeLanguageSelection();
     }

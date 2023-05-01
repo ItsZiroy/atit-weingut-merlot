@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceException;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * This class is meant to serve as the general entry point for all
@@ -37,13 +38,14 @@ public final class DB {
      * to create an entity manager for a specific persistence unit. This
      * is especially helpful for creating tests.
      *
-     * @param p_unit_name Persistence Unit name
+     * @param pUnitName Persistence Unit name
      * @return Entity Manager
      * @throws PersistenceException An error with persistence config
      */
-    public static EntityManager getEntityManager(String p_unit_name) throws PersistenceException {
-        if (entityManager == null || !p_unit_name.equals(persistenceUnitName)) {
-            setPersistenceUnit(p_unit_name);
+    public static EntityManager getEntityManager(String pUnitName) throws PersistenceException {
+        LogManager.getLogger().debug("Getting Entity Manager for Persistence Unit " + pUnitName);
+        if (entityManager == null || !pUnitName.equals(persistenceUnitName)) {
+            setPersistenceUnit(pUnitName);
         }
         return entityManager;
     }
@@ -55,6 +57,7 @@ public final class DB {
      * @throws PersistenceException An error with persistence config
      */
     public static void setPersistenceUnit(String name) throws PersistenceException {
+        LogManager.getLogger().debug("Setting persistence Unit to " + name);
         persistenceUnitName = name;
         initialize();
     }
@@ -78,6 +81,7 @@ public final class DB {
      * @throws PersistenceException An error with persistence config
      */
     public static EntityManager getEntityManager() throws PersistenceException {
+        LogManager.getLogger().debug("Getting Entity Manager for standard persistence Unit");
         if (entityManager == null) {
             initialize();
         }

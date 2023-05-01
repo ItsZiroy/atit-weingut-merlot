@@ -8,14 +8,14 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <!-- Mariadb:
-            <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://127.0.0.1:3306/weingutmerlot" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://127.0.0.1:3306/weingutmerlot" />
             -->
 
-            <property name="javax.persistence.jdbc.driver" value="mysql.mysql-connector-java.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/weingutmerlot" />
-            <property name="javax.persistence.jdbc.user" value="weingut_merlot" />
-            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/weingutmerlot" />
+            <property name="jakarta.persistence.jdbc.user" value="weingut_merlot" />
+            <property name="jakarta.persistence.jdbc.password" value="" />
         </properties>
     </persistence-unit>
 </persistence>

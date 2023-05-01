@@ -3,6 +3,7 @@ package com.itsziroy.weingutmerlot.backend.db.managers;
 import com.itsziroy.weingutmerlot.backend.HefeService;
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.backend.db.entities.Hefe;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class HefeManager implements HefeService {
      */
     @Override
     public List<Hefe> getAll() {
+        LogManager.getLogger().debug("Getting all Hefen");
         return DB.getEntityManager().createQuery("select h from Hefe h", Hefe.class).getResultList();
     }
 
@@ -25,6 +27,7 @@ public class HefeManager implements HefeService {
      */
     @Override
     public Hefe getOne(int id) {
+        LogManager.getLogger().debug("Getting Hefe " + id);
         return DB.getEntityManager().find(Hefe.class, id);
     }
 }

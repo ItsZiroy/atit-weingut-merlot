@@ -13,8 +13,8 @@
 
         <RollingFile
                 name="File"
-                fileName="${LOG_DIR}/discount.log"
-                filePattern="${LOG_DIR}/discount.%d{yyyy_MM_dd_HH_mm_ss}_%i.log"
+                fileName="${LOG_DIR}/backend.log"
+                filePattern="${LOG_DIR}/backend.%d{yyyy_MM_dd_HH_mm_ss}_%i.log"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>

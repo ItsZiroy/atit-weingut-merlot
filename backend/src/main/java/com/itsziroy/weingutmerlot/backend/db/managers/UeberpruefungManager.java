@@ -12,6 +12,7 @@ import com.itsziroy.weingutmerlot.backend.db.entities.pivot.UeberpruefungenHasHe
 import com.itsziroy.weingutmerlot.backend.helper.UpcomingUeberpruefung;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
+import org.apache.logging.log4j.LogManager;
 
 import java.time.Instant;
 import java.util.*;
@@ -28,6 +29,7 @@ public class UeberpruefungManager implements UebererpruefungService {
      */
     @Override
     public List<Ueberpruefung> getAll() {
+        LogManager.getLogger().debug("Getting all Überprüfungen");
         return DB.getEntityManager().createQuery("select u from Ueberpruefung u", Ueberpruefung.class).getResultList();
     }
 
@@ -38,11 +40,13 @@ public class UeberpruefungManager implements UebererpruefungService {
      */
     @Override
     public Ueberpruefung getOne(int id) {
+        LogManager.getLogger().debug("Getting Überprüfung " + id);
         return DB.getEntityManager().find(Ueberpruefung.class, id);
     }
 
     @Override
     public List<UpcomingUeberpruefung> getUpcomingUeberpruefungen() {
+        LogManager.getLogger().debug("Getting next Upcoming Ueberpruefungen.");
         /*
          * Overview of the functionality:
          *
@@ -73,6 +77,7 @@ public class UeberpruefungManager implements UebererpruefungService {
 
     @Override
     public Date getNextUeberpruefungDate(Ueberpruefung ueberpruefung) {
+        LogManager.getLogger().debug("Getting next Ueberprueung Date for Ueberpruefung " + ueberpruefung.getId());
         if (!ueberpruefung.isNaechsterSchritt()) {
             return ueberpruefung.getNextDate();
         }
@@ -86,12 +91,14 @@ public class UeberpruefungManager implements UebererpruefungService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(ueberpruefung.getDatum());
         calendar.add(Calendar.DAY_OF_YEAR, current.getNachZeit());
-
+        LogManager.getLogger().debug("Next date is " + calendar.getTime());
         return calendar.getTime();
     }
 
     @Override
     public Ueberpruefung getCurrentUeberpruefung(Charge charge) {
+        LogManager.getLogger().debug("Getting current Ueberprueung for Charge" + charge.getId());
+
         TypedQuery<Ueberpruefung> ueberpruefungQuery = DB.getEntityManager().createQuery(
                 "select u from Ueberpruefung u where u.charge.id = :charge " +
                         "order by u.gaerungsprozessschritt.schritt DESC, u.datum DESC", Ueberpruefung.class);
@@ -106,8 +113,9 @@ public class UeberpruefungManager implements UebererpruefungService {
     @Override
     public void save(Ueberpruefung ueberpruefung, List<UeberpruefungenHasHefen> ueberpruefungenHasHefenList)
             throws PersistenceException, IllegalArgumentException {
-
+        LogManager.getLogger().debug("Started validating Ueberpruefung");
         this.validate(ueberpruefung);
+        LogManager.getLogger().debug("Successfully validated Ueberpruefung");
         // persist new Überprüfung
         DB.getEntityManager().getTransaction().begin();
         DB.getEntityManager().persist(ueberpruefung);
@@ -135,6 +143,7 @@ public class UeberpruefungManager implements UebererpruefungService {
         }
 
         DB.getEntityManager().getTransaction().commit();
+        LogManager.getLogger().debug("Successfully persisted Ueberpruefung.");
     }
 
     @Override

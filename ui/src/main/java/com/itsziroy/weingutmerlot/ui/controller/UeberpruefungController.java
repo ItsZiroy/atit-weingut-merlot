@@ -57,7 +57,6 @@ public class UeberpruefungController {
 
                 hefeComboBox.clearSelection();
                 anpasssungHefe.clear();
-
                 reloadHefeSelection();
             } catch (NumberFormatException e) {
                 LogManager.getLogger().warn("Invalid Number for Hefe Input.");
@@ -100,6 +99,7 @@ public class UeberpruefungController {
      * Handler method for "Speichern" button clicked
      */
     public void handleSaveButtonClicked() {
+        LogManager.getLogger().info("Started saving Ueberpruefung.");
         // if the Gaerungsprozess cannot be continued
         if (irreversibelToggleButton.isSelected()) {
             ChargeManager chargeManager = DB.getChargeManager();
@@ -133,6 +133,8 @@ public class UeberpruefungController {
 
             // next date is only relevant if nachsterSchritt is deselected
             if (!naechsterSchritt) {
+                LogManager.getLogger().info("Charge will not go over into next Gaerungsprozessschritt.");
+
                 LocalDate localNextDate = datePicker.getValue();
                 Instant instant = Instant.from(localNextDate.atStartOfDay(ZoneId.systemDefault()));
                 Date nextDate = Date.from(instant);

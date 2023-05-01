@@ -1,5 +1,6 @@
 package com.itsziroy.weingutmerlot.ui;
 
+import com.itsziroy.weingutmerlot.backend.db.DB;
 import com.itsziroy.weingutmerlot.ui.controller.ErrorController;
 import com.itsziroy.weingutmerlot.ui.helper.LoadedView;
 import jakarta.persistence.PersistenceException;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -60,33 +62,29 @@ public class App extends Application {
      * @return Pair of the loaded Parent Node and the Loader Object
      */
     public static LoadedView loadView(View view) {
-        Parent root;
+        Parent root = null;
         FXMLLoader loader = new FXMLLoader();
 
         LogManager.getLogger().info("Loading View " + view);
         try {
-            resourceBundle = ResourceBundle.getBundle("App", App.locale);
             loader.setResources(resourceBundle);
             URL url = App.class.getResource(view.toString());
             loader.setLocation(url);
             root = loader.load();
             LogManager.getLogger().info("Successfully loaded View " + view);
 
-        } catch (IOException | IllegalStateException e) {
-            LogManager.getLogger().error(view + " could not be loaded");
-            App.error(resourceBundle.getString("viewExceptionScene"));
-            throw new RuntimeException(e);
-
         } catch (PersistenceException e) {
-            LogManager.getLogger().error("A database error occurred while starting the application:  ");
+            LogManager.getLogger().error("A database error occurred while starting the application:  ", e);
             App.error(resourceBundle.getString("dbExceptionScene"));
-            throw new RuntimeException(e);
+
+        } catch (IOException | IllegalStateException e) {
+            LogManager.getLogger().error(view + " could not be loaded", e);
+            App.error(resourceBundle.getString("viewExceptionScene"));
 
         } catch (Exception e) {
-            LogManager.getLogger().error("An error occurred while starting the app");
+            LogManager.getLogger().error("An error occurred while starting the app", e);
             App.error(resourceBundle.getString("exceptionScene") + " " +
                     resourceBundle.getString("seeSystemLog"));
-            throw new RuntimeException(e);
         }
         return new LoadedView(root, loader);
     }
@@ -120,7 +118,17 @@ public class App extends Application {
     public void start(Stage stage) {
         scene = new Scene(new Pane());
         stage.setScene(scene);
-        setView(View.DASHBOARD);
+        try {
+            resourceBundle = ResourceBundle.getBundle("App", App.locale);
+            DB.setPersistenceUnit("default");
+            setView(View.DASHBOARD);
+        } catch (PersistenceException e) {
+            LogManager.getLogger().error("A database error occurred while starting the application:  ", e);
+            App.error(resourceBundle.getString("dbExceptionScene"));
+        } catch (MissingResourceException e) {
+            LogManager.getLogger().error("Resource bundle could not be loaded. Something is wrong with your files!", e);
+        }
+
         stage.show();
     }
 }
