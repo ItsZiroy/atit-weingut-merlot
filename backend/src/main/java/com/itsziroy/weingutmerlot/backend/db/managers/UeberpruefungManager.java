@@ -97,7 +97,7 @@ public class UeberpruefungManager implements UebererpruefungService {
 
     @Override
     public Ueberpruefung getCurrentUeberpruefung(Charge charge) {
-        LogManager.getLogger().debug("Getting current Ueberprueung for Charge" + charge.getId());
+        LogManager.getLogger().debug("Getting current Ueberprueung for Charge " + charge.getId());
 
         TypedQuery<Ueberpruefung> ueberpruefungQuery = DB.getEntityManager().createQuery(
                 "select u from Ueberpruefung u where u.charge.id = :charge " +

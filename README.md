@@ -1,4 +1,9 @@
-# ATIT Weingut Merlot
+![Logo](ui/src/main/resources/images/weingutmerlot.png)
+## Overview
+Welcome to our small project for the ATIT course. The following guide outlines how to get started with developing
+the project. To find out more about the project please refer to our Wiki:
+
+[Weingut Merlot Wiki](https://github.com/ItsZiroy/atit-weingut-merlot/wiki)
 ## Prerequisits
 
 ### Java SDK 19
@@ -37,7 +42,7 @@ mvn clean install
 mvn clean install --Ddependency-check.skip=true
 ```
 
-### Intializing Database
+### Initializing Database
 From the root directory of the project run the following two commands in the terminal
 and change your username to your database user:
 
@@ -100,6 +105,23 @@ the application going either through the editor or through the command line:
 ```shell
 mvn -pl ui javafx:run
 ```
+
+## Migration Guide
+
+In order to install the latest packages and have the current data model version, when developing please follow
+these two steps to upgrade your project on changes:
+
+### Updating dependencies
+Either run 
+```shell
+mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true
+```
+or the run the included maven run configuration, which ultimately does the same. 
+See [here](/.run/Update%20Backend%20For%20Frontend.run.xml) for more.
+
+### Updating the Database
+Currently, there are no migration files included, so in order to upgrade the database, either manually map the changes
+to the current instance or drop the database and follow the guide under [Initializing Database](#initializing-database)
 
 ## Multi Modular Project
 This project consists of multiple modules:
