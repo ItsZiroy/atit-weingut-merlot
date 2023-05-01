@@ -8,11 +8,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 
+import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -27,6 +30,8 @@ public class App extends Application {
     private static Locale locale = new Locale("de");
     private static ResourceBundle resourceBundle;
     private static Scene scene;
+
+    private final String APP_ICON_PATH = "/images/weingutmerlot_square.png";
 
     /**
      * A helper method for loading a generic error View.
@@ -118,17 +123,52 @@ public class App extends Application {
     public void start(Stage stage) {
         scene = new Scene(new Pane());
         stage.setScene(scene);
+
+        stage.setTitle("Weingut Merlot");
+
         try {
             resourceBundle = ResourceBundle.getBundle("App", App.locale);
             DB.setPersistenceUnit("default");
             setView(View.DASHBOARD);
+
+            setAppIcon(stage);
+
         } catch (PersistenceException e) {
             LogManager.getLogger().error("A database error occurred while starting the application:  ", e);
             App.error(resourceBundle.getString("dbExceptionScene"));
         } catch (MissingResourceException e) {
             LogManager.getLogger().error("Resource bundle could not be loaded. Something is wrong with your files!", e);
+        } catch (IOException | AssertionError e) {
+            LogManager.getLogger().error("App Icon could not be loaded. Something is wrong with your files!", e);
         }
 
         stage.show();
+    }
+
+    /**
+     * Sets the App Icon
+     *
+     * @param stage Root stage
+     * @throws IOException Icon could not be loaded
+     * @throws AssertionError Loaded Icon is null
+     */
+    private void setAppIcon(Stage stage) throws IOException, AssertionError {
+        InputStream logoStream = getClass().getResourceAsStream(APP_ICON_PATH);
+
+        assert logoStream != null;
+
+        Image logo = new Image(logoStream);
+        stage.getIcons().add(logo);
+
+        // Add image to dock icon
+        if (Taskbar.isTaskbarSupported()) {
+            var taskbar = Taskbar.getTaskbar();
+            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+                var dockIcon = defaultToolkit.getImage(getClass().getResource(APP_ICON_PATH));
+                taskbar.setIconImage(dockIcon);
+
+            }
+        }
     }
 }
