@@ -1,0 +1,6 @@
+.navbar-item {
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-family: "Grenze Gotisch";
+    -fx-font-size: 20;
+}
