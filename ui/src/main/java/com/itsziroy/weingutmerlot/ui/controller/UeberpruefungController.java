@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
-public class UeberpruefungController {
+public class UeberpruefungController extends Controller {
 
     @FXML
     private Label alkoholLabel, zuckerLabel, temperaturLabel, irreversibleLabel;
@@ -208,6 +208,7 @@ public class UeberpruefungController {
         anpasssungHefe.textProperty().addListener(this::addHefe);
 
         initializeHefenCombobox();
+        initializeComponents();
     }
 
     /**
@@ -310,9 +311,6 @@ public class UeberpruefungController {
     public void initializeData(Gaerungsprozessschritt gaerungsprozessschritt, Charge charge) {
         this.gaerungsprozessschritt = gaerungsprozessschritt;
         this.charge = charge;
-
-        initializeComponents();
-
     }
 
     private void initializeComponents() {

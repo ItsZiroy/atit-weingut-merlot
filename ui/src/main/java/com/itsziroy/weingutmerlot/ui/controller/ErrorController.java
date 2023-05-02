@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 /**
  * Controller for FXMl View Error.fxml
  */
-public class ErrorController {
+public class ErrorController extends Controller {
 
     @FXML
     private Text errorMessage;
@@ -14,4 +14,7 @@ public class ErrorController {
     public void initializeData(String message) {
         errorMessage.setText(message);
     }
+
+    @Override
+    public void initialize() { }
 }

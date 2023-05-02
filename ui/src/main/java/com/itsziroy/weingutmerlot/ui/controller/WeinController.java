@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
-public class WeinController {
+public class WeinController extends Controller{
 
     @FXML
     private MFXSlider alkoholgehaltSlider;
