@@ -44,7 +44,7 @@
       <Label layoutX="821.0" layoutY="446.0" text="%anpassung_hefe" />
       <MFXToggleButton fx:id="irreversibelToggleButton" layoutX="947.0" layoutY="570.0" visible="false" />
       <Label fx:id="irreversibleLabel" layoutX="1010.0" layoutY="582.0" text="%irreversibel" visible="false" />
-      <Label layoutX="266.0" layoutY="138.0" text="Überprüfung hinzufügen">
+      <Label layoutX="266.0" layoutY="138.0" text="%ueberpruefungHinzufuegen">
          <font>
             <Font name="Grenze Gotisch Black" size="42.0" />
          </font>
