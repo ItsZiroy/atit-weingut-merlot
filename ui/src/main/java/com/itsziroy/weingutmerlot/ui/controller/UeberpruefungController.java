@@ -13,8 +13,7 @@ import io.github.palexdev.materialfx.controls.*;
 import jakarta.persistence.PersistenceException;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 
 import java.time.Instant;
@@ -53,7 +52,14 @@ public class UeberpruefungController extends Controller {
             try {
                 double menge = Double.parseDouble(anpasssungHefe.getText());
                 Hefe hefe = hefeComboBox.getSelectedItem();
-                hefeMenge.put(hefe, menge);
+
+                // if the entered amount is 0 and the Hefe already exists, it shall be removed
+                if (menge == 0) {
+                    hefeMenge.remove(hefe);
+                // otherwise the Hefe and its amount shall be added
+                } else {
+                    hefeMenge.put(hefe, menge);
+                }
 
                 hefeComboBox.clearSelection();
                 anpasssungHefe.clear();
@@ -74,8 +80,10 @@ public class UeberpruefungController extends Controller {
 
     public void handleHefeListClicked() {
         HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
-        hefeComboBox.selectItem(selected.hefe());
-        anpasssungHefe.setText(String.valueOf(selected.menge()));
+        if (selected != null) {
+            hefeComboBox.selectItem(selected.hefe());
+            anpasssungHefe.setText(String.valueOf(selected.menge()));
+        }
     }
 
     /**
@@ -204,7 +212,7 @@ public class UeberpruefungController extends Controller {
         alkoholIst.textProperty().addListener(this::differenceAlkohol);
         zuckerIst.textProperty().addListener(this::differenceZucker);
         temperaturIst.textProperty().addListener(this::differenceTemperatur);
-        hefeComboBox.textProperty().addListener(this::addHefe);
+        hefeComboBox.getSelectionModel().selectedItemProperty().addListener(this::addHefe);
         anpasssungHefe.textProperty().addListener(this::addHefe);
 
         initializeHefenCombobox();
@@ -279,16 +287,22 @@ public class UeberpruefungController extends Controller {
         }
     }
 
+
+    /**
+     * Handler method for new selection of yeast or value change of yeast's amount
+     *
+     * @param observable not used
+     */
     private void addHefe(Observable observable) {
-        int anpassungHefeInt;
+        double anpassungHefeInt;
         try {
-            anpassungHefeInt = Integer.parseInt(anpasssungHefe.getText());
+            anpassungHefeInt = Double.parseDouble(anpasssungHefe.getText());
             if (anpassungHefeInt < 0) {
                 throw new RuntimeException();
             }
         } catch (RuntimeException e) {
             anpassungHefeInt = -1;
-            hinzufuegenHefeButton.setDisable(true);
+            // hinzufuegenHefeButton.setDisable(true);
         }
 
         hinzufuegenHefeButton.setDisable(hefeComboBox.getSelectedItem() == null || anpassungHefeInt == -1);
