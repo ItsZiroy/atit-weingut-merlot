@@ -49,7 +49,7 @@ public class WeinController extends Controller{
 
     }
 
-    @FXML
+    @Override
     public void initialize() {
         this.initializeWeinartComboxbox();
         this.initializeSuessegradCombobox();

@@ -24,11 +24,12 @@ public class BaseController extends Controller {
             App.reload();
         }
     }
-    @FXML
-    public void initialize() {
 
+    @Override
+    public void initialize() {
         initializeLanguageSelection();
     }
+
     private void initializeLanguageSelection() {
         ObservableList<Locale> options = FXCollections.observableArrayList(Locale.GERMAN, Locale.ENGLISH, Locale.FRENCH);
         languageSelection.setItems(options);

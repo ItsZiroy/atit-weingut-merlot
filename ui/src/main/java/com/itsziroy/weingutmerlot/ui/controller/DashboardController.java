@@ -22,7 +22,7 @@ public class DashboardController extends Controller {
     private Label noUeberpruefungLabel;
 
 
-    @FXML
+    @Override
     public void initialize() {
         initalizeUpcomingUeberpruefungen();
     }

@@ -208,6 +208,7 @@ public class UeberpruefungController extends Controller {
         }
     }
 
+    @Override
     public void initialize() {
         alkoholIst.textProperty().addListener(this::differenceAlkohol);
         zuckerIst.textProperty().addListener(this::differenceZucker);
