@@ -12,6 +12,7 @@ import com.itsziroy.weingutmerlot.ui.helper.HefeMenge;
 import io.github.palexdev.materialfx.controls.*;
 import jakarta.persistence.PersistenceException;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
@@ -45,25 +46,40 @@ public class UeberpruefungController extends Controller {
     private MFXToggleButton nachsterSchrittToggleButton, irreversibelToggleButton;
     @FXML
     private MFXButton uebernehmenZucker, uebernehmenTemperatur, hinzufuegenHefeButton;
-    private final Map<Hefe, Double> hefeMenge = new HashMap<>();
 
+    /**
+     * This handler method adds a hefe to the change list of the Überprüfung
+     */
     public void handleAddHefe() {
         if (hefeComboBox.getSelectedItem() != null && !anpasssungHefe.getText().isBlank()) {
             try {
                 double menge = Double.parseDouble(anpasssungHefe.getText());
                 Hefe hefe = hefeComboBox.getSelectedItem();
 
-                // if the entered amount is 0 and the Hefe already exists, it shall be removed
-                if (menge == 0) {
-                    hefeMenge.remove(hefe);
-                // otherwise the Hefe and its amount shall be added
-                } else {
-                    hefeMenge.put(hefe, menge);
+                // find if item already exists in the displayed list
+                HefeMenge existingHefeMenge = null;
+                for(var currentHefeMenge: anpassungHefeList.getItems()) {
+                    if(currentHefeMenge.hefe() == hefe) {
+                        existingHefeMenge = currentHefeMenge;
+                    }
                 }
+
+                // if an entry for the same Hefe already exists, delete it
+                // and combine the two mengen
+                if(existingHefeMenge != null) {
+                    anpassungHefeList.getItems().remove(existingHefeMenge);
+                    menge = menge + existingHefeMenge.menge();
+                }
+
+                // if the menge is 0, do not add the Hefe to the list
+                if (menge != 0) {
+                    HefeMenge newHefeMenge = new HefeMenge(hefe,  menge);
+                    anpassungHefeList.getItems().add(newHefeMenge);
+                }
+
 
                 hefeComboBox.clearSelection();
                 anpasssungHefe.clear();
-                reloadHefeSelection();
             } catch (NumberFormatException e) {
                 LogManager.getLogger().warn("Invalid Number for Hefe Input.");
             }
@@ -72,12 +88,9 @@ public class UeberpruefungController extends Controller {
         }
     }
 
-    private void reloadHefeSelection() {
-        anpassungHefeList.getItems().clear();
-        hefeMenge.forEach((hefe, menge) ->
-                anpassungHefeList.getItems().add(new HefeMenge(hefe, menge)));
-    }
-
+    /**
+     * On clicking the list, fill combobox and value with selected item
+     */
     public void handleHefeListClicked() {
         HefeMenge selected = anpassungHefeList.getSelectionModel().getSelectedItem();
         if (selected != null) {
@@ -218,7 +231,9 @@ public class UeberpruefungController extends Controller {
 
         initializeHefenCombobox();
         initializeComponents();
+        initializeHefeChangeList();
     }
+
 
     /**
      * Handler method for text value change of actual alcohol
@@ -348,5 +363,47 @@ public class UeberpruefungController extends Controller {
 
         gaerungsprozessschritteHasHefen.forEach(g ->
                 hefeSollList.getItems().add(new HefeMenge(g.getHefe(), g.getMenge())));
+    }
+
+    private void initializeHefeChangeList() {
+        // Set new Cell factory for the Hefe change list
+        anpassungHefeList.setCellFactory(listView -> {
+
+            ListCell<HefeMenge> cell = new ListCell<>();
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem deleteItem = new MenuItem();
+
+            // On delete, remove items from the Hefe change list
+            deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
+            deleteItem.setOnAction(event -> {
+                anpassungHefeList.getItems().remove(cell.getItem());
+                hefeComboBox.clearSelection();
+                anpasssungHefe.clear();
+            });
+
+            contextMenu.getItems().add(deleteItem);
+
+            // Cell listener updates the displayed text, when the item binding changes
+            cell.itemProperty().addListener(
+                    (observable, oldHefeMenge, newHefeMenge) -> {
+                        if (newHefeMenge != null) {
+                            cell.setText(newHefeMenge.toString());
+                        } else {
+                            cell.setText("");
+                        }
+                    }
+            );
+
+            // If the cell is empty, the context menu should not be displayed
+            // Once value is there, display the context menu
+            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    cell.setContextMenu(null);
+                } else {
+                    cell.setContextMenu(contextMenu);
+                }
+            });
+            return cell;
+        });
     }
 }
