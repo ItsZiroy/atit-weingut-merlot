@@ -56,22 +56,28 @@ public class UeberpruefungController extends Controller {
                 double menge = Double.parseDouble(anpasssungHefe.getText());
                 Hefe hefe = hefeComboBox.getSelectedItem();
 
-                // if the entered amount is 0 and the Hefe already exists, it shall be removed
-                if (menge == 0) {
-                    HefeMenge toBeDeletedHefeMenge = null;
-
-                    // Find item in the displayed list and remove it there too
-                    for(var currentHefeMenge: anpassungHefeList.getItems()) {
-                        if(currentHefeMenge.hefe() == hefe) {
-                            toBeDeletedHefeMenge = currentHefeMenge;
-                        }
+                // Find if item already exists in the displayed list
+                HefeMenge existingHefeMenge = null;
+                for(var currentHefeMenge: anpassungHefeList.getItems()) {
+                    if(currentHefeMenge.hefe() == hefe) {
+                        existingHefeMenge = currentHefeMenge;
                     }
-                    anpassungHefeList.getItems().remove(toBeDeletedHefeMenge);
-
-                // otherwise the Hefe and its amount shall be added
-                } else {
-                    anpassungHefeList.getItems().add(new HefeMenge(hefe, menge));
                 }
+
+                // if an entry for the same hefe already exists, delete it
+                // and combine the two mengen
+                if(existingHefeMenge != null) {
+                    anpassungHefeList.getItems().remove(existingHefeMenge);
+                    menge = menge + existingHefeMenge.menge();
+                }
+
+                // if the entered amount is 0 and the Hefe already exists, it shall stay removed
+                // otherwise the Hefe and its amount shall be added
+                if (menge != 0) {
+                    HefeMenge newHefeMenge = new HefeMenge(hefe,  menge);
+                    anpassungHefeList.getItems().add(newHefeMenge);
+                }
+
 
                 hefeComboBox.clearSelection();
                 anpasssungHefe.clear();
@@ -370,7 +376,11 @@ public class UeberpruefungController extends Controller {
 
             // On delete, remove items from the Hefe change list
             deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
-            deleteItem.setOnAction(event -> anpassungHefeList.getItems().remove(cell.getItem()));
+            deleteItem.setOnAction(event -> {
+                anpassungHefeList.getItems().remove(cell.getItem());
+                hefeComboBox.clearSelection();
+                anpasssungHefe.clear();
+            });
 
             contextMenu.getItems().add(deleteItem);
 
