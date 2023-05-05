@@ -56,7 +56,7 @@ public class UeberpruefungController extends Controller {
                 double menge = Double.parseDouble(anpasssungHefe.getText());
                 Hefe hefe = hefeComboBox.getSelectedItem();
 
-                // Find if item already exists in the displayed list
+                // find if item already exists in the displayed list
                 HefeMenge existingHefeMenge = null;
                 for(var currentHefeMenge: anpassungHefeList.getItems()) {
                     if(currentHefeMenge.hefe() == hefe) {
@@ -64,15 +64,14 @@ public class UeberpruefungController extends Controller {
                     }
                 }
 
-                // if an entry for the same hefe already exists, delete it
+                // if an entry for the same Hefe already exists, delete it
                 // and combine the two mengen
                 if(existingHefeMenge != null) {
                     anpassungHefeList.getItems().remove(existingHefeMenge);
                     menge = menge + existingHefeMenge.menge();
                 }
 
-                // if the entered amount is 0 and the Hefe already exists, it shall stay removed
-                // otherwise the Hefe and its amount shall be added
+                // if the menge is 0, do not add the Hefe to the list
                 if (menge != 0) {
                     HefeMenge newHefeMenge = new HefeMenge(hefe,  menge);
                     anpassungHefeList.getItems().add(newHefeMenge);
