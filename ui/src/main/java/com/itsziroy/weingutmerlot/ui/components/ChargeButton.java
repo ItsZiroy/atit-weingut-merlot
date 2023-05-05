@@ -7,11 +7,12 @@ import com.itsziroy.weingutmerlot.backend.db.entities.Gaerungsprozessschritt;
 import com.itsziroy.weingutmerlot.backend.db.entities.Ueberpruefung;
 import com.itsziroy.weingutmerlot.ui.App;
 import com.itsziroy.weingutmerlot.ui.View;
+import com.itsziroy.weingutmerlot.ui.controller.BaseController;
 import com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController;
 import com.itsziroy.weingutmerlot.ui.helper.LoadedView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
 import java.text.SimpleDateFormat;
@@ -49,6 +50,7 @@ public class ChargeButton extends MFXButton {
         this.setText(dateString + ", " + chargeString + ": " + chargeId + ", " + gaerungsprozessschritt + ": " + gaerungsprozessschrittId);
 
         this.setOnAction(this::onUeberpruefungButtonClick);
+
     }
 
     /**
@@ -57,17 +59,18 @@ public class ChargeButton extends MFXButton {
      *
      * @param e ActionEvent
      */
+    @FXML
     private void onUeberpruefungButtonClick(ActionEvent e) {
-        LoadedView loadedView = App.loadView(View.UEBERPRUEFUNG);
+        LoadedView loadedView = App.loadView(View.UEBERPRUEFUNG, controllerType -> {
+            if (controllerType == BaseController.class) {
+                return new BaseController();
+            }
+            UeberpruefungController controller = new UeberpruefungController();
+            controller.initializeData(currentGaerungsprozessschritt, charge);
+            return controller;
+        });
 
         Parent root = loadedView.parent();
-        FXMLLoader loader = loadedView.loader();
-
-        UeberpruefungController controller = loader.getController();
-
-        controller.initializeData(currentGaerungsprozessschritt, charge);
-
-
         App.setRoot(root);
 
     }
