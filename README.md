@@ -116,7 +116,7 @@ Either run
 ```shell
 mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true
 ```
-or the run the included maven run configuration, which ultimately does the same. 
+or run the included maven run configuration, which ultimately does the same. 
 See [here](/.run/Update%20Backend%20For%20Frontend.run.xml) for more.
 
 ### Updating the Database
