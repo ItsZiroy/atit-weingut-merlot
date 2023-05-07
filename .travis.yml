@@ -21,7 +21,7 @@ jobs:
       -Dsonar.host.url=$SONAR_HOST
       -Dsonar.login=$SONAR_LOGIN"
     - stage: "Integration Tests"
-      script: "mvn verify"
+      script: "mvn clean verify -Ddependency-check.skip=true -Djacoco.skip=true"
 
     # The maven dependencies should be cached so the pipeline is faster
 cache:
