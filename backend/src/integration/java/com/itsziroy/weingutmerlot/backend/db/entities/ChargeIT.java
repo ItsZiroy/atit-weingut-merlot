@@ -2,6 +2,7 @@ package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class ChargeIT {
@@ -23,11 +24,6 @@ public class ChargeIT {
         return charge;
     }
 
-    @Test
-    void chargePersistence() {
-        Assertions.assertDoesNotThrow(() -> createRandomCharge(true));
-    }
-
     public static Charge createRandomCharge(boolean persist) {
 
         Charge charge = new Charge();
@@ -45,4 +41,14 @@ public class ChargeIT {
 
         return charge;
     }
+    @BeforeAll
+    static void setUp() {
+        DB.setPersistenceUnit("test");
+    }
+
+    @Test
+    void chargePersistence() {
+        Assertions.assertDoesNotThrow(() -> createRandomCharge(true));
+    }
+
 }

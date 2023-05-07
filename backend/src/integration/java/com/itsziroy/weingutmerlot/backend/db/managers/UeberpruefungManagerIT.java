@@ -41,32 +41,23 @@ class UeberpruefungManagerIT {
 
 
         // Create not accepted Überprüfung for Gärungsprozessschritt 2
-        ueberpruefung1 = new Ueberpruefung();
+        ueberpruefung1 = UeberpruefungIT.createRandomUeberpruefung(false);
         ueberpruefung1.setCharge(charge);
         Date date = new Date(2023, Calendar.APRIL, 20);
         ueberpruefung1.setDatum(date);
         ueberpruefung1.setGaerungsprozessschritt(gaerungsprozessschritte[1]);
         ueberpruefung1.setNaechsterSchritt(false);
-        ueberpruefung1.setIstAlkohol(5.0);
-        ueberpruefung1.setIstTemperatur(25.0);
-        ueberpruefung1.setIstZucker(150);
-        ueberpruefung1.setAnpassungTemperatur(0.0);
-        ueberpruefung1.setAnpassungZucker(0);
         Date nextDate = new Date(2023, Calendar.APRIL, 25);
         ueberpruefung1.setNextDate(nextDate);
 
         // Create a accepted Überprüfung for Gärungssschritt 2
-        ueberpruefung2 = new Ueberpruefung();
+        ueberpruefung2 = UeberpruefungIT.createRandomUeberpruefung(false);
         ueberpruefung2.setCharge(charge);
         date = new Date(2023, Calendar.APRIL, 25);
         ueberpruefung2.setDatum(date);
         ueberpruefung2.setGaerungsprozessschritt(gaerungsprozessschritte[1]);
         ueberpruefung2.setNaechsterSchritt(true);
-        ueberpruefung2.setIstAlkohol(5.0);
-        ueberpruefung2.setIstTemperatur(25.0);
-        ueberpruefung2.setIstZucker(150);
-        ueberpruefung2.setAnpassungTemperatur(0.0);
-        ueberpruefung2.setAnpassungZucker(0);
+
 
         DB.getEntityManager().getTransaction().begin();
         DB.getEntityManager().persist(ueberpruefung1);
