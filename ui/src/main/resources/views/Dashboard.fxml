@@ -3,12 +3,18 @@
 <?import io.github.palexdev.materialfx.controls.MFXListView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.DashboardController">
+<?import javafx.scene.text.Font?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1497.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.DashboardController" stylesheets="@../css/font.css">
    <children>
-      <MFXListView fx:id="listView" layoutX="723.0" layoutY="46.0" minWidth="300" />
+      <fx:include source="layout/Base.fxml" />
+
+      <Label layoutX="1070.0" layoutY="178.0" styleClass="grenze-gotisch" text="%upcomingUeberpruefungen">
+         <font>
+            <Font name="Grenze Gotisch Regular" size="40.0" />
+         </font>
+      </Label>
       <Label fx:id="noUeberpruefungLabel" layoutX="723.0" layoutY="46.0" text="%noUeberpruefung" visible="false" />
-      <MFXComboBox fx:id="languageSelection" floatingText="%sprache" layoutX="14.0" layoutY="14.0" onAction="#handleLanguageChange" prefHeight="41.0" prefWidth="170.0" />
+      <MFXListView fx:id="listView" layoutX="1071.0" layoutY="231.0" minWidth="300" prefHeight="451.0" prefWidth="412.0" />
    </children>
 </Pane>

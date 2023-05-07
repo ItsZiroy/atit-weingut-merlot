@@ -5,46 +5,73 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<?import com.itsziroy.weingutmerlot.ui.components.HomeButton?>
 <AnchorPane prefHeight="551.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itsziroy.weingutmerlot.ui.controller.UeberpruefungController">
    <children>
-      <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="41.0" layoutY="263.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="41.0" layoutY="129.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="41.0" layoutY="198.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="alkoholIst" floatingText="%alkohol_ist" layoutX="198.0" layoutY="263.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="zuckerIst" floatingText="%zucker_ist" layoutX="198.0" layoutY="129.0" prefHeight="28.0" prefWidth="147.0" />
-      <MFXTextField fx:id="temperaturIst" floatingText="%temperatur_ist" layoutX="198.0" layoutY="198.0" prefHeight="28.0" prefWidth="147.0" />
-      <Label fx:id="alkoholLabel" layoutX="437.0" layoutY="276.0" prefHeight="25.0" prefWidth="50.0" />
-      <Label fx:id="zuckerLabel" layoutX="437.0" layoutY="142.0" prefHeight="25.0" prefWidth="50.0" />
-      <Label fx:id="temperaturLabel" layoutX="437.0" layoutY="211.0" prefHeight="25.0" prefWidth="50.0" />
-      <Label fx:id="chargeLabel" layoutX="35.0" layoutY="92.0" text="Label" />
-      <MFXToggleButton fx:id="nachsterSchrittToggleButton" layoutX="94.0" layoutY="448.0" onAction="#handleNextStepChange" selected="true" />
-      <HomeButton layoutX="35.0" layoutY="14.0" />
-      <Label layoutX="197.0" layoutY="460.0" text="%next_Gaerungsprozessschritt" />
-      <Label fx:id="gaerungsprozessschrittLabel" layoutX="191.0" layoutY="92.0" text="Label" />
-      <Label fx:id="weinLabel" layoutX="35.0" layoutY="60.0" text="Label" />
-      <MFXButton layoutX="167.0" layoutY="489.0" onMouseClicked="#handleSaveButtonClicked" text="%speichern" />
-      <Label fx:id="weinartLabel" layoutX="251.0" layoutY="60.0" text="Label" />
-      <Label layoutX="359.0" layoutY="279.0" text="%abweichung" />
-      <Label layoutX="359.0" layoutY="145.0" text="%abweichung" />
-      <Label layoutX="359.0" layoutY="214.0" text="%abweichung" />
-      <MFXTextField fx:id="anpasssungHefe" floatingText="%menge" layoutX="781.0" layoutY="263.0" text="0" />
-      <MFXTextField fx:id="anpassungZucker" floatingText="%anpassung_zucker" layoutX="592.0" layoutY="129.0" prefHeight="49.0" prefWidth="176.0" text="0"/>
-      <MFXTextField fx:id="anpassungTemperatur" floatingText="%anpassung_temperatur" layoutX="592.0" layoutY="198.0" prefHeight="49.0" prefWidth="176.0" text="0"/>
-      <MFXComboBox fx:id="hefeComboBox" floatingText="%hefe" layoutX="592.0" layoutY="263.0" prefHeight="49.0" prefWidth="176.0" />
-      <MFXButton fx:id="uebernehmenZucker" disable="true" layoutX="472.0" layoutY="141.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
-      <MFXButton fx:id="uebernehmenTemperatur" disable="true" layoutX="472.0" layoutY="210.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
-      <MFXDatePicker fx:id="datePicker" layoutX="392.0" layoutY="450.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
-      <MFXButton fx:id="hinzufuegenHefeButton" disable="true" layoutX="878.0" layoutY="276.0" onAction="#handleAddHefe" text="%add" />
-      <ListView fx:id="anpassungHefeList" layoutX="592.0" layoutY="343.0" onMouseClicked="#handleHefeListClicked" prefHeight="80.0" prefWidth="176.0" />
-      <ListView fx:id="hefeSollList" layoutX="41.0" layoutY="343.0" prefHeight="80.0" prefWidth="176.0" />
-      <Label layoutX="41.0" layoutY="324.0" text="%hefe_soll" />
-      <Label layoutX="592.0" layoutY="324.0" text="%anpassung_hefe" />
-      <MFXToggleButton fx:id="irreversibelToggleButton" layoutX="718.0" layoutY="448.0" visible="false" />
-      <Label fx:id="irreversibleLabel" layoutX="781.0" layoutY="460.0" text="%irreversibel" visible="false" />
+      <fx:include fx:id="" source="../layout/Base.fxml" />
+      <MFXTextField fx:id="alkoholSoll" editable="false" floatingText="%alkohol_soll" layoutX="270.0" layoutY="385.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="zuckerSoll" editable="false" floatingText="%zucker_soll" layoutX="270.0" layoutY="251.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturSoll" editable="false" floatingText="%temperatur_soll" layoutX="270.0" layoutY="320.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="alkoholIst" floatingText="%alkohol_ist" layoutX="427.0" layoutY="385.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="zuckerIst" floatingText="%zucker_ist" layoutX="427.0" layoutY="251.0" prefHeight="28.0" prefWidth="147.0" />
+      <MFXTextField fx:id="temperaturIst" floatingText="%temperatur_ist" layoutX="427.0" layoutY="320.0" prefHeight="28.0" prefWidth="147.0" />
+      <Label fx:id="alkoholLabel" layoutX="666.0" layoutY="398.0" prefHeight="25.0" prefWidth="50.0" textFill="RED" />
+      <Label fx:id="zuckerLabel" layoutX="666.0" layoutY="264.0" prefHeight="25.0" prefWidth="50.0" textFill="#e80000" />
+      <Label fx:id="temperaturLabel" layoutX="666.0" layoutY="333.0" prefHeight="25.0" prefWidth="50.0" textFill="#ff0808" />
+      <MFXToggleButton fx:id="nachsterSchrittToggleButton" layoutX="323.0" layoutY="570.0" onAction="#handleNextStepChange" selected="true" />
+      <Label layoutX="426.0" layoutY="582.0" text="%next_Gaerungsprozessschritt" />
+      <MFXButton layoutX="396.0" layoutY="611.0" onMouseClicked="#handleSaveButtonClicked" text="%speichern" />
+      <Label layoutX="588.0" layoutY="401.0" text="%abweichung" />
+      <Label layoutX="588.0" layoutY="267.0" text="%abweichung" />
+      <Label layoutX="588.0" layoutY="336.0" text="%abweichung" />
+      <MFXTextField fx:id="anpasssungHefe" floatingText="%menge" layoutX="1010.0" layoutY="385.0" text="0" />
+      <MFXTextField fx:id="anpassungZucker" floatingText="%anpassung_zucker" layoutX="821.0" layoutY="251.0" prefHeight="49.0" prefWidth="176.0" text="0" />
+      <MFXTextField fx:id="anpassungTemperatur" floatingText="%anpassung_temperatur" layoutX="821.0" layoutY="320.0" prefHeight="49.0" prefWidth="176.0" text="0" />
+      <MFXComboBox fx:id="hefeComboBox" floatingText="%hefe" layoutX="821.0" layoutY="385.0" prefHeight="49.0" prefWidth="176.0" />
+      <MFXButton fx:id="uebernehmenZucker" disable="true" layoutX="701.0" layoutY="263.0" onAction="#handleTakeOverZucker" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXButton fx:id="uebernehmenTemperatur" disable="true" layoutX="701.0" layoutY="332.0" onAction="#handleTakeOverTemperatur" prefHeight="25.0" prefWidth="110.0" text="%uebernehmen" />
+      <MFXDatePicker fx:id="datePicker" layoutX="621.0" layoutY="572.0" prefHeight="38.0" prefWidth="322.0" promptText="%naechstesUeberpruefungsDatum" visible="false" />
+      <MFXButton fx:id="hinzufuegenHefeButton" disable="true" layoutX="1107.0" layoutY="398.0" onAction="#handleAddHefe" text="%add" />
+      <ListView fx:id="anpassungHefeList" layoutX="821.0" layoutY="465.0" onMouseClicked="#handleHefeListClicked" prefHeight="80.0" prefWidth="176.0" />
+      <ListView fx:id="hefeSollList" layoutX="270.0" layoutY="465.0" prefHeight="80.0" prefWidth="176.0" />
+      <Label layoutX="270.0" layoutY="446.0" text="%hefe_soll" />
+      <Label layoutX="821.0" layoutY="446.0" text="%anpassung_hefe" />
+      <MFXToggleButton fx:id="irreversibelToggleButton" layoutX="947.0" layoutY="570.0" visible="false" />
+      <Label fx:id="irreversibleLabel" layoutX="1010.0" layoutY="582.0" text="%irreversibel" visible="false" />
+      <Label layoutX="266.0" layoutY="138.0" text="%ueberpruefungHinzufuegen">
+         <font>
+            <Font name="Grenze Gotisch Black" size="42.0" />
+         </font>
+      </Label>
+      <VBox layoutX="1210.0" layoutY="128.0" prefHeight="664.0" prefWidth="287.0" spacing="20.0">
+         <children>
+            <Label fx:id="weinLabel" text="Label">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="weinartLabel" text="Label" />
+            <Label fx:id="gaerungsprozessschrittLabel" text="Label" />
+            <Label fx:id="chargeLabel" text="Label" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </VBox>
    </children>
 </AnchorPane>

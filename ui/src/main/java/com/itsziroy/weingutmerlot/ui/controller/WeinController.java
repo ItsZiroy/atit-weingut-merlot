@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
-public class WeinController {
+public class WeinController extends Controller{
 
     @FXML
     private MFXSlider alkoholgehaltSlider;
@@ -49,7 +49,7 @@ public class WeinController {
 
     }
 
-    @FXML
+    @Override
     public void initialize() {
         this.initializeWeinartComboxbox();
         this.initializeSuessegradCombobox();

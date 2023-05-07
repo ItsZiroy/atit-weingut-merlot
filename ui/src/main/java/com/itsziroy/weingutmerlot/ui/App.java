@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
@@ -30,6 +31,8 @@ public class App extends Application {
     private static Locale locale = new Locale("de");
     private static ResourceBundle resourceBundle;
     private static Scene scene;
+    private static Callback<Class<?>, Object> currentControllerFactory;
+    private static View currentView;
 
     private final String APP_ICON_PATH = "/images/weingutmerlot_square.png";
 
@@ -60,6 +63,18 @@ public class App extends Application {
         return resourceBundle;
     }
 
+    public static Callback<Class<?>, Object> getCurrentControllerFactory() {
+        return currentControllerFactory;
+    }
+
+    public static View getCurrentView() {
+        return currentView;
+    }
+
+    public static Scene getScene() {
+        return scene;
+    }
+
     /**
      * Loads the view that is passed as a parameter in the selected language
      *
@@ -67,15 +82,44 @@ public class App extends Application {
      * @return Pair of the loaded Parent Node and the Loader Object
      */
     public static LoadedView loadView(View view) {
+        return loadViewInt(view, null);
+    }
+
+    /**
+     * Loads the view that is passed as a parameter in the selected language with
+     * a defined controller Factory. This is useful when data needs to be loaded first.
+     *
+     * @param view View that shall be loaded
+     * @param controllerFactory Controller factory to be run
+     * @return Pair of the loaded Parent Node and the Loader Object
+     */
+    public static LoadedView loadView(View view, Callback<Class<?>, Object> controllerFactory) {
+        return loadViewInt(view, controllerFactory);
+    }
+
+    /**
+     * Internal method for loading views.
+     * @param view View to load
+     * @param controllerFactory Controller factory
+     * @return Loaded View
+     */
+    private static LoadedView loadViewInt(View view, Callback<Class<?>, Object> controllerFactory) {
         Parent root = null;
         FXMLLoader loader = new FXMLLoader();
-
         LogManager.getLogger().info("Loading View " + view);
         try {
+            resourceBundle = ResourceBundle.getBundle("App", App.locale);
             loader.setResources(resourceBundle);
             URL url = App.class.getResource(view.toString());
             loader.setLocation(url);
+
+            if(controllerFactory != null) {
+                LogManager.getLogger().info("Setting Controller Factory");
+                loader.setControllerFactory(controllerFactory);
+            }
             root = loader.load();
+            currentControllerFactory = controllerFactory;
+            currentView = view;
             LogManager.getLogger().info("Successfully loaded View " + view);
 
         } catch (PersistenceException e) {
@@ -98,6 +142,13 @@ public class App extends Application {
         launch();
     }
 
+    /**
+     * Reloads the current page
+     */
+    public static void reload() {
+        LoadedView loadedView = loadView(currentView, currentControllerFactory);
+        setRoot(loadedView.parent());
+    }
     /**
      * Sets the Root Node of the entire Stage
      *
