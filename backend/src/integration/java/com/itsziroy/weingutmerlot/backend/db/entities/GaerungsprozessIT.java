@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class GaerungsprozessTest {
+public class GaerungsprozessIT {
 
     @BeforeAll
     static void setUp() {
@@ -32,7 +32,7 @@ public class GaerungsprozessTest {
         gaerungsprozess.setZuckergehalt((int) (Math.random() * 100));
         gaerungsprozess.setDauer((int) (Math.random() * 100));
 
-        Wein wein = WeinTest.createRandomWein(persist);
+        Wein wein = WeinIT.createRandomWein(persist);
 
         gaerungsprozess.setWein(wein);
 

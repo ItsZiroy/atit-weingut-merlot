@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GaerungsprozessschrittTest {
+public class GaerungsprozessschrittIT {
 
     /**
      * A set of Gaerungsprozessschritte to use for Sibling testing
@@ -60,7 +60,7 @@ public class GaerungsprozessschrittTest {
     static void setUp() {
         DB.setPersistenceUnit("test");
 
-        Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(false);
+        Gaerungsprozess gaerungsprozess = GaerungsprozessIT.createRandomGaerungsprozess(false);
 
         DB.getEntityManager().getTransaction().begin();
 
@@ -101,7 +101,7 @@ public class GaerungsprozessschrittTest {
         schritt.setSollZucker((int) (Math.random() * 100));
         schritt.setSchritt((int) (Math.random() * 100));
 
-        Gaerungsprozess gaerungsprozess = GaerungsprozessTest.createRandomGaerungsprozess(persist);
+        Gaerungsprozess gaerungsprozess = GaerungsprozessIT.createRandomGaerungsprozess(persist);
 
         schritt.setGaerungsprozess(gaerungsprozess);
 
