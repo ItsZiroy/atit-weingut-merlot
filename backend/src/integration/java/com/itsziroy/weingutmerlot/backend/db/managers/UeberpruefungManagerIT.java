@@ -23,7 +23,7 @@ class UeberpruefungManagerIT {
     // Idea: Gärungsprozess (including Wein)-> Gärungsprozessschritte -> Charge -> Überprüfungen
     @BeforeAll
     static void setUp() {
-        DB.setPersistenceUnit("test2");
+        DB.setPersistenceUnit("test");
 
         ueberpruefungService = DB.getUeberpruefungManager();
 
