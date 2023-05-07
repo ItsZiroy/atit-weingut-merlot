@@ -5,7 +5,7 @@ import jakarta.persistence.PersistenceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class DBTest {
+class DatabaseIT {
     /**
      * Getting entity manager with manual persistence Unit declaration
      */
@@ -29,7 +29,7 @@ class DBTest {
      * an exception is being thrown
      */
     @Test
-    void persistenceUnitDoesNotExist() throws ClassNotFoundException {
+    void persistenceUnitDoesNotExist() {
         Assertions.assertThrows(PersistenceException.class, () -> DB.setPersistenceUnit("this_will_definitely_not_exist"));
     }
 }
