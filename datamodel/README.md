@@ -22,3 +22,7 @@ Only the endings (1:1, 1:n, n:m) are relevant for us.
 The section that is most relevant for the implementation looks as follows:
 ![Er-zoomed in](./images/ER-Gärungsprozess.png)
 
+## Generating the Datamodel
+To generate the initialize.sql script from MySQL workbench, you can use the *Forward Engineer SQL Create script* option.
+To see which options are recommended, see the [wiki](https://github.com/ItsZiroy/atit-weingut-merlot/wiki/Generating-SQL-Create-script).
+
