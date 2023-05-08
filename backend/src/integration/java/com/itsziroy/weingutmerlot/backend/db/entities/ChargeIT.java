@@ -2,9 +2,10 @@ package com.itsziroy.weingutmerlot.backend.db.entities;
 
 import com.itsziroy.weingutmerlot.backend.db.DB;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class ChargeTest {
+public class ChargeIT {
 
     public static Charge createRandomChargeForWein(boolean persist, Wein wein) {
 
@@ -23,18 +24,13 @@ public class ChargeTest {
         return charge;
     }
 
-    @Test
-    void chargePersistence() {
-        Assertions.assertDoesNotThrow(() -> createRandomCharge(true));
-    }
-
     public static Charge createRandomCharge(boolean persist) {
 
         Charge charge = new Charge();
         charge.setJahrgang((int) (Math.random() * 2000));
         charge.setLagerungsort("Test");
         charge.setMengeInLiter(Math.random() * 1000);
-        Wein wein = WeinTest.createRandomWein(true);
+        Wein wein = WeinIT.createRandomWein(true);
         charge.setWein(wein);
 
         if (persist) {
@@ -45,4 +41,14 @@ public class ChargeTest {
 
         return charge;
     }
+    @BeforeAll
+    static void setUp() {
+        DB.setPersistenceUnit("test");
+    }
+
+    @Test
+    void chargePersistence() {
+        Assertions.assertDoesNotThrow(() -> createRandomCharge(true));
+    }
+
 }

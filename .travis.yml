@@ -1,7 +1,7 @@
 language: java
 jdk: openjdk19
 
-# The basic install script will be run before every job.
+# The basic installation script will be run before every job.
 # Tests, dependency check and jacoco are skipped on purpose
 # here because they will be run later.
 install: "mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
@@ -9,7 +9,7 @@ install: "mvn clean install -Ddependency-check.skip=true -Djacoco.skip=true -Dsk
 stages:
   - name: "Tests & Sonar Scan"
     if: branch = main OR type = pull_request
-  - name: "Tests"
+  - name: "Integration Tests"
     if: (NOT branch = main) AND (NOT type = pull_request)
 
 jobs:
@@ -20,8 +20,8 @@ jobs:
       -Dsonar.projectKey=$SONAR_PROJECT_KEY
       -Dsonar.host.url=$SONAR_HOST
       -Dsonar.login=$SONAR_LOGIN"
-    - stage: "Tests"
-      script: "mvn test"
+    - stage: "Integration Tests"
+      script: "mvn clean verify -Ddependency-check.skip=true -Djacoco.skip=true"
 
     # The maven dependencies should be cached so the pipeline is faster
 cache:
