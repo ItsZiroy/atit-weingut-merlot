@@ -61,10 +61,19 @@ public class Gaerungsprozessschritt {
         this.nachZeit = nachZeit;
     }
 
+    /**
+     * Gets the next Prozessschritt
+     * @return Gärungsprozessschritt
+     */
     public Gaerungsprozessschritt getNextProzessschritt() {
         return this.getSiblingProzessschrittByNumber(this.getSchritt() + 1);
     }
 
+    /**
+     * Finds a sibling Processschritt by the step identifier
+     * @param schritt step
+     * @return Gärungsprozessschritt
+     */
     public Gaerungsprozessschritt getSiblingProzessschrittByNumber(int schritt) {
         TypedQuery<Gaerungsprozessschritt> query = DB.getEntityManager().createQuery("select p from Gaerungsprozessschritt p " +
                 "where p.schritt = :schritt and p.gaerungsprozess.id = :gaerungsprozess_id", Gaerungsprozessschritt.class);
@@ -87,6 +96,10 @@ public class Gaerungsprozessschritt {
         this.schritt = schritt;
     }
 
+    /**
+     * Gets the previous Gärungsprozessschritt
+     * @return Gärungsprozessschritt
+     */
     public Gaerungsprozessschritt getPreviousProzessschritt() {
         return this.getSiblingProzessschrittByNumber(this.getSchritt() - 1);
     }
