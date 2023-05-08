@@ -61,7 +61,7 @@ public class ChargeButton extends MFXButton {
      */
     @FXML
     private void onUeberpruefungButtonClick(ActionEvent e) {
-        LoadedView loadedView = App.loadView(View.UEBERPRUEFUNG, controllerType -> {
+        LoadedView loadedView = App.loadView(View.CREATE_UEBERPRUEFUNG, controllerType -> {
             if (controllerType == BaseController.class) {
                 return new BaseController();
             }
