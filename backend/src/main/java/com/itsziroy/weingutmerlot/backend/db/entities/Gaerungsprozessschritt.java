@@ -62,7 +62,7 @@ public class Gaerungsprozessschritt {
     }
 
     /**
-     * Gets the next Prozessschritt
+     * Gets the next Gärungsprozessschritt
      * @return Gärungsprozessschritt
      */
     public Gaerungsprozessschritt getNextProzessschritt() {
@@ -70,7 +70,7 @@ public class Gaerungsprozessschritt {
     }
 
     /**
-     * Finds a sibling Processschritt by the step identifier
+     * Finds a sibling Prozessschritt by the step identifier
      * @param schritt step
      * @return Gärungsprozessschritt
      */
