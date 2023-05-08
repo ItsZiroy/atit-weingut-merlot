@@ -130,4 +130,9 @@ This project consists of multiple modules:
 * ([/datamodel](/datamodel)) Not a maven module but this is where all the information
     regarding the data model lies.
 
-
+## Contact
+If you have further questions, you can contact us directly at 
+[maximilian.leonhard@studmail.hwg-lu.de](mailto:maximilian.leonhard@studmail.hwg-lu.de), 
+[dennis.luedke@studmail.hwg-lu.de](mailto:dennis.luedke@studmail.hwg-lu.de), 
+[laura.goedde@studmail.hwg-lu.de](mailto:laura.goedde@studmail.hwg-lu.de) 
+or [yannik.hahn@studmail.hwg-lu.de](mailto:yannik.hahn@studmail.hwg-lu.de)
